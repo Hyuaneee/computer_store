@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- elementUI -->
+    <link rel="stylesheet" href="../../frame/elementUI/lib-master/theme-chalk/index.css"/>
+    <!-- 必须先引入vue，  后使用element-ui -->
+    <script src="../../frame/elementUI/vue.js"></script>
+    <!-- 引入element 的组件库-->
+    <script src="../../frame/elementUI/lib-master/index.js"></script>
+    <!-- jquery -->
+    <script src="./../../frame/jquery/jquery.min.js"></script>
+    <!--导入核心文件-->
+    <script src="../../frame/bootstrap3/js/holder.js"></script>
+    <link href="../../frame/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="../../frame/bootstrap3/jquery-1.9.1.min.js"></script>
+    <script src="../../frame/bootstrap3/js/bootstrap.js"></script>
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="../../frame/bootstrap3/font-awesome-4.7.0/css/font-awesome.css" />
+
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/top.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/footer.css" />
+    <title>电脑商城</title>
+</head>
+
+<body>
+<div id="app">
+    <!--头部-->
+    <header class="header">
+        <!--电脑商城logo-->
+        <div class="row">
+            <div class="col-md-3">
+                <a href="../index.html">
+                    <img src="../../images/index/stumalllogo.png" />
+                </a>
+            </div>
+            <!--快捷选项-->
+            <div class="col-md-9 top-item">
+                <ul class="list-inline pull-right">
+                    <li><a href="../favorites.html"><span class="fa fa-heart"></span>&nbsp;收藏</a></li>
+                    <li class="li-split">|</li>
+                    <li><a href="../orders.html"><span class="fa fa-file-text"></span>&nbsp;订单</a></li>
+                    <li class="li-split">|</li>
+                    <li><a href="../cart.html"><span class="fa fa-cart-plus"></span>&nbsp;购物车</a></li>
+                    <li class="li-split">|</li>
+                    <li>
+                        <!--下列列表按钮 ：管理-->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                    <span id="top-dropdown-btn">
+                                        <img v-bind:src="user.avatar" style="width: 25px;height: 25px">
+                                        &nbsp;{{user.username}}<span class="caret"></span>
+                                    </span>
+                            </button>
+                            <ul class="dropdown-menu top-dropdown-ul" role="menu">
+                                <li><a href="admin/password.html">修改密码</a></li>
+                                <li><a href="admin/userdata.html">个人资料</a></li>
+                                <li><a href="admin/upload.html">上传头像</a></li>
+                                <li><a href="admin/address.html">收货管理	</a></li>
+                                <li><a href="/user/logout">注销</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <!--导航 -->
+    <!--分割导航和顶部-->
+    <div class="row top-nav">
+        <div class="col-md-6">
+            <ul class="nav nav-pills">
+                <li>
+                    <a href="#"></a>
+                </li>
+                <li class="active"><a href="index.html"><span class="fa fa-home"></span></a></li>
+                <li><a href="#">秒杀</a></li>
+                <li><a href="#">优惠券</a></li>
+                <li><a href="#">电脑VIP</a></li>
+                <li><a href="#">外卖</a></li>
+                <li><a href="#">超市</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3" style="float: right;margin-right: 5px">
+            <el-input placeholder="请输入内容" v-model="searchData" class="input-with-select">
+                <el-button slot="append" icon="el-icon-search" @Click="searchContent()"></el-button>
+            </el-input>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col-md-2">
+            <!--左侧导航开始-->
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <!--主选项：我的订单-->
+                        <p class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">我的订单</a>
+                        </p>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div><a href="../orders.html">全部订单</a></div>
+                            <div><a href="../orders.html">待付款</a></div>
+                            <div><a href="../orders.html">待收货</a></div>
+                            <div><a href="../orders.html">待评价</a></div>
+                            <div><a href="../orders.html">退货退款</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <!--主选项：资料修改-->
+                        <p class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">资料修改</a>
+                        </p>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div><a href="password.html">修改密码</a></div>
+                            <div><a href="userdata.html">个人资料</a></div>
+                            <div><a href="upload.html">上传头像</a></div>
+                            <div><a href="address.html"><b>收货管理</b></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--左侧导航结束-->
+        </div>
+        <div class="col-md-10">
+            <div class="panel panel-default">
+                <ul class="nav nav-tabs">
+                    <li><a href="password.html">修改密码</a></li>
+                    <li><a href="userdata.html">个人资料</a></li>
+                    <li><a href="upload.html">上传头像</a></li>
+                    <li class="active"><a href="#">收货管理</a></li>
+                </ul>
+                <div class="panel-body">
+                    <!--地址显示-->
+                    <h4 style="text-align: center">收货地址列表</h4>
+                    <span style="float: right; color: darkgreen">最多只能有20个收货地址</span>
+                    <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key,selection-change:多选，当选择项发生变化时会触发该事件 -->
+                    <el-table height="250" border :data="page.content" v-loading="loading"
+                              :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
+                              @selection-change="handleSelectionChange" ref="multipleTable" style="font-size: 10px">
+                        <el-table-column type="selection" label="全选" :reserve-selection="true" min-width="3%"></el-table-column>  <!-- reserve-selection选择其他页时，之前页选的的框依然存在 -->
+                        <el-table-column prop="tag" label="地址类型" min-width="8%"></el-table-column>
+                        <el-table-column prop="name" label="收货人姓名" min-width="12%"></el-table-column>
+                        <el-table-column prop="address" label="详细地址" min-width="40%"></el-table-column>
+                        <el-table-column prop="phone" label="联系电话" min-width="15%"></el-table-column>
+                        <el-table-column label="操作" min-width="22%">
+                            <template slot-scope="scope">   <!-- 将整个行对象封装为scope -->
+                                <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleUpdate(scope.row)" circle></el-button>
+                                <el-button type="danger" icon="el-icon-delete" size="mini" @click="rowDelete(scope.row)" circle></el-button>
+                                <el-button v-show="scope.row.is_default==1?false:true" type="info" size="mini" @click="setDefalut(scope.row)">设为默认</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <!-- 按钮组 -->
+                    <div style="margin-top: 10px">
+                        <tr>
+                            <th colspan="6">
+                                <el-button type="info" @click="Previous()" plain :disabled="page.firstPage">上一页</el-button>
+                                <el-button type="info" @click="Next()" plain :disabled="page.lastPage" >下一页</el-button>
+                                <el-button @click="handleAdd()" icon="el-icon-plus" type="primary" style="float: right">新增</el-button>
+                                <el-button @click="delAll()" type="danger" icon="el-icon-delete"  style="float: right;margin-right: 20px" :disabled="multipleSelection.length==0">
+                                    一键删除
+                                </el-button>
+                            </th>
+                        </tr>
+                    </div>
+                    <!-- 添加数据弹框 -->
+                    <div class="add-form">
+                        <el-dialog title="添加数据" :visible.sync="dialogFormVisible">
+                            <el-form ref="elAdd":model="elAdd" :rules="rules" label-position="right" label-width="100px" :clearable="true">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <el-form-item label="收货人" prop="name">
+                                            <el-input v-model="elAdd.name" placeholder="请输入收货人姓名"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="省/直辖市" prop="province_name">
+                                            <el-select  v-model="elAdd.province_name" placeholder="请选择省/直辖市" @input="getListCity(elAdd.province_name)">
+                                                <el-option v-for="province of addressList.provinces" :key="province.id" :label="province.name" :value="province.name"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="城市" prop="city_name">
+                                            <el-select v-model="elAdd.city_name" placeholder="请选择城市" @input="getListArea(elAdd.city_name)">
+                                                <el-option v-for="city of addressList.citys" :key="city.id" :label="city.name" :value="city.name"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="区/县" prop="area_name">
+                                            <el-select v-model="elAdd.area_name" placeholder="请选择区/县">
+                                                <el-option v-for="area of addressList.areas" :key="area.id" :label="area.name" :value="area.name"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="邮政编码" prop="zip" >
+                                            <el-input v-model="elAdd.zip" placeholder="请输入邮政编码"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="详细地址" prop="address">
+                                            <el-input v-model="elAdd.address"   type="textarea" :rows="2"
+                                            placeholder="请输入详细的收货地址,街道办,小区名称,等"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="手机号" prop="phone">
+                                            <el-input v-model="elAdd.phone" placeholder="请输入手机号"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="固定电话" prop="tel" >
+                                            <el-input v-model="elAdd.tel" placeholder="请输入固定电话"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="地址类型" prop="tag" >
+                                            <el-input v-model="elAdd.tag" placeholder="请输入地址类型，如：家，公司或学校"/>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer">
+                                <el-button @click="cancel()">取消</el-button>
+                                <el-button @click="reset()">重置</el-button>
+                                <el-button type="primary" @click="handleSave()">确定</el-button>
+                            </div>
+                        </el-dialog>
+                    </div>
+                    <!-- 修改i数据弹框 -->
+                    <div class="updata-form">
+                        <el-dialog title="修改数据" :visible.sync="dialogUpdateVisible">
+                            <el-form ref="elAUpdate":model="elAUpdate" :rules="rules" label-position="right" label-width="100px" :clearable="true">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <el-form-item label="收货人" prop="name">
+                                            <el-input v-model="elAUpdate.name" placeholder="请输入收货人姓名"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="省/直辖市" prop="province_name">
+                                            <el-select v-model="elAUpdate.province_name" placeholder="请选择省/直辖市" @input="getListCity(elAUpdate.province_name)">
+                                                <el-option v-for="province of addressList.provinces" :key="province.id" :label="province.name" :value="province.name"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="城市" prop="city_name">
+                                            <el-select v-model="elAUpdate.city_name" placeholder="请选择城市" @input="getListArea(elAUpdate.city_name)">
+                                                <el-option v-for="city of addressList.citys" :key="city.id" :label="city.name" :value="city.name"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="区/县" prop="area_name">
+                                            <el-select v-model="elAUpdate.area_name" placeholder="请选择区/县">
+                                                <el-option v-for="area of addressList.areas" :key="area.id" :label="area.name" :value="area.name"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="邮政编码" prop="zip" >
+                                            <el-input v-model="elAUpdate.zip" placeholder="请输入邮政编码"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="详细地址" prop="address">
+                                            <el-input v-model="elAUpdate.address"   type="textarea" :rows="2"
+                                                      placeholder="请输入详细的收货地址,街道办,小区名称,等"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="手机号" prop="phone">
+                                            <el-input v-model="elAUpdate.phone" placeholder="请输入手机号"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="固定电话" prop="tel" >
+                                            <el-input v-model="elAUpdate.tel" placeholder="请输入固定电话"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="地址类型" prop="tag" >
+                                            <el-input v-model="elAUpdate.tag" placeholder="请输入地址类型，如：家，公司或学校"/>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer">
+                                <el-button @click="cancel()">取消</el-button>
+                                <el-button type="primary" @click="handleEdit()">确定</el-button>
+                            </div>
+                        </el-dialog>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--页脚开始-->
+    <div class="clearfix"></div>
+    <footer class="footer">
+        <!-- 品质保障，私人定制等-->
+        <div class="text-center rights container">
+            <div class="col-md-offset-2 col-md-2">
+                <span class="fa fa-thumbs-o-up"></span>
+                <p>品质保障</p>
+            </div>
+            <div class="col-md-2">
+                <span class="fa fa-address-card-o"></span>
+                <p>私人订制</p>
+            </div>
+            <div class="col-md-2">
+                <span class="fa fa-graduation-cap"></span>
+                <p>学生特供</p>
+            </div>
+            <div class="col-md-2">
+                <span class="fa fa-bitcoin"></span>
+                <p>专属特权</p>
+            </div>
+        </div>
+        <!--联系我们、下载客户端等-->
+        <div class="container beforeBottom">
+            <div class="col-md-offset-1 col-md-3">
+                <div><img src="../../images/index/stumalllogo.png" alt="" class="footLogo" /></div>
+                <div><img src="../../images/index/footerFont.png" alt="" /></div>
+            </div>
+            <div class="col-md-4 callus text-center">
+                <div class="col-md-4">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <p>买家帮助</p>
+                            </a>
+                        </li>
+                        <li><a href="#">新手指南</a></li>
+                        <li><a href="#">服务保障</a></li>
+                        <li><a href="#">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <p>商家帮助</p>
+                            </a>
+                        </li>
+                        <li><a href="#">商家入驻</a></li>
+                        <li><a href="#">商家后台</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <p>关于我们</p>
+                            </a>
+                        </li>
+                        <li><a href="#">关于圆心</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li>
+                            <span class="fa fa-wechat"></span>
+                            <span class="fa fa-weibo"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-5">
+                    <p>电脑商城客户端</p>
+                    <img src="../../images/index/ios.png" class="lf">
+                    <img src="../../images/index/android.png" alt="" class="lf" />
+                </div>
+                <div class="col-md-6">
+                    <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
+                </div>
+            </div>
+        </div>
+        <!-- 页面底部-备案号 #footer -->
+        <div class="col-md-12 text-center bottom">
+            Copyright © 2022 dnsc.cn All Rights Reserved 京ICP备08963888号-45 <a target="_blank" href="http://www.dnsc.cn/">圆心科技集团有限公司</a> 版权所有
+        </div>
+    </footer>
+</div>
+</body>
+    <script src="../../frame/axios/axios.min.js"></script>
+    <script src="../../js/admin/address.js"></script>
+</html>

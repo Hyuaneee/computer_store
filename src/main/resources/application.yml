@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/computerstore?serverTimezone=Asia/Shanghai&useSSL=false
+      username: root
+      password: 123456
+
+# mp配置
+mybatis-plus:
+
+  configuration:
+    #驼峰命名默认true
+    map-underscore-to-camel-case: true
+    #开启日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      #雪花算法
+      id-type: auto
+salt:
+  passwd: huangjy
+
