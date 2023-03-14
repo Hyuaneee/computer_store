@@ -21,7 +21,6 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         StringBuffer requestURL = request.getRequestURL();
-        System.out.println("拦截到请求：" + requestURL.toString());
         try {
             HttpSession session = request.getSession();
             Number  uid = (Number) session.getAttribute("uid");
@@ -32,6 +31,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             System.out.println("登录出现异常");
             e.printStackTrace();
         }
+        System.out.println("拦截到请求：" + requestURL.toString());
         response.sendRedirect("/login.html");
         return false;
     }

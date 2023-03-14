@@ -21,10 +21,17 @@ public class ReturnFront<T> {
 
     private T data; //数据
 
-    private Map map = new HashMap(); //动态数据
+    private Object key; //存放键值对对象
+    private Object value;
 
     public ReturnFront() {
 
+    }
+
+    //传输键值对对象
+    public ReturnFront(Object key, Object value) {
+        this.key = key;
+        this.value = value;
     }
 
 
@@ -39,16 +46,11 @@ public class ReturnFront<T> {
 
     //业务操作失败
     public static <T> ReturnFront<T> error(String message) {
-        ReturnFront exceptionR = new ReturnFront();
+        ReturnFront<T> exceptionR = new ReturnFront<T>();
         exceptionR.message = message;
         exceptionR.code = 0;
         return exceptionR;
     }
 
-    //动态数据存储
-    public ReturnFront<T> add(Object key, Object value) {
-        this.map.put(key, value);
-        return this;
-    }
 
 }

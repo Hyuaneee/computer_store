@@ -21,58 +21,58 @@
     <script src="../frame/bootstrap3/jquery-1.9.1.min.js"></script>
     <script src="../frame/bootstrap3/js/bootstrap.js"></script>
     <!-- 字体图标 -->
-    <link rel="stylesheet" href="../frame/bootstrap3/font-awesome-4.7.0/css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="../css/layout.css" />
-    <link rel="stylesheet" type="text/css" href="../css/top.css" />
-    <link rel="stylesheet" type="text/css" href="../css/footer.css" />
-    <link rel="stylesheet" type="text/css" href="../css/product.css" />
-    <link rel="stylesheet" type="text/css" href="../css/imgmove.css" />
+    <link rel="stylesheet" href="../frame/bootstrap3/font-awesome-4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/top.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/footer.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/product.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/imgmove.css"/>
     <title>电脑商城</title>
 </head>
-    <script>
-        $(function() {
-            /*图片变大的样式*/
-            $(".move-img").hover(function() {
-                $(this).animate({
-                    "background-size": "110%"
-                }, "fast");
-            }, function() {
-                $(this).animate({
-                    "background-size": "100%"
-                }, "fast");
+<script>
+    $(function () {
+        /*图片变大的样式*/
+        $(".move-img").hover(function () {
+            $(this).animate({
+                "background-size": "110%"
+            }, "fast");
+        }, function () {
+            $(this).animate({
+                "background-size": "100%"
+            }, "fast");
+        })
+        /*商品小图片加鼠标移入加边框、移出移除边框*/
+        $(".img-small").hover(function () {
+                $(this).css("border", "1px solid #4288c3");
+            },
+            function () {
+                $(this).css("border", "");
             })
-            /*商品小图片加鼠标移入加边框、移出移除边框*/
-            $(".img-small").hover(function() {
-                    $(this).css("border", "1px solid #4288c3");
-                },
-                function() {
-                    $(this).css("border", "");
-                })
-            //点击时变化大图片
-            $(".img-small").click(function() {
-                //获得点击的小图片数据
-                var n = $(this).attr("data");
-                //所有大图隐藏
-                $(".img-big").hide();
-                //显示点击的小图对应的大图
-                $(".img-big[data='" + n + "']").show();
-            })
-            //购物数量加1
-            $("#numUp").click(function() {
-                var n = parseInt($("#num").val());
-                $("#num").val(n + 1);
-            })
-            //购物数量-1
-            $("#numDown").click(function() {
-                var n = parseInt($("#num").val());
-                if (n == 1) {
-                    return;
-                }
-                $("#num").val(n - 1);
-            })
-            $(".img-big:eq(0)").show();
-        });
-    </script>
+        //点击时变化大图片
+        $(".img-small").click(function () {
+            //获得点击的小图片数据
+            var n = $(this).attr("data");
+            //所有大图隐藏
+            $(".img-big").hide();
+            //显示点击的小图对应的大图
+            $(".img-big[data='" + n + "']").show();
+        })
+        //购物数量加1
+        $("#numUp").click(function () {
+            var n = parseInt($("#num").val());
+            $("#num").val(n + 1);
+        })
+        //购物数量-1
+        $("#numDown").click(function () {
+            var n = parseInt($("#num").val());
+            if (n == 1) {
+                return;
+            }
+            $("#num").val(n - 1);
+        })
+        $(".img-big:eq(0)").show();
+    });
+</script>
 <body>
 <div id="app">
     <!--头部-->
@@ -81,7 +81,7 @@
         <div class="row">
             <div class="col-md-3">
                 <a href="index.html">
-                    <img src="../images/index/stumalllogo.png" />
+                    <img src="../images/index/stumalllogo.png"/>
                 </a>
             </div>
             <!--快捷选项-->
@@ -107,7 +107,7 @@
                                 <li><a href="admin/password.html">修改密码</a></li>
                                 <li><a href="admin/userdata.html">个人资料</a></li>
                                 <li><a href="admin/upload.html">上传头像</a></li>
-                                <li><a href="admin/address.html">收货管理	</a></li>
+                                <li><a href="admin/address.html">收货管理 </a></li>
                                 <li><a href="/user/logout">注销</a></li>
                             </ul>
                         </div>
@@ -123,7 +123,7 @@
                 <li>
                     <a href="#"></a>
                 </li>
-                <li class="active"><a href="index.html"><span class="fa fa-home"></span></a></li>
+                <li class="active"><a href="./index.html"><span class="fa fa-home"></span></a></li>
                 <li><a href="#">秒杀</a></li>
                 <li><a href="#">优惠券</a></li>
                 <li><a href="#">电脑VIP</a></li>
@@ -142,34 +142,44 @@
         <div class="col-md-offset-1 col-md-10">
             <div class="col-md-6">
                 <div data="1" class="img-big move-img col-md-12">
-                    <img id="product-image-1-big" :src="'http://localhost'+productData.image+'1_big.png'" class="img-responsive" />
+                    <img id="product-image-1-big" :src="'http://localhost'+productData.image+'1_big.png'"
+                         class="img-responsive"/>
                 </div>
                 <div data="2" class="img-big move-img col-md-12">
-                    <img id="product-image-2-big" :src="'http://localhost'+productData.image+'2_big.png'" class="img-responsive" />
+                    <img id="product-image-2-big" :src="'http://localhost'+productData.image+'2_big.png'"
+                         class="img-responsive"/>
                 </div>
                 <div data="3" class="img-big move-img col-md-12">
-                    <img id="product-image-3-big" :src="'http://localhost'+productData.image+'3_big.png'" class="img-responsive" />
+                    <img id="product-image-3-big" :src="'http://localhost'+productData.image+'3_big.png'"
+                         class="img-responsive"/>
                 </div>
                 <div data="4" class="img-big move-img col-md-12">
-                    <img id="product-image-4-big" :src="'http://localhost'+productData.image+'4_big.png'" class="img-responsive" />
+                    <img id="product-image-4-big" :src="'http://localhost'+productData.image+'4_big.png'"
+                         class="img-responsive"/>
                 </div>
                 <div data="5" class="img-big move-img col-md-12">
-                    <img id="product-image-5-big" :src="'http://localhost'+productData.image+'5_big.png'" class="img-responsive" />
+                    <img id="product-image-5-big" :src="'http://localhost'+productData.image+'5_big.png'"
+                         class="img-responsive"/>
                 </div>
                 <div data="1" class="col-md-2 img-small">
-                    <img id="product-image-1" :src="'http://localhost'+productData.image+'1.jpg'" class="img-responsive" />
+                    <img id="product-image-1" :src="'http://localhost'+productData.image+'1.jpg'"
+                         class="img-responsive"/>
                 </div>
                 <div data="2" class="col-md-2 img-small">
-                    <img id="product-image-2" :src="'http://localhost'+productData.image+'2.jpg'" class="img-responsive" />
+                    <img id="product-image-2" :src="'http://localhost'+productData.image+'2.jpg'"
+                         class="img-responsive"/>
                 </div>
                 <div data="3" class="col-md-2 img-small">
-                    <img id="product-image-3" :src="'http://localhost'+productData.image+'3.jpg'" class="img-responsive" />
+                    <img id="product-image-3" :src="'http://localhost'+productData.image+'3.jpg'"
+                         class="img-responsive"/>
                 </div>
                 <div data="4" class="col-md-2 img-small">
-                    <img id="product-image-4" :src="'http://localhost'+productData.image+'4.jpg'" class="img-responsive" />
+                    <img id="product-image-4" :src="'http://localhost'+productData.image+'4.jpg'"
+                         class="img-responsive"/>
                 </div>
                 <div data="5" class="col-md-2 img-small">
-                    <img id="product-image-5" :src="'http://localhost'+productData.image+'5.jpg'" class="img-responsive" />
+                    <img id="product-image-5" :src="'http://localhost'+productData.image+'5.jpg'"
+                         class="img-responsive"/>
                 </div>
             </div>
             <div class="col-md-6">
@@ -181,8 +191,9 @@
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-12 form-space">
-                        <label >数量：</label>
-                        <el-input-number size="small" v-model="cartData.num" :min="1" :max="productData.num"></el-input-number>
+                        <label>数量：</label>
+                        <el-input-number size="small" v-model="cartData.num" :min="1"
+                                         :max="productData.num"></el-input-number>
                     </div>
                     <div class="col-md-12 form-space">
                         <p><small><b>电脑商城</b>发货并提供售后服务,今日下单,明日送达</small></p>
@@ -191,10 +202,18 @@
                         <Button class="btn btn-primary btn-lg btn-block">立即购买</button>
                     </div>
                     <div class="col-md-12 form-space">
-                        <button v-show="insertLoading==false" class="btn btn-default go-cart" @Click="insert()"><span class="fa fa-cart-plus"></span> 加入购物车</button>
-                        <button v-show="insertLoading" class="btn btn-default go-cart" @Click="deleteCart()"><span class="glyphicon glyphicon-ok"></span> 已加入购物车</button>
-                        <button v-show="collectLoading==false" class="btn btn-default go-cart" @Click="insertCollect()"><span class="fa fa-cart-plus"></span> 加入收藏</button>
-                        <button v-show="collectLoading" class="btn btn-default go-cart" @Click="deleteCollect()"><span class="glyphicon glyphicon-ok"></span> 已加入收藏</button>
+                        <button v-show="insertLoading==false" class="btn btn-default go-cart" @Click="insert()"><span
+                                class="fa fa-cart-plus"></span> 加入购物车
+                        </button>
+                        <button v-show="insertLoading" class="btn btn-default go-cart" @Click="deleteCart()"><span
+                                class="glyphicon glyphicon-ok"></span> 已加入购物车
+                        </button>
+                        <button v-show="collectLoading==false" class="btn btn-default go-cart" @Click="insertCollect()">
+                            <span class="fa fa-heart"></span> 加入收藏
+                        </button>
+                        <button v-show="collectLoading" class="btn btn-default go-cart" @Click="deleteCollect()"><span
+                                class="glyphicon glyphicon-ok"></span> 已加入收藏
+                        </button>
                     </div>
                 </div>
             </div>
@@ -227,7 +246,8 @@
                     </div>
                     <div class="row">
                         <p class="col-md-offset-1 col-md-11 saled-content">电脑商城销售并发货的商品，由电脑商城提供发票和相应的售后服务。请您放心购买！
-                            <br /> 注：因厂家会在没有任何提前通知的情况下更改产品包装、产地或者一些附件，本司不能确保客户收到的货物与商城图片、产地、附件说明完全一致。只能确保为原厂正货！并且保证与当时市场上同样主流新品一致。若本商城没有及时更新，请大家谅解！
+                            <br/>
+                            注：因厂家会在没有任何提前通知的情况下更改产品包装、产地或者一些附件，本司不能确保客户收到的货物与商城图片、产地、附件说明完全一致。只能确保为原厂正货！并且保证与当时市场上同样主流新品一致。若本商城没有及时更新，请大家谅解！
                         </p>
                     </div>
                     <div class="row">
@@ -237,7 +257,8 @@
                     <div class="row">
                         <p class="col-md-offset-1 col-md-11 saled-content">
                             凭质保证书及电脑商城发票，可享受全国联保服务（奢侈品、钟表除外；奢侈品、钟表由电脑商城联系保修，享受法定三包售后服务），与您亲临商场选购的商品享受相同的质量保证。电脑商城还为您提供具有竞争力商品价格和运费政策，请您放心购买！
-                            <br /> 注：因厂家会在没有任何提前通知的情况下更改产品包装、产地或者一些附件，本司不能确保客户收到的货物与商城图片、产地、附件说明完全一致。只能确保为原厂正货！并且保证与当时市场上同样主流新品一致。若本商城没有及时更新，请大家谅解！
+                            <br/>
+                            注：因厂家会在没有任何提前通知的情况下更改产品包装、产地或者一些附件，本司不能确保客户收到的货物与商城图片、产地、附件说明完全一致。只能确保为原厂正货！并且保证与当时市场上同样主流新品一致。若本商城没有及时更新，请大家谅解！
                         </p>
                     </div>
                     <div class="row">
@@ -245,11 +266,12 @@
                         <div class="col-md-11 saled-title">无忧退货</div>
                     </div>
                     <div class="row">
-                        <p class="col-md-offset-1 col-md-11 saled-content">客户购买电脑商城商品7日内（含7日，自客户收到商品之日起计算），在保证商品完好的前提下，可无理由退货。（部分商品除外，详情请见各商品细则）</p>
+                        <p class="col-md-offset-1 col-md-11 saled-content">
+                            客户购买电脑商城商品7日内（含7日，自客户收到商品之日起计算），在保证商品完好的前提下，可无理由退货。（部分商品除外，详情请见各商品细则）</p>
                     </div>
                     <div class="saled-content">
-                        <small><b>权利声明：</b><br />
-                            所有商品信息、商品咨询等内容，是电脑商城重要的经营资源，未经许可，禁止非法转载使用。<br />
+                        <small><b>权利声明：</b><br/>
+                            所有商品信息、商品咨询等内容，是电脑商城重要的经营资源，未经许可，禁止非法转载使用。<br/>
                             注：本站商品信息均来自于合作方，其真实性、准确性和合法性由信息拥有者（合作方）负责。本站不提供任何保证，并不承担任何法律责任。</small>
                     </div>
                 </div>
@@ -280,8 +302,8 @@
         <!--联系我们、下载客户端等-->
         <div class="container beforeBottom">
             <div class="col-md-offset-1 col-md-3">
-                <div><img src="../images/index/stumalllogo.png" alt="" class="footLogo" /></div>
-                <div><img src="../images/index/footerFont.png" alt="" /></div>
+                <div><img src="../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
+                <div><img src="../images/index/footerFont.png" alt=""/></div>
             </div>
             <div class="col-md-4 callus text-center">
                 <div class="col-md-4">
@@ -327,7 +349,7 @@
                 <div class="col-md-5">
                     <p>电脑商城客户端</p>
                     <img src="../images/index/ios.png" class="lf">
-                    <img src="../images/index/android.png" alt="" class="lf" />
+                    <img src="../images/index/android.png" alt="" class="lf"/>
                 </div>
                 <div class="col-md-6">
                     <img style="width: 120px;height: 120px" src="../images/index/erweima.png">
@@ -336,11 +358,13 @@
         </div>
         <!-- 页面底部-备案号 #footer -->
         <div class="col-md-12 text-center bottom">
-            Copyright © 2022 dnsc.cn All Rights Reserved 京ICP备08963888号-45 <a target="_blank" href="http://www.dnsc.cn/">圆心科技集团有限公司</a> 版权所有
+            Copyright © 2022 dnsc.cn All Rights Reserved 京ICP备08963888号-45 <a target="_blank"
+                                                                              href="http://www.dnsc.cn/">圆心科技集团有限公司</a>
+            版权所有
         </div>
     </footer>
 </div>
 </body>
-    <script src="../frame/axios/axios.min.js"></script>
-    <script src="../js/page/product.js"></script>
+<script src="../frame/axios/axios.min.js"></script>
+<script src="../js/page/product.js"></script>
 </html>

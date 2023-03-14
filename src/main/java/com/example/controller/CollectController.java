@@ -11,7 +11,6 @@ import com.example.service.CollectService;
 import com.example.service.ProductService;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/collect")
-public class CollectController extends BaseController {
+public class CollectController {
     @Autowired
     private CollectService collectService;
     @Autowired
@@ -92,22 +91,17 @@ public class CollectController extends BaseController {
         return ReturnFront.success(collect);
     }
 
-
     //获取收藏列表
     @PostMapping("/getPageList/{currentPage}/{pageSize}")
     public ReturnFront getPageList(@PathVariable Integer currentPage, @PathVariable Integer pageSize, HttpSession session) {
-        //获取id
         Long uid = (Long) session.getAttribute("uid");
-        QueryWrapper<Collect> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("uid", uid);
-        //分页操作
         IPage<Collect> iPage = new Page<>(currentPage, pageSize);
         QueryWrapper<Collect> wrapper = new QueryWrapper<>();
         wrapper.eq("uid", uid);
         wrapper.orderBy(true, false, "created_time", "title");
         IPage<Collect> page = collectService.page(iPage, wrapper);
         if (page == null) {
-            return ReturnFront.error("数据有误!");
+            return ReturnFront.error("数据有误,请刷新");
         }
         List<List<Collect>> resultList = new ArrayList<>();
 
@@ -122,6 +116,6 @@ public class CollectController extends BaseController {
             resultList.add(temp);
         }
         page.setRecords(null);
-        return new ReturnFront().add(page, resultList);
+        return new ReturnFront(page, resultList);
     }
 }

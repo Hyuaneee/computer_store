@@ -11,7 +11,7 @@ spring:
 
 # mp配置
 mybatis-plus:
-
+  mapper-locations: classpath*:**/mapper/xml/*.xml
   configuration:
     #驼峰命名默认true
     map-underscore-to-camel-case: true

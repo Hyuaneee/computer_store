@@ -8,6 +8,7 @@ import com.example.pojo.User;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ import java.util.Date;
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseController {
+public class UserController {
 
     @Value("${salt.passwd}")
     private String md5Salt;

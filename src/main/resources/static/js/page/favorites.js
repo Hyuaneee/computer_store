@@ -1,13 +1,13 @@
-$(function() {
+$(function () {
     /*商品列表，鼠标移入时加阴影、移出移除阴影*/
-    $(".goods-panel").hover(function() {
+    $(".goods-panel").hover(function () {
         $(this).css("box-shadow", "0px 0px 8px #888888");
-    }, function() {
+    }, function () {
         $(this).css("box-shadow", "");
     })
 });
 
-Vue.config.productionTip=false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
+Vue.config.productionTip = false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
 
 new Vue({
     el: '#app',
@@ -22,40 +22,40 @@ new Vue({
         //搜索
         searchData: null,
         //分页信息
-        pageData:{
-            content:[],
+        pageData: {
+            content: [],
             currentPage: 1,   //当前页
             pageSize: 12,  //当前页条数
             total: 1,  //数据总条数
-            pages : 1,  //总页数
-            firstPage : false,  //是否禁用前一页按钮
+            pages: 1,  //总页数
+            firstPage: false,  //是否禁用前一页按钮
             lastPage: false,  //是否有禁用下一页按钮
         }
 
     },
     //钩子函数，VUE对象初始化完成后自动执行
-    created(){
+    created() {
         this.getUser();
         this.findPage();
     },
-    methods:{
+    methods: {
         //获取用户信息
-        getUser(){
+        getUser() {
             axios({
                 method: "get",
                 url: "/user/getUser",
-            }).then((res)=>{
-                if(res.data.flag){
-                    this.userLoading=true;
-                    this.user=res.data.data;
-                }else{
-                    this.userLoading=false;
+            }).then((res) => {
+                if (res.data.code == 1) {
+                    this.userLoading = true;
+                    this.user = res.data.data;
+                } else {
+                    this.userLoading = false;
                 }
             });
         },
         //搜索
-        searchContent(){
-            location.href="search.html?context="+this.searchData;
+        searchContent() {
+            location.href = "search.html?context=" + this.searchData;
         },
         //获取当前页数据
         findPage() {
@@ -80,36 +80,36 @@ new Vue({
         },
 
         //取消收藏
-        deleteCollect(id){
-            this.$confirm("此操作将从数据库中永久修改数据，是否继续？","提示",{
-                confirmButtonText:"确定",
-                cancelButtonText:"取消",
+        deleteCollect(id) {
+            this.$confirm("此操作将从数据库中永久修改数据，是否继续？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
                 type: "warning"
-            }).then(()=> {   //选择确定的情况
+            }).then(() => {   //选择确定的情况
                 axios({
                     method: "get",
-                    url: "/collect/delete/"+id,
-                }).then((res)=>{
-                    if(res.data.flag){
+                    url: "/collect/delete/" + id,
+                }).then((res) => {
+                    if (res.data.code == 1) {
                         this.$message.success({
-                            message: res.data.message,
+                            message: "已取消收藏！",
                             type: 'success'
                         });
-                        $('#collect'+id).html("<span class='fa fa-heart-o'></span>已取消收藏");
-                    }else{
+                        location.reload();
+                    } else {
                         this.$message.error(res.data.message);
                     }
                 });
-            }).catch(()=>{     //选择取消的情况
+            }).catch(() => {     //选择取消的情况
                 this.$message({
-                    type:"into",
-                    message:"已取消修改"
+                    type: "into",
+                    message: "已取消修改"
                 });
             });
         },
         //跳转到商品展示页
-        productShow(pid){
-            location.href="product.html?id="+pid;
+        productShow(pid) {
+            location.href = "product.html?id=" + pid;
         }
 
     }

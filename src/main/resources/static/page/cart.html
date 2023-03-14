@@ -80,7 +80,7 @@
                 <li>
                     <a href="#"></a>
                 </li>
-                <li class="active"><a href="index.html"><span class="fa fa-home"></span></a></li>
+                <li class="active"><a href="./index.html"><span class="fa fa-home"></span></a></li>
                 <li><a href="#">秒杀</a></li>
                 <li><a href="#">优惠券</a></li>
                 <li><a href="#">电脑VIP</a></li>
@@ -122,7 +122,7 @@
                                 <td>
                                     <input type="checkbox" class="ckitem" @change="checkOne" :value="cart.cid"/>
                                 </td>
-                                <td><img :src="'http://localhost:3000'+cart.image+'collect.png'" class="img-responsive" /></td>
+                                <td><img :src="'http://localhost'+cart.image+'collect.png'" class="img-responsive" /></td>
                                 <td>{{cart.title}}</td>
                                 <td>¥<span>{{cart.price}}</span></td>
                                 <td>
@@ -241,6 +241,6 @@
 </div>
 
 </body>
-    <script src="../frame/axios/axios.min.js"></script>
-    <script src="../js/page/cart.js" ></script>
+<script src="../frame/axios/axios.min.js"></script>
+<script src="../js/page/cart.js" ></script>
 </html>
