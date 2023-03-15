@@ -51,7 +51,7 @@ new Vue({
                 methods: "get",
                 url: "/user/getUser",
             }).then((res)=>{
-                if(res.data.flag){
+                if(res.data.code === 1){
                     this.userLoading=true;
                     this.user=res.data.data;
                 }else{
@@ -79,7 +79,7 @@ new Vue({
                 url: "/cart/getListCids",
                 data:this.multipleSelection
             }).then((res)=>{
-                if(res.data.flag){
+                if(res.data.code === 1){
                     this.cartList.content=res.data.data;
                     //计算总商品数和总金额
                     this.CartCount.allProduct=this.multipleSelection.length;
@@ -103,7 +103,7 @@ new Vue({
                 method: "GET",
                 url: "/address/getAddressList",
             }).then((res)=>{
-                if(res.data.flag){
+                if(res.data.code === 1){
                     this.addressList=res.data.data;
 
                 }else{
@@ -131,7 +131,7 @@ new Vue({
                         url: "/order/insert/"+parseInt(aid),
                         data: this.multipleSelection,
                     }).then((res)=>{
-                        if(res.data.flag){
+                        if(res.data.code === 1){
                             this.$message({
                                 type:"success",
                                 message:res.data.message

@@ -8,7 +8,7 @@ import java.util.Date;
 
 //订单类
 @Data
-public class Order extends BaseEntity{
+public class Orders extends BaseEntity{
     @TableId(type = IdType.AUTO)
     private Long oid;   //订单id
     private Long uid;   //用户id

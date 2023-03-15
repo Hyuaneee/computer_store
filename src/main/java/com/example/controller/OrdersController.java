@@ -15,9 +15,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/order")
-public class OrderController {
+public class OrdersController {
     @Autowired
-    private OrderService orderService;
+    private OrdersService ordersService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -25,7 +25,7 @@ public class OrderController {
     @Autowired
     private CartService cartService;
     @Autowired
-    private Order_itemService order_itemService;
+    private Orders_itemService orders_itemService;
 
     //添加订单
     @PostMapping("/insert/{aid}")
@@ -63,25 +63,25 @@ public class OrderController {
         System.out.println("============  no:1 end");
 
         //操作订单表
-        Order order = new Order();
-        order.setUid(user.getUid());
-        order.setRecv_name(address.getName());
-        order.setRecv_phone(address.getPhone());
-        order.setRecv_province(address.getProvince_name());
-        order.setRecv_city(address.getCity_name());
-        order.setRecv_area(address.getArea_name());
-        order.setRecv_address(address.getAddress());
-        order.setTotal_price(total_price);
-        order.setStatus(0); //订单状态
-        order.setOrder_time(new Date());
+        Orders orders = new Orders();
+        orders.setUid(user.getUid());
+        orders.setRecv_name(address.getName());
+        orders.setRecv_phone(address.getPhone());
+        orders.setRecv_province(address.getProvince_name());
+        orders.setRecv_city(address.getCity_name());
+        orders.setRecv_area(address.getArea_name());
+        orders.setRecv_address(address.getAddress());
+        orders.setTotal_price(total_price);
+        orders.setStatus(0); //订单状态
+        orders.setOrder_time(new Date());
 
-        order.setCreatedUser(user.getUsername());
-        order.setCreatedTime(new Date());
-        order.setModifiedUser(user.getUsername());
-        order.setModifiedTime(new Date());
+        orders.setCreatedUser(user.getUsername());
+        orders.setCreatedTime(new Date());
+        orders.setModifiedUser(user.getUsername());
+        orders.setModifiedTime(new Date());
 
         //生成订单（添加到表内）
-        boolean flag1 = orderService.save(order);
+        boolean flag1 = ordersService.save(orders);
         if (!flag1) {
             return ReturnFront.error("创建订单失败");
         }
@@ -95,22 +95,22 @@ public class OrderController {
 
         //操作订单商品表
         for (CartVO cartVO : listCids) {
-            Order_item order_item = new Order_item();
-            order_item.setOid(order.getOid());
-            order_item.setPid(cartVO.getPid());
-            order_item.setTitle(cartVO.getTitle());
-            order_item.setImage(cartVO.getImage());
-            order_item.setPrice(cartVO.getPrice());
-            order_item.setNum(cartVO.getNum());
-            order_item.setAfter_sale(0);
-            order_item.setItem_status(0);
-            order_item.setIs_receive(0);
+            Orders_item orders_item = new Orders_item();
+            orders_item.setOid(orders.getOid());
+            orders_item.setPid(cartVO.getPid());
+            orders_item.setTitle(cartVO.getTitle());
+            orders_item.setImage(cartVO.getImage());
+            orders_item.setPrice(cartVO.getPrice());
+            orders_item.setNum(cartVO.getNum());
+            orders_item.setAfter_sale(0);
+            orders_item.setItem_status(0);
+            orders_item.setIs_receive(0);
 
-            order_item.setCreatedUser(user.getUsername());
-            order_item.setCreatedTime(new Date());
-            order_item.setModifiedUser(user.getUsername());
-            order_item.setModifiedTime(new Date());
-            boolean flag2 = order_itemService.save(order_item);
+            orders_item.setCreatedUser(user.getUsername());
+            orders_item.setCreatedTime(new Date());
+            orders_item.setModifiedUser(user.getUsername());
+            orders_item.setModifiedTime(new Date());
+            boolean flag2 = orders_itemService.save(orders_item);
             if (!flag2) {
                 return ReturnFront.error("创建订单失败");
             }
@@ -121,23 +121,23 @@ public class OrderController {
     //更新表的status字段和支付时间
     @GetMapping("/updateStatus/{oid}")
     public ReturnFront updateStatus(@PathVariable Long oid) {
-        QueryWrapper<Order> wrapper = new QueryWrapper<>();
+        QueryWrapper<Orders> wrapper = new QueryWrapper<>();
         wrapper.eq("oid", oid);
-        Order order = orderService.getOne(wrapper);
-        if (order == null) {
+        Orders orders = ordersService.getOne(wrapper);
+        if (orders == null) {
             return ReturnFront.error("订单不存在");
         }
-        if (order.getStatus() == 1) {
+        if (orders.getStatus() == 1) {
             return ReturnFront.error("请不要重复支付");
         }
-        if (order.getStatus() == 2 || order.getStatus() == 3 || order.getStatus() == 4) {
+        if (orders.getStatus() == 2 || orders.getStatus() == 3 || orders.getStatus() == 4) {
             return ReturnFront.error("您的订单已取消或已完成");
         }
-        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        UpdateWrapper<Orders> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("oid", oid);
         updateWrapper.set("status", 1);
         updateWrapper.set("pay_time", new Date());
-        boolean flag = orderService.update(updateWrapper);
+        boolean flag = ordersService.update(updateWrapper);
         if (!flag) {
             return ReturnFront.error("支付失败");
         }
@@ -148,21 +148,21 @@ public class OrderController {
     @GetMapping("/getListoid")
     public ReturnFront getListoid(Integer status, HttpSession session) {
         Long uid = (Long) session.getAttribute("uid");
-        QueryWrapper<Order> wrapper = new QueryWrapper<>();
+        QueryWrapper<Orders> wrapper = new QueryWrapper<>();
         wrapper.eq("uid", uid);
         if (status != null) {
             wrapper.eq("status", status);
         }
-        List<Order> orderList = orderService.list(wrapper);
+        List<Orders> ordersList = ordersService.list(wrapper);
         List<ReturnFront> result = new ArrayList<>();
-        for (Order order : orderList) {
-            QueryWrapper<Order_item> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("oid", order.getOid());
-            List<Order_item> order_itemList = order_itemService.list(queryWrapper);
-            if (order_itemList == null) {
+        for (Orders orders : ordersList) {
+            QueryWrapper<Orders_item> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("oid", orders.getOid());
+            List<Orders_item> orders_itemList = orders_itemService.list(queryWrapper);
+            if (orders_itemList == null) {
                 return ReturnFront.error("订单出现异常");
             }
-            result.add(new ReturnFront(order, order_itemList));
+            result.add(new ReturnFront(orders, orders_itemList));
 
         }
         return ReturnFront.success(result);
@@ -172,21 +172,21 @@ public class OrderController {
     //用户确认是否收货
     @GetMapping("/updateIs_receive/{id}")
     public ReturnFront updateIs_receive(@PathVariable Long id) {
-        Order_item order_item = order_itemService.getById(id);
+        Orders_item orders_item = orders_itemService.getById(id);
         //判断订单商品是否存在
-        if (order_item == null) {
+        if (orders_item == null) {
             return ReturnFront.error("订单商品有误,请刷新");
         }
 
         //判断是否已收货
-        if (order_item.getIs_receive() == 1) {
+        if (orders_item.getIs_receive() == 1) {
             return ReturnFront.error("已收货");
         }
 
         //查询商品所属订单
-        QueryWrapper<Order> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.eq("oid", order_item.getOid());
-        Order one = orderService.getOne(queryWrapper1);
+        QueryWrapper<Orders> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("oid", orders_item.getOid());
+        Orders one = ordersService.getOne(queryWrapper1);
 
         //判断订单状态
         if (one.getStatus() == 0) {  //0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
@@ -197,33 +197,33 @@ public class OrderController {
         }
 
         //收货操作
-        UpdateWrapper<Order_item> wrapper = new UpdateWrapper<>();
+        UpdateWrapper<Orders_item> wrapper = new UpdateWrapper<>();
         wrapper.eq("id", id);
         wrapper.set("is_receive", 1); //修改为收货状态
-        boolean flag = order_itemService.update(wrapper);
+        boolean flag = orders_itemService.update(wrapper);
         if (!flag) {
             return ReturnFront.error("操作失败，请重试");
         }
 
         //判断全部收货来完成订单
-        QueryWrapper<Order_item> queryWrapper2 = new QueryWrapper<>();
-        queryWrapper2.eq("oid", order_item.getOid()); //判断订单oid是否相等
+        QueryWrapper<Orders_item> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("oid", orders_item.getOid()); //判断订单oid是否相等
         //集合遍历所有订单中商品
-        List<Order_item> list = order_itemService.list(queryWrapper2);
+        List<Orders_item> list = orders_itemService.list(queryWrapper2);
         int is_receive = 1;
-        for (Order_item orderItem : list) {
+        for (Orders_item orders_Item : list) {
             //发现有商品还未收货，不进入下面的if
-            if (order_item.getIs_receive() == 0) {
+            if (orders_item.getIs_receive() == 0) {
                 is_receive = 0;
             }
         }
 
         //集合循环没有修改收货状态，所有商品状态为收货，订单完成
         if (is_receive == 1) {
-            UpdateWrapper<Order> queryWrapper3 = new UpdateWrapper<>();
-            queryWrapper3.eq("oid", order_item.getOid());
+            UpdateWrapper<Orders> queryWrapper3 = new UpdateWrapper<>();
+            queryWrapper3.eq("oid", orders_item.getOid());
             queryWrapper3.set("status", 4); //订单完成
-            boolean update = orderService.update(queryWrapper3);
+            boolean update = ordersService.update(queryWrapper3);
             if (!update) {
                 return ReturnFront.error("订单有误,请刷新");
             }
@@ -235,16 +235,16 @@ public class OrderController {
     //用户取消订单
     @GetMapping("/changeStatus/{oid}")
     public ReturnFront changeStatus(@PathVariable Long oid) {
-        QueryWrapper<Order> wrapper1 = new QueryWrapper<>();
+        QueryWrapper<Orders> wrapper1 = new QueryWrapper<>();
         wrapper1.eq("oid", oid);
-        Order order = orderService.getOne(wrapper1);
-        if (order == null) {
+        Orders orders = ordersService.getOne(wrapper1);
+        if (orders == null) {
             return ReturnFront.error("订单信息不存在,请刷新");
         }
-        UpdateWrapper<Order> wrapper2 = new UpdateWrapper<>();
+        UpdateWrapper<Orders> wrapper2 = new UpdateWrapper<>();
         wrapper2.eq("oid", oid);
         wrapper2.set("status", 2); //修改为取消状态
-        boolean flag = orderService.update(wrapper2);
+        boolean flag = ordersService.update(wrapper2);
         if (!flag) {
             throw new RuntimeException("取消失败,请重试");
         }
