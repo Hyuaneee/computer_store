@@ -139,7 +139,7 @@ public class CartController {
         return ReturnFront.success("添加成功");
     }
 
-    /*//根据cids数组获取购物车信息
+    //根据cids数组获取购物车信息
     @PostMapping("/getListCids")
     public ReturnFront getListCids(@RequestBody List<Long> cids) {
         List<CartVO> list = cartService.getListCids(cids);
@@ -148,5 +148,5 @@ public class CartController {
         }
 
         return ReturnFront.success(list);
-    }*/
+    }
 }

@@ -20,7 +20,7 @@ new Vue({
         //推荐栏目
         pageRecommend: {
             content: [],
-            currentPage: 1,   //当前页
+            currentPage: 3,   //当前页
             pageSize: 5,  //当前页条数
         }
     },
@@ -48,7 +48,7 @@ new Vue({
         searchContent() {
             location.href = "search.html?context=" + this.searchData;
         },
-        //获取热销排行前4,推荐栏目前四
+        //获取热销排行前五,推荐栏目前五
         findPage() {
             axios({
                 method: "POST",
@@ -59,7 +59,7 @@ new Vue({
             });
             axios({
                 method: "POST",
-                url: "/product/getRecommendList/" + this.pageRecommend.currentPage + "/" + this.pageRecommend.pageSize,
+                url: "/product/getBestList/" + this.pageRecommend.currentPage + "/" + this.pageRecommend.pageSize,
                 data: {},
             }).then((res) => {
                 this.pageRecommend.content = res.data.data.records;

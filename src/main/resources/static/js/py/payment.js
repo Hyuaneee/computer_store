@@ -28,7 +28,7 @@ new Vue({
         //订单信息
         order:{
             oid: null,
-            total_price: 0,
+            totalPrice: 0,
         },
     },
     //钩子函数，VUE对象初始化完成后自动执行
@@ -43,7 +43,7 @@ new Vue({
                 methods: "get",
                 url: "/user/getUser",
             }).then((res)=>{
-                if(res.data.flag){
+                if(res.data.code === 1){
                     this.userLoading=true;
                     this.user=res.data.data;
                 }else{
@@ -62,7 +62,7 @@ new Vue({
                 methods: "get",
                 url: "/order/getOrderOid/"+oid,
             }).then((res)=>{
-                if(res.data.flag){
+                if(res.data.code === 1){
                     this.order=res.data.data;
                 }else{
                     this.$message.error(res.data.message);
@@ -91,7 +91,7 @@ new Vue({
                     methods: "get",
                     url: "/order/updateStatus/"+oid,
                 }).then((res)=>{
-                    if(res.data.flag){
+                    if(res.data.code === 1){
                         this.$message.success({
                             message: res.data.message,
                             type: 'success'

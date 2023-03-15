@@ -135,7 +135,7 @@ public class AddressController {
         return ReturnFront.success("设置成功");
     }
 
-    /*//获取地址集合
+    //获取地址集合
     @GetMapping("/getAddressList")
     public ReturnFront getAddressList() {
         List<Address> list = addressService.list();
@@ -146,5 +146,5 @@ public class AddressController {
             return ReturnFront.error("您还未添加地址信息");
         }
         return ReturnFront.success(list);
-    }*/
+    }
 }

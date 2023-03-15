@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * 利用uid进行拦截
+ */
+
+
 public class UserLoginInterceptor implements HandlerInterceptor {
     /**
      * controller调用前
@@ -23,7 +28,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
         StringBuffer requestURL = request.getRequestURL();
         try {
             HttpSession session = request.getSession();
-            Number  uid = (Number) session.getAttribute("uid");
+            Number uid = (Number) session.getAttribute("uid");
             if (uid != null) {
                 return true; //放行
             }
@@ -32,6 +37,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             e.printStackTrace();
         }
         System.out.println("拦截到请求：" + requestURL.toString());
+        //重定向
         response.sendRedirect("/login.html");
         return false;
     }

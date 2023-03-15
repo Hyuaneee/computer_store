@@ -1,9 +1,10 @@
 /*商品列表，鼠标移入时加阴影、移出移除阴影*/
-$(".goods-panel").hover(function() {
+$(".goods-panel").hover(function () {
     $(this).css("box-shadow", "0px 0px 8px #888888");
-}, function() {
+}, function () {
     $(this).css("box-shadow", "");
 });
+
 //获取地址栏中的参数id
 function getUrlParam(name) {
     //构造一个含有目标参数的正则表达式对象
@@ -19,7 +20,7 @@ function getUrlParam(name) {
 }
 
 
-Vue.config.productionTip=false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
+Vue.config.productionTip = false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
 
 new Vue({
     el: '#app',
@@ -34,46 +35,46 @@ new Vue({
         //搜索
         searchData: null,
         //分页信息
-        pageData:{
-            content:[],
+        pageData: {
+            content: [],
             currentPage: 1,   //当前页
             pageSize: 12,  //当前页条数
             total: 1,  //数据总条数
-            pages : 1,  //总页数
-            firstPage : false,  //是否禁用前一页按钮
+            pages: 1,  //总页数
+            firstPage: false,  //是否禁用前一页按钮
             lastPage: false,  //是否有禁用下一页按钮
         }
 
     },
     //钩子函数，VUE对象初始化完成后自动执行
-    created(){
+    created() {
         this.getUser();
         this.findPage();
     },
-    methods:{
+    methods: {
         //获取用户信息
-        getUser(){
+        getUser() {
             axios({
                 method: "get",
                 url: "/user/getUser",
-            }).then((res)=>{
-                if(res.data.flag){
-                    this.userLoading=true;
-                    this.user=res.data.data;
-                }else{
-                    this.userLoading=false;
+            }).then((res) => {
+                if (res.data.code === 1) {
+                    this.userLoading = true;
+                    this.user = res.data.data;
+                } else {
+                    this.userLoading = false;
                 }
             });
         },
         //搜索
-        searchContent(){
-            location.href="search.html?context="+this.searchData;
+        searchContent() {
+            location.href = "search.html?context=" + this.searchData;
         },
         //获取当前页数据
         findPage() {
             this.loading = true;
-            var context=getUrlParam("context");
-            this.searchData=context;
+            var context = getUrlParam("context");
+            this.searchData = context;
             axios({
                 method: "POST",
                 url: "/product/getPageList/" + this.pageData.currentPage + "/" + this.pageData.pageSize,
@@ -95,55 +96,55 @@ new Vue({
             });
         },
         //上一页
-        Previous(){
-            this.pageData.currentPage=this.pageData.currentPage-1;
+        Previous() {
+            this.pageData.currentPage = this.pageData.currentPage - 1;
             this.findPage();
         },
         //下一页
-        Next(){
-            this.pageData.currentPage=this.pageData.currentPage+1;
+        Next() {
+            this.pageData.currentPage = this.pageData.currentPage + 1;
             this.findPage();
         },
         //加入收藏
-        insertCollect(id){
+        insertCollect(id) {
             axios({
                 method: "get",
-                url: "/collect/insertCollect/"+id,
-            }).then((res)=>{
-                if(res.data.flag){
+                url: "/collect/insertCollect/" + id,
+            }).then((res) => {
+                if (res.data.code === 1) {
                     this.$message.success({
                         message: res.data.message,
                         type: 'success'
                     });
-                    $('#collectA'+id).html("<span class='fa fa-heart-o'></span>已加入收藏");
-                }else{
+                    $('#collectA' + id).html("<span class='fa fa-heart-o'></span>已加入收藏");
+                } else {
                     this.$message.error(res.data.message);
                 }
             });
         },
         //加入购物车
-        insertCart(id){
+        insertCart(id) {
             axios({
                 method: "get",
                 url: "/cart/insert",
-                params:{
+                params: {
                     pid: id
                 }
-            }).then((res)=>{
-                if(res.data.flag){
+            }).then((res) => {
+                if (res.data.code === 1) {
                     this.$message.success({
                         message: res.data.message,
                         type: 'success'
                     });
-                    $('#collectB'+id).html("<span class=\"glyphicon glyphicon-ok\"></span>已加入购物车");
-                }else{
+                    $('#collectB' + id).html("<span class=\"glyphicon glyphicon-ok\"></span>已加入购物车");
+                } else {
                     this.$message.error(res.data.message);
                 }
             });
         },
         //跳转到商品展示页
-        productShow(pid){
-            location.href="product.html?id="+pid;
+        productShow(pid) {
+            location.href = "product.html?id=" + pid;
         }
 
     }

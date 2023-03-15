@@ -21,11 +21,11 @@
     <script src="../frame/bootstrap3/jquery-1.9.1.min.js"></script>
     <script src="../frame/bootstrap3/js/bootstrap.js"></script>
     <!-- 字体图标 -->
-    <link rel="stylesheet" href="../frame/bootstrap3/font-awesome-4.7.0/css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="../css/layout.css" />
-    <link rel="stylesheet" type="text/css" href="../css/top.css" />
-    <link rel="stylesheet" type="text/css" href="../css/footer.css" />
-    <link rel="stylesheet" type="text/css" href="../css/order.css" />
+    <link rel="stylesheet" href="../frame/bootstrap3/font-awesome-4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/top.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/footer.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/order.css"/>
     <title>电脑商城</title>
 </head>
 
@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-md-3">
                 <a href="index.html">
-                    <img src="../images/index/stumalllogo.png" />
+                    <img src="../images/index/stumalllogo.png"/>
                 </a>
             </div>
             <!--快捷选项-->
@@ -63,7 +63,7 @@
                                 <li><a href="admin/password.html">修改密码</a></li>
                                 <li><a href="admin/userdata.html">个人资料</a></li>
                                 <li><a href="admin/upload.html">上传头像</a></li>
-                                <li><a href="admin/address.html">收货管理	</a></li>
+                                <li><a href="admin/address.html">收货管理 </a></li>
                                 <li><a href="/user/logout">注销</a></li>
                             </ul>
                         </div>
@@ -80,11 +80,10 @@
                     <a href="#"></a>
                 </li>
                 <li class="active"><a href="./index.html"><span class="fa fa-home"></span></a></li>
-                <li><a href="#">秒杀</a></li>
-                <li><a href="#">优惠券</a></li>
-                <li><a href="#">电脑VIP</a></li>
-                <li><a href="#">外卖</a></li>
-                <li><a href="#">超市</a></li>
+                <li><a href="#">全部商品</a></li>
+                <li><a href="#">联想专区</a></li>
+                <li><a href="#">戴尔专区</a></li>
+                <li><a href="#">其他配件</a></li>
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
@@ -138,8 +137,8 @@
             <div class="panel panel-default" v-for="order of orderMap" :key="order.oid">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        订单号：{{order.key.oid}}，下单时间：{{formatting(order.key.order_time)}} ，
-                        收货人：{{order.key.recv_name}} ，支付时间：{{order.key.pay_time==null?'未支付':formatting(order.key.pay_time)}}
+                        订单号：{{order.key.oid}}，下单时间：{{formatting(order.key.orderTime)}} ，
+                        收货人：{{order.key.recvName}} ，支付时间：{{order.key.payTime==null?'未支付':formatting(order.key.payTime)}}
                         ，订单状态：{{showStatus(order.key.status)}}
                     </p>
                 </div>
@@ -159,29 +158,40 @@
                         </thead>
                         <tbody class="orders-body">
                         <tr v-for="item of order.value">
-                            <td><img :src="'http://localhost:3000'+item.image+'collect.png'" class="img-responsive" /></td>
+                            <td><img :src="'http://localhost'+item.image+'collect.png'" class="img-responsive"/></td>
                             <td>{{item.title}}</td>
                             <td>¥<span>{{item.price}}</span></td>
                             <td>{{item.num}}件</td>
                             <td>¥<span>{{item.price*item.num}}</span></td>
-                            <td><el-button type="text" @click="applyAfterSale(item.id)" :loading="afterSale" :disabled="order.key.status==2">申请售后</el-button></td>
                             <td>
-                                <div>{{item.item_status==0?'未发货':'已发货'}}</div>
-                                <div><a :href="'orderInfo.html?id='+item.id" :disabled="order.key.status==2">订单详情</a></div>
+                                <el-button type="text" @click="applyAfterSale(item.id)" :loading="afterSale"
+                                           :disabled="order.key.status==2">申请售后
+                                </el-button>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-default btn-xs" v-show="item.is_receive==false" @click="updateIs_receive(item.id)" :disabled="order.key.status==2">确认收货</a>
-                                <a href="#" class="btn btn-default btn-xs" v-show="item.is_receive==true" :disabled="true">已收货</a>
+                                <div>{{item.itemStatus==0?'未发货':'已发货'}}</div>
+                                <div><a :href="'orderInfo.html?id='+item.id" :disabled="order.key.status==2">订单详情</a>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-default btn-xs" v-show="item.isReceive==false"
+                                   @click="updateIs_receive(item.id)" :disabled="order.key.status==2">确认收货</a>
+                                <a href="#" class="btn btn-default btn-xs" v-show="item.isReceive==true"
+                                   :disabled="true">已收货</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                     <div>
-                        <span class="pull-right">订单总金额：¥{{order.key.total_price}}</span><br>
+                        <span class="pull-right">订单总金额：¥{{order.key.totalPrice}}</span><br>
                     </div>
                     <div style="margin-top: 10px">
-                        <el-button size="medium" type="primary" style="float: right;" round @Click="payment(order.key.oid)" v-show="order.key.pay_time==null">支付</el-button>
-                        <el-button size="medium" type="primary" style="float: right;margin-right: 20px" round @click="changeStatus(order.key.oid)" v-show="getStatus(order.key.status)">取消</el-button>
+                        <el-button size="medium" type="primary" style="float: right;" round
+                                   @Click="payment(order.key.oid)" v-show="order.key.payTime==null">支付
+                        </el-button>
+                        <el-button size="medium" type="primary" style="float: right;margin-right: 20px" round
+                                   @click="changeStatus(order.key.oid)" v-show="getStatus(order.key.status)">取消
+                        </el-button>
                     </div>
                 </div>
             </div>
@@ -212,8 +222,8 @@
         <!--联系我们、下载客户端等-->
         <div class="container beforeBottom">
             <div class="col-md-offset-1 col-md-3">
-                <div><img src="../../images/index/stumalllogo.png" alt="" class="footLogo" /></div>
-                <div><img src="../../images/index/footerFont.png" alt="" /></div>
+                <div><img src="../../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
+                <div><img src="../../images/index/footerFont.png" alt=""/></div>
             </div>
             <div class="col-md-4 callus text-center">
                 <div class="col-md-4">
@@ -259,7 +269,7 @@
                 <div class="col-md-5">
                     <p>电脑商城客户端</p>
                     <img src="../../images/index/ios.png" class="lf">
-                    <img src="../../images/index/android.png" alt="" class="lf" />
+                    <img src="../../images/index/android.png" alt="" class="lf"/>
                 </div>
                 <div class="col-md-6">
                     <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
@@ -268,12 +278,14 @@
         </div>
         <!-- 页面底部-备案号 #footer -->
         <div class="col-md-12 text-center bottom">
-            Copyright © 2022 dnsc.cn All Rights Reserved 京ICP备08963888号-45 <a target="_blank" href="http://www.dnsc.cn/">圆心科技集团有限公司</a> 版权所有
+            Copyright © 2022 dnsc.cn All Rights Reserved 京ICP备08963888号-45 <a target="_blank"
+                                                                              href="http://www.dnsc.cn/">圆心科技集团有限公司</a>
+            版权所有
         </div>
     </footer>
 </div>
 
 </body>
-    <script src="../frame/axios/axios.min.js"></script>
-    <script src="../js/page/orders.js"></script>
+<script src="../frame/axios/axios.min.js"></script>
+<script src="../js/page/orders.js"></script>
 </html>

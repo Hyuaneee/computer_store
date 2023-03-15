@@ -29,9 +29,9 @@ const v = new Vue({
         //修该和添加规则
         rules: {    //表单规则
             name: [{required: true, message: '不能为空', trigger: 'blur'}],  //blur失去焦点
-            province_name: [{required: true, message: '不能为空', trigger: 'blur'}],
-            city_name: [{required: true, message: '不能为空', trigger: 'blur'}],
-            area_name: [{required: true, message: '不能为空', trigger: 'blur'}],
+            provinceName: [{required: true, message: '不能为空', trigger: 'blur'}],
+            cityName: [{required: true, message: '不能为空', trigger: 'blur'}],
+            areaName: [{required: true, message: '不能为空', trigger: 'blur'}],
             address: [{required: true, message: '地址必填项', trigger: 'blur'}],
             phone: [
                 {required: true, message: '手机号不能为空', trigger: 'blur'},
@@ -116,7 +116,7 @@ const v = new Vue({
             }).finally(() => {
                 axios({
                     method: "get",
-                    url: "/dict_district/getListCity/" + this.elAUpdate.province_code,
+                    url: "/dict_district/getListCity/" + this.elAUpdate.provinceCode,
                 }).then((res) => {
                     if (!res.data.code == 1) {
                         this.$message(res.data.data);
@@ -126,7 +126,7 @@ const v = new Vue({
                 });
                 axios({
                     method: "get",
-                    url: "/dict_district/getListArea/" + this.elAUpdate.city_code,
+                    url: "/dict_district/getListArea/" + this.elAUpdate.cityCode,
                 }).then((res) => {
                     if (!res.data.code === 1) {
                         this.$message(res.data.data);
@@ -298,7 +298,7 @@ const v = new Vue({
             this.findPage();
         },
         //设置是否默认：0-不默认，1-默认
-        setDefalut(row) {
+        setDefault(row) {
             axios({
                 method: "get",
                 url: "/address/setDefault/" + row.aid,
@@ -373,36 +373,36 @@ const v = new Vue({
         //修改的code获取
         getuUpdateCode() {
             for (province of this.addressList.provinces) {
-                if (province.name == this.elAUpdate.province_name) {
-                    this.elAUpdate.province_code = province.code;
+                if (province.name == this.elAUpdate.provinceName) {
+                    this.elAUpdate.provinceCode = province.code;
                 }
             }
             for (city of this.addressList.citys) {
-                if (city.name == this.elAUpdate.city_name) {
-                    this.elAUpdate.city_code = city.code;
+                if (city.name == this.elAUpdate.cityName) {
+                    this.elAUpdate.cityCode = city.code;
                 }
             }
             for (area of this.addressList.areas) {
-                if (area.name == this.elAUpdate.area_name) {
-                    this.elAUpdate.area_code = area.code;
+                if (area.name == this.elAUpdate.areaName) {
+                    this.elAUpdate.areaCode = area.code;
                 }
             }
         },
         //添加的code获取
         getAddCode() {
             for (province of this.addressList.provinces) {
-                if (province.name == this.elAdd.province_name) {
-                    this.elAdd.province_code = province.code;
+                if (province.name == this.elAdd.provinceName) {
+                    this.elAdd.provinceCode = province.code;
                 }
             }
             for (city of this.addressList.citys) {
-                if (city.name == this.elAdd.city_name) {
-                    this.elAdd.city_code = city.code;
+                if (city.name == this.elAdd.cityName) {
+                    this.elAdd.cityCode = city.code;
                 }
             }
             for (area of this.addressList.areas) {
-                if (area.name == this.elAdd.area_name) {
-                    this.elAdd.area_code = area.code;
+                if (area.name == this.elAdd.areaName) {
+                    this.elAdd.areaCode = area.code;
                 }
             }
         }

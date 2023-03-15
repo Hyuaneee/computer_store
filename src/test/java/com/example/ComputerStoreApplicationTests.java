@@ -1,9 +1,12 @@
 package com.example;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.common.ReturnFront;
 import com.example.mapper.UserMapper;
+import com.example.pojo.Address;
 import com.example.pojo.Orders;
 import com.example.pojo.User;
+import com.example.service.AddressService;
 import com.example.service.OrdersService;
 import com.example.service.Orders_itemService;
 import org.junit.jupiter.api.Test;
@@ -21,8 +24,11 @@ class ComputerStoreApplicationTests {
     @Autowired
     private OrdersService ordersService;
 
+    @Autowired
     private Orders_itemService orders_itemService;
 
+    @Autowired
+    private AddressService addressService;
 
     @Test
     void contextLoads() {
@@ -61,6 +67,14 @@ class ComputerStoreApplicationTests {
         for (ReturnFront returnFront : result) {
             System.out.println(returnFront);
         }*/
+    }
+
+    @Test
+    void getAddressList() {
+        List<Address> list = addressService.list();
+        for (Address address : list) {
+            System.out.println(address);
+        }
     }
 
 

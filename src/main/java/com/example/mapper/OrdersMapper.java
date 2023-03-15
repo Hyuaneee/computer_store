@@ -9,7 +9,9 @@ import org.apache.ibatis.annotations.Options;
 @Mapper
 public interface OrdersMapper extends BaseMapper<Orders> {
 
-    @Insert("insert into orders values(#{oid},#{uid},#{recv_name},#{recv_phone},#{recv_province},#{recv_city},#{recv_area},#{recv_address},#{total_price},#{status},#{order_time},#{pay_time},#{created_user},#{created_time},#{modified_user},#{modified_time})")
+    //新增订单数据
+    @Insert("insert into orders values(#{oid},#{uid},#{recvName},#{recvPhone},#{recvProvince},#{recvCity},#{recvArea},#{recvAddress},#{totalPrice},#{status},#{orderTime},#{payTime},#{createdUser},#{createdTime},#{modifiedUser},#{modifiedTime})")
+    //使用数据库中自增长的主键，并且可以将主键的值返回给keyProperty中写好的字段
     @Options(useGeneratedKeys = true, keyProperty = "oid", keyColumn = "oid")
     int insert(Orders orders);
 

@@ -9,6 +9,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 
+/**
+ * 配置拦截路径
+ */
+
 @Slf4j
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
@@ -31,6 +35,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 );
     }
 
+    /**
+     * 放行静态路径
+     *
+     * @param registry
+     */
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");

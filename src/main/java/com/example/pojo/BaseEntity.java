@@ -5,7 +5,9 @@ import lombok.Data;
 import java.util.Date;
 
 
-//实体类基类
+/**
+ * 实体类基类，用于统一注入日志
+ */
 @Data
 public class BaseEntity {
     private String createdUser;  //日志-创建人

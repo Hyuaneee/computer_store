@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
-//购物车类
+/**
+ * 购物车类
+ */
+
 @Data
-public class Cart extends BaseEntity{
+public class Cart extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long cid;   //购物车数据id
     private Long uid;   //用户id

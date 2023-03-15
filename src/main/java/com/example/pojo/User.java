@@ -7,10 +7,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 用户类
+ */
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long uid;  //用户id
     private String username;  //用户名

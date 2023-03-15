@@ -74,11 +74,10 @@
                     <a href="#"></a>
                 </li>
                 <li class="active"><a href="../index.html"><span class="fa fa-home"></span></a></li>
-                <li><a href="#">秒杀</a></li>
-                <li><a href="#">优惠券</a></li>
-                <li><a href="#">电脑VIP</a></li>
-                <li><a href="#">外卖</a></li>
-                <li><a href="#">超市</a></li>
+                <li><a href="#">全部商品</a></li>
+                <li><a href="#">联想专区</a></li>
+                <li><a href="#">戴尔专区</a></li>
+                <li><a href="#">其他配件</a></li>
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
@@ -146,21 +145,24 @@
                               @selection-change="handleSelectionChange" ref="multipleTable" style="font-size: 10px">
                         <el-table-column type="selection" label="全选" :reserve-selection="true"
                                          min-width="3%"></el-table-column>  <!-- reserve-selection选择其他页时，之前页选的的框依然存在 -->
-                        <el-table-column prop="tag" label="地址类型" min-width="8%"></el-table-column>
-                        <el-table-column prop="name" label="收货人姓名" min-width="12%"></el-table-column>
-                        <el-table-column prop="address" label="详细地址" min-width="40%"></el-table-column>
+                        <el-table-column prop="tag" label="类型" min-width="8%"></el-table-column>
+                        <el-table-column prop="name" label="姓名" min-width="10%"></el-table-column>
+                        <el-table-column prop="provinceName" label="省" min-width="8%"></el-table-column>
+                        <el-table-column prop="cityName" label="市" min-width="8%"></el-table-column>
+                        <el-table-column prop="areaName" label="区" min-width="8%"></el-table-column>
+                        <el-table-column prop="address" label="详细地址" min-width="20%"></el-table-column>
                         <el-table-column prop="phone" label="联系电话" min-width="15%"></el-table-column>
-                        <el-table-column label="操作" min-width="22%">
+                        <el-table-column label="操作" min-width="23%">
                             <template slot-scope="scope">   <!-- 将整个行对象封装为scope -->
                                 <el-button type="primary" icon="el-icon-edit" size="mini"
                                            @click="handleUpdate(scope.row)" circle></el-button>
                                 <el-button type="danger" icon="el-icon-delete" size="mini" @click="rowDelete(scope.row)"
                                            circle></el-button>
                                 <el-button
-                                        :type="scope.row.status == '1' ? 'danger' : 'success'"
+                                        :type="scope.row.isDefault == '1' ? 'danger' : 'success'"
                                         size="mini"
-                                        @click="setDefalut(scope.row)"
-                                >{{scope.row.is_default == '1'?"默认":"设为默认"}}
+                                        @click="setDefault(scope.row)"
+                                >{{scope.row.isDefault == '1'?"默认":"设为默认"}}
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -195,26 +197,26 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="省/直辖市" prop="province_name">
-                                            <el-select v-model="elAdd.province_name" placeholder="请选择省/直辖市"
-                                                       @input="getListCity(elAdd.province_name)">
+                                        <el-form-item label="省/直辖市" prop="provinceName">
+                                            <el-select v-model="elAdd.provinceName" placeholder="请选择省/直辖市"
+                                                       @input="getListCity(elAdd.provinceName)">
                                                 <el-option v-for="province of addressList.provinces" :key="province.id"
                                                            :label="province.name" :value="province.name"></el-option>
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="城市" prop="city_name">
-                                            <el-select v-model="elAdd.city_name" placeholder="请选择城市"
-                                                       @input="getListArea(elAdd.city_name)">
+                                        <el-form-item label="城市" prop="cityName">
+                                            <el-select v-model="elAdd.cityName" placeholder="请选择城市"
+                                                       @input="getListArea(elAdd.cityName)">
                                                 <el-option v-for="city of addressList.citys" :key="city.id"
                                                            :label="city.name" :value="city.name"></el-option>
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="区/县" prop="area_name">
-                                            <el-select v-model="elAdd.area_name" placeholder="请选择区/县">
+                                        <el-form-item label="区/县" prop="areaName">
+                                            <el-select v-model="elAdd.areaName" placeholder="请选择区/县">
                                                 <el-option v-for="area of addressList.areas" :key="area.id"
                                                            :label="area.name" :value="area.name"></el-option>
                                             </el-select>
@@ -267,26 +269,26 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="省/直辖市" prop="province_name">
-                                            <el-select v-model="elAUpdate.province_name" placeholder="请选择省/直辖市"
-                                                       @input="getListCity(elAUpdate.province_name)">
+                                        <el-form-item label="省/直辖市" prop="provinceName">
+                                            <el-select v-model="elAUpdate.provinceName" placeholder="请选择省/直辖市"
+                                                       @input="getListCity(elAUpdate.provinceName)">
                                                 <el-option v-for="province of addressList.provinces" :key="province.id"
                                                            :label="province.name" :value="province.name"></el-option>
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="城市" prop="city_name">
-                                            <el-select v-model="elAUpdate.city_name" placeholder="请选择城市"
-                                                       @input="getListArea(elAUpdate.city_name)">
+                                        <el-form-item label="城市" prop="cityName">
+                                            <el-select v-model="elAUpdate.cityName" placeholder="请选择城市"
+                                                       @input="getListArea(elAUpdate.cityName)">
                                                 <el-option v-for="city of addressList.citys" :key="city.id"
                                                            :label="city.name" :value="city.name"></el-option>
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="区/县" prop="area_name">
-                                            <el-select v-model="elAUpdate.area_name" placeholder="请选择区/县">
+                                        <el-form-item label="区/县" prop="areaName">
+                                            <el-select v-model="elAUpdate.areaName" placeholder="请选择区/县">
                                                 <el-option v-for="area of addressList.areas" :key="area.id"
                                                            :label="area.name" :value="area.name"></el-option>
                                             </el-select>

@@ -1,4 +1,4 @@
-Vue.config.productionTip=false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
+Vue.config.productionTip = false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
 
 new Vue({
     el: '#app',
@@ -14,7 +14,7 @@ new Vue({
         //订单信息
         order: {
             oid: null,
-            total_price: 0,
+            totalPrice: 0,
         },
         //订单列表
         orderMap: {},
@@ -23,49 +23,49 @@ new Vue({
     }
     ,
     //钩子函数，VUE对象初始化完成后自动执行
-    created(){
+    created() {
         this.getUser();
         this.getList();
     },
-    methods:{
+    methods: {
         //获取用户信息
-        getUser(){
+        getUser() {
             axios({
                 methods: "get",
                 url: "/user/getUser",
-            }).then((res)=>{
-                if(res.data.flag){
-                    this.userLoading=true;
-                    this.user=res.data.data;
-                }else{
-                    this.userLoading=false;
+            }).then((res) => {
+                if (res.data.code === 1) {
+                    this.userLoading = true;
+                    this.user = res.data.data;
+                } else {
+                    this.userLoading = false;
                 }
             });
         },
         //搜索
-        searchContent(){
-            location.href="search.html?context="+this.searchData;
+        searchContent() {
+            location.href = "search.html?context=" + this.searchData;
         },
         //根据oid获取订单列表
-        getList(status){
+        getList(status) {
             axios({
                 methods: "get",
                 url: "/order/getListoid",
-                params:{
+                params: {
                     status: status
                 }
-            }).then((res)=>{
-                if(res.data.flag){
-                    this.orderMap=res.data.data;
-                }else{
+            }).then((res) => {
+                if (res.data.code === 1) {
+                    this.orderMap = res.data.data;
+                } else {
                     this.$message.error(res.data.message);
                 }
             });
         },
         //时间格式化
-        formatting(value){
+        formatting(value) {
             var now = new Date();
-            var zeroFill = function(value) {
+            var zeroFill = function (value) {
                 if (value < 10) {
                     value = '0' + value
                 }
@@ -87,118 +87,118 @@ new Vue({
             return (`${year}-${month}-${day} ${hh}:${mm}:${ss}`);
         },
         //申请售后
-        applyAfterSale(id){
-            this.$confirm("确定申请售后，是否继续？","提示",{
-                confirmButtonText:"确定",
-                cancelButtonText:"取消",
+        applyAfterSale(id) {
+            this.$confirm("确定申请售后，是否继续？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
                 type: "warning"
-            }).then(()=> {   //选择确定的情况
-                this.afterSale=true;
+            }).then(() => {   //选择确定的情况
+                this.afterSale = true;
                 axios({
                     methods: "get",
-                    url: "/order/applyAfterSale/"+id,
-                }).then((res)=>{
-                    if(res.data.flag){
+                    url: "/order/applyAfterSale/" + id,
+                }).then((res) => {
+                    if (res.data.code === 1) {
                         this.$message.success({
                             message: res.data.message,
                             type: 'success'
                         });
-                    }else{
+                    } else {
                         this.$message.error(res.data.message);
                     }
-                }).finally(()=>{
-                    this.afterSale=false;
+                }).finally(() => {
+                    this.afterSale = false;
                 });
-            }).catch(()=>{   //选择取消的情况
+            }).catch(() => {   //选择取消的情况
                 this.$message({
-                    type:"into",
-                    message:"已取消"
+                    type: "into",
+                    message: "已取消"
                 });
             });
         },
         //用户确认接受包裹
-        updateIs_receive(id){
-            this.$confirm("您确认已接受包裹？","提示",{
-                confirmButtonText:"确定",
-                cancelButtonText:"取消",
+        updateIs_receive(id) {
+            this.$confirm("您确认已接受包裹？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
                 type: "warning"
-            }).then(()=> {   //选择确定的情况
+            }).then(() => {   //选择确定的情况
                 axios({
                     methods: "get",
-                    url: "/order/updateIs_receive/"+id,
-                }).then((res)=>{
-                    if(res.data.flag){
+                    url: "/order/updateIs_receive/" + id,
+                }).then((res) => {
+                    if (res.data.code === 1) {
                         this.$message.success({
                             message: res.data.message,
                             type: 'success'
                         });
-                    }else{
+                    } else {
                         this.$message.error(res.data.message);
                     }
-                }).finally(()=>{
+                }).finally(() => {
                     this.getList(null);
                 });
-            }).catch(()=>{   //选择取消的情况
+            }).catch(() => {   //选择取消的情况
                 this.$message({
-                    type:"into",
-                    message:"已取消"
+                    type: "into",
+                    message: "已取消"
                 });
             });
         },
         //判断staus状态
-        getStatus(status){
-            if(status==2||status==3||status==4){
+        getStatus(status) {
+            if (status == 2 || status == 3 || status == 4) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         },
         //显示订单状态,0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
-        showStatus(status){
-            if(status==0){
+        showStatus(status) {
+            if (status == 0) {
                 return '未支付';
-            }else if(status==1){
+            } else if (status == 1) {
                 return '已支付';
-            }else if(status==2){
+            } else if (status == 2) {
                 return '已取消';
-            }else if(status==3){
+            } else if (status == 3) {
                 return '已关闭';
-            }else{
+            } else {
                 return '已完成';
             }
         },
         //用户取消订单
-        changeStatus(oid){
-            this.$confirm("您确认取消订单？","提示",{
-                confirmButtonText:"确定",
-                cancelButtonText:"取消",
+        changeStatus(oid) {
+            this.$confirm("您确认取消订单？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
                 type: "warning"
-            }).then(()=> {   //选择确定的情况
+            }).then(() => {   //选择确定的情况
                 axios({
                     methods: "get",
-                    url: "/order/changeStatus/"+oid,
-                }).then((res)=>{
-                    if(res.data.flag){
+                    url: "/order/changeStatus/" + oid,
+                }).then((res) => {
+                    if (res.data.code === 1) {
                         this.$message.success({
                             message: res.data.message,
                             type: 'success'
                         });
-                    }else{
+                    } else {
                         this.$message.error(res.data.message);
                     }
-                }).finally(()=>{
+                }).finally(() => {
                     this.getList(null);
                 });
-            }).catch(()=>{   //选择取消的情况
+            }).catch(() => {   //选择取消的情况
                 this.$message({
-                    type:"into",
-                    message:"已取消"
+                    type: "into",
+                    message: "已取消"
                 });
             });
         },
         //支付
-        payment(oid){
-            location.href="pay/payment.html?oid="+oid;
+        payment(oid) {
+            location.href = "pay/payment.html?oid=" + oid;
         }
     }
 });

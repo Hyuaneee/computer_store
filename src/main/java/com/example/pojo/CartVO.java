@@ -2,6 +2,10 @@ package com.example.pojo;
 
 import lombok.Data;
 
+/**
+ * 购物车实体类再加工，添加额外字段
+ */
+
 @Data
 public class CartVO {
     private Long cid;   //购物车数据id

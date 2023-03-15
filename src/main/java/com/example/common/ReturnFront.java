@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 /**
- * 通用返回结果
+ * 通用返回结果  用于前端对接
  *
  * @param <T>
  */
@@ -42,7 +42,6 @@ public class ReturnFront<T> {
         exceptionR.code = 1;
         return exceptionR;
     }
-
 
     //业务操作失败
     public static <T> ReturnFront<T> error(String message) {

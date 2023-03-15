@@ -90,11 +90,13 @@ new Vue({
                                 message: "用户信息修改成功",
                                 type: 'success'
                             });
-                            window.location.reload();
                         } else {
                             this.$message.error(res.data.message);
                         }
-                    });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500)
+                    })
                 } else {
                     this.$message.error('此提交不符合规则');
                     return false;

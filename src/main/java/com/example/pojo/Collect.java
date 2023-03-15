@@ -2,9 +2,11 @@ package com.example.pojo;
 
 import lombok.Data;
 
-//用户收藏类
+/**
+ * 收藏类
+ */
 @Data
-public class Collect extends BaseEntity{
+public class Collect extends BaseEntity {
     private Long id;   //用户收藏数据id
     private Long uid;  //用户id
     private Long pid;  //商品id
