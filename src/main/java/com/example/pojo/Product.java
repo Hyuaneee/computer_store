@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class Product extends BaseEntity{
     private Long id;  //商品id
-    private Long categoryId;  //分类id
     private String itemType;  //商品系列
     private String title;  //商品标题
     private String sellPoint;  //商品卖点

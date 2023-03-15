@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.ReturnFront;
 import com.example.pojo.Product;
-import com.example.pojo.Product_category;
 import com.example.service.ProductService;
-import com.example.service.Product_categoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +19,6 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-    @Autowired
-    private Product_categoryService product_categoryService;
 
     //热销排行
     @PostMapping("/getBestList/{currentPage}/{pageSize}")
@@ -38,21 +34,6 @@ public class ProductController {
         return ReturnFront.success(page);
     }
 
-
-    //推荐栏目
-    @PostMapping("/getRecommendList/{currentPage}/{pageSize}")
-    public ReturnFront getRecommendList(@PathVariable Integer currentPage, @PathVariable Integer pageSize) {
-        IPage<Product> iPage = new Page<>(currentPage, pageSize);
-        QueryWrapper<Product> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", 1);
-        wrapper.orderBy(true, true, "modified_time", "title");  //优先级和标题
-        IPage<Product> page = productService.page(iPage, wrapper);
-        if (page == null) {
-            return ReturnFront.error("数据不存在");
-        }
-        return ReturnFront.success(page);
-    }
-
     //详情页数据获取
     @GetMapping("/details")
     public ReturnFront details(Long id) {
@@ -61,18 +42,6 @@ public class ProductController {
             return ReturnFront.error("商品不存在");
         }
         return ReturnFront.success(product);
-    }
-
-    //获取分类
-    @GetMapping("/getListProductType")
-    public ReturnFront getListProductType() {
-        QueryWrapper<Product_category> wrapper = new QueryWrapper<>();
-        wrapper.eq("parent_id", 0);
-        List<Product_category> list = product_categoryService.list(wrapper);
-        if (list == null) {
-            throw new RuntimeException("哔哔");
-        }
-        return ReturnFront.success(list);
     }
 
     /* 和收藏collect一样没有完全搞懂 */
