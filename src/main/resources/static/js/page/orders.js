@@ -12,12 +12,12 @@ new Vue({
         //搜索
         searchData: null,
         //订单信息
-        order: {
+        orders: {
             oid: null,
             totalPrice: 0,
         },
         //订单列表
-        orderMap: {},
+        ordersMap: {},
         //售后按钮是否加载
         afterSale: false,
     }
@@ -56,7 +56,7 @@ new Vue({
                 }
             }).then((res) => {
                 if (res.data.code === 1) {
-                    this.orderMap = res.data.data;
+                    this.ordersMap = res.data.data;
                 } else {
                     this.$message.error(res.data.message);
                 }

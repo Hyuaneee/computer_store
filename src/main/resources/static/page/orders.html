@@ -134,12 +134,12 @@
         </div>
         <!--左侧导航结束-->
         <div class="col-md-10">
-            <div class="panel panel-default" v-for="order of orderMap" :key="order.oid">
+            <div class="panel panel-default" v-for="orders of ordersMap" :key="orders.oid">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        订单号：{{order.key.oid}}，下单时间：{{formatting(order.key.orderTime)}} ，
-                        收货人：{{order.key.recvName}} ，支付时间：{{order.key.payTime==null?'未支付':formatting(order.key.payTime)}}
-                        ，订单状态：{{showStatus(order.key.status)}}
+                        订单号：{{orders.key.oid}}，下单时间：{{(orders.key.orderTime)}} ，
+                        收货人：{{orders.key.recvName}} ，支付时间：{{orders.key.payTime==null?'未支付':formatting(orders.key.payTime)}}
+                        ，订单状态：{{showStatus(orders.key.status)}}
                     </p>
                 </div>
                 <div class="panel-body">
@@ -157,25 +157,20 @@
                         </tr>
                         </thead>
                         <tbody class="orders-body">
-                        <tr v-for="item of order.value">
+                        <tr v-for="item of orders.value">
                             <td><img :src="'http://localhost'+item.image+'collect.png'" class="img-responsive"/></td>
                             <td>{{item.title}}</td>
                             <td>¥<span>{{item.price}}</span></td>
                             <td>{{item.num}}件</td>
                             <td>¥<span>{{item.price*item.num}}</span></td>
                             <td>
-                                <el-button type="text" @click="applyAfterSale(item.id)" :loading="afterSale"
-                                           :disabled="order.key.status==2">申请售后
-                                </el-button>
-                            </td>
-                            <td>
                                 <div>{{item.itemStatus==0?'未发货':'已发货'}}</div>
-                                <div><a :href="'orderInfo.html?id='+item.id" :disabled="order.key.status==2">订单详情</a>
+                                <div><a :href="'ordersInfo.html?id='+item.id" :disabled="orders.key.status==2">订单详情</a>
                                 </div>
                             </td>
                             <td>
                                 <a href="#" class="btn btn-default btn-xs" v-show="item.isReceive==false"
-                                   @click="updateIs_receive(item.id)" :disabled="order.key.status==2">确认收货</a>
+                                   @click="updateIs_receive(item.id)" :disabled="orders.key.status==2">确认收货</a>
                                 <a href="#" class="btn btn-default btn-xs" v-show="item.isReceive==true"
                                    :disabled="true">已收货</a>
                             </td>
@@ -183,14 +178,14 @@
                         </tbody>
                     </table>
                     <div>
-                        <span class="pull-right">订单总金额：¥{{order.key.totalPrice}}</span><br>
+                        <span class="pull-right">订单总金额：¥{{orders.key.totalPrice}}</span><br>
                     </div>
                     <div style="margin-top: 10px">
                         <el-button size="medium" type="primary" style="float: right;" round
-                                   @Click="payment(order.key.oid)" v-show="order.key.payTime==null">支付
+                                   @Click="payment(orders.key.oid)" v-show="orders.key.payTime==null">支付
                         </el-button>
                         <el-button size="medium" type="primary" style="float: right;margin-right: 20px" round
-                                   @click="changeStatus(order.key.oid)" v-show="getStatus(order.key.status)">取消
+                                   @click="changeStatus(orders.key.oid)" v-show="getStatus(orders.key.status)">取消
                         </el-button>
                     </div>
                 </div>
