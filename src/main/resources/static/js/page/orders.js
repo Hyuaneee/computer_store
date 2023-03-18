@@ -86,36 +86,7 @@ new Vue({
 
             return (`${year}-${month}-${day} ${hh}:${mm}:${ss}`);
         },
-        //申请售后
-        applyAfterSale(id) {
-            this.$confirm("确定申请售后，是否继续？", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-            }).then(() => {   //选择确定的情况
-                this.afterSale = true;
-                axios({
-                    methods: "get",
-                    url: "/order/applyAfterSale/" + id,
-                }).then((res) => {
-                    if (res.data.code === 1) {
-                        this.$message.success({
-                            message: res.data.message,
-                            type: 'success'
-                        });
-                    } else {
-                        this.$message.error(res.data.message);
-                    }
-                }).finally(() => {
-                    this.afterSale = false;
-                });
-            }).catch(() => {   //选择取消的情况
-                this.$message({
-                    type: "into",
-                    message: "已取消"
-                });
-            });
-        },
+
         //用户确认接受包裹
         updateIs_receive(id) {
             this.$confirm("您确认已接受包裹？", "提示", {

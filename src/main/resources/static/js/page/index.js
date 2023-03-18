@@ -11,17 +11,17 @@ new Vue({
         },
         //搜索
         searchData: null,
-        //热销排行前4
+        //热销排行
         page: {
             content: [],
             currentPage: 1,   //当前页
-            pageSize: 5,  //当前页条数
+            pageSize: 6,  //当前页条数
         },
         //推荐栏目
         pageRecommend: {
             content: [],
-            currentPage: 3,   //当前页
-            pageSize: 5,  //当前页条数
+            currentPage: 2,   //当前页
+            pageSize: 6,  //当前页条数
         }
     },
     //钩子函数，VUE对象初始化完成后自动执行

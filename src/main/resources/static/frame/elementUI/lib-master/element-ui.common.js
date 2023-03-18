@@ -619,7 +619,7 @@ pagervue_type_template_id_7274f267_render._withStripped = true
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
 // This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
+// be included in the final webpack admin bundle.
 
 function normalizeComponent (
   scriptExports,
@@ -15374,7 +15374,7 @@ var pickervue_type_script_lang_js_validator = function validator(val) {
       }
 
       // NOTE: deal with common but incorrect usage, should remove in next major version
-      // user might provide string / timestamp without value-format, coerce them into date (or array of date)
+      // admin might provide string / timestamp without value-format, coerce them into date (or array of date)
       return Array.isArray(this.value) ? this.value.map(function (val) {
         return new Date(val);
       }) : new Date(this.value);
@@ -15456,7 +15456,7 @@ var pickervue_type_script_lang_js_validator = function validator(val) {
     },
 
 
-    // {parse, formatTo} String deals with user input
+    // {parse, formatTo} String deals with admin input
     parseString: function parseString(value) {
       var type = Array.isArray(value) ? this.type : this.type.replace('range', '');
       return parseAsFormatAndType(value, this.format, type);
@@ -15582,7 +15582,7 @@ var pickervue_type_script_lang_js_validator = function validator(val) {
           this.blur();
           event.stopPropagation();
         } else {
-          // user may change focus between two input
+          // admin may change focus between two input
           setTimeout(function () {
             if (_this.refInput.indexOf(document.activeElement) === -1) {
               _this.pickerVisible = false;
@@ -15605,7 +15605,7 @@ var pickervue_type_script_lang_js_validator = function validator(val) {
         return;
       }
 
-      // if user is typing, do not let picker handle key input
+      // if admin is typing, do not let picker handle key input
       if (this.userInput) {
         event.stopPropagation();
         return;
@@ -15733,7 +15733,7 @@ var pickervue_type_script_lang_js_validator = function validator(val) {
       }
     },
     emitChange: function emitChange(val) {
-      // determine user real change only
+      // determine admin real change only
       if (!valueEquals(val, this.valueOnOpen)) {
         this.$emit('change', val);
         this.valueOnOpen = val;
@@ -18657,7 +18657,7 @@ date_table_component.options.__file = "packages/date-picker/src/basic/date-table
         this.emit(this.value);
       } else {
         // value were emitted in handle{Date,Time}Pick, nothing to update here
-        // deal with the scenario where: user opens the picker, then confirm without doing anything
+        // deal with the scenario where: admin opens the picker, then confirm without doing anything
         var value = this.value ? this.value : Object(date_util_["modifyWithTimeString"])(this.getDefaultValue(), this.defaultTime);
         this.date = new Date(value); // refresh date
         this.emit(value);

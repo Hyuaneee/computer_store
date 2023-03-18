@@ -224,9 +224,9 @@ public class OrdersController {
         //集合遍历所有订单中商品
         List<Orders_item> list = orders_itemService.list(queryWrapper2);
         int is_receive = 1;
-        for (Orders_item orders_Item : list) {
+        for (Orders_item list_item : list) {
             //发现有商品还未收货，不进入下面的if
-            if (orders_item.getIsReceive() == 0) {
+            if (list_item.getIsReceive() == 0) {
                 is_receive = 0;
             }
         }

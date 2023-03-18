@@ -2,8 +2,12 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.ReturnFront;
 import com.example.mapper.UserMapper;
+import com.example.pojo.Address;
 import com.example.pojo.User;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -173,6 +178,42 @@ public class UserController {
         return ReturnFront.success("修改成功");
     }
 
+    //分页查询
+    @PostMapping("/PageList/{currentPage}/{pageSize}")
+    public ReturnFront insert(@PathVariable Integer currentPage, @PathVariable Integer pageSize) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("deleted", 0);
+        IPage<User> iPage = new Page<>(currentPage, pageSize);
+        IPage<User> page = userService.page(iPage, wrapper);
+        return ReturnFront.success(page);
+    }
 
+
+    //账号状态设置
+    @GetMapping("/setStatus/{uid}/{status}")
+    public ReturnFront setDefault(@PathVariable Long uid, @PathVariable Integer status) {
+        status = status == 0 ? 1 : 0;
+        UpdateWrapper<User> wrapper = new UpdateWrapper<>();
+        wrapper.eq("uid", uid);
+        wrapper.set("status", status);
+        boolean flag = userService.update(wrapper);
+        if (!flag) {
+            return ReturnFront.error("设置失败,请重试");
+        }
+        return ReturnFront.success("设置成功");
+    }
+
+    //账号逻辑删除
+    @GetMapping("/setDeleted/{uid}")
+    public ReturnFront setDeleted(@PathVariable Long uid) {
+        UpdateWrapper<User> wrapper = new UpdateWrapper<>();
+        wrapper.eq("uid", uid);
+        wrapper.set("deleted", 1);
+        boolean flag = userService.update(wrapper);
+        if (!flag) {
+            return ReturnFront.error("设置失败,请重试");
+        }
+        return ReturnFront.success("设置成功");
+    }
 
 }

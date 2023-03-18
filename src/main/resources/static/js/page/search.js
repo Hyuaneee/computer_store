@@ -38,7 +38,7 @@ new Vue({
         pageData: {
             content: [],
             currentPage: 1,   //当前页
-            pageSize: 12,  //当前页条数
+            pageSize: 8,  //当前页条数
             total: 1,  //数据总条数
             pages: 1,  //总页数
             firstPage: false,  //是否禁用前一页按钮
@@ -68,6 +68,9 @@ new Vue({
         },
         //搜索
         searchContent() {
+            if (this.searchData == null) {
+                this.searchData = "a"
+            }
             location.href = "search.html?context=" + this.searchData;
         },
         //获取当前页数据
@@ -82,7 +85,7 @@ new Vue({
                     context: context
                 },
             }).then((res) => {
-                console.log(res.data);
+                console.log(res.data.data);
                 this.pageData.content = res.data.value;
                 this.pageData.currentPage = res.data.key.current;
                 this.pageData.pageSize = res.data.key.size;

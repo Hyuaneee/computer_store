@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- elementUI -->
+    <link rel="stylesheet" href="frame/elementUI/lib-master/theme-chalk/index.css"/>
+    <!-- 必须先引入vue，  后使用element-ui -->
+    <script src="frame/elementUI/vue.js"></script>
+    <!-- 引入element 的组件库-->
+    <script src="frame/elementUI/lib-master/index.js"></script>
+
+    <!-- bootstrap -->
+    <link href="frame/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="frame/bootstrap3/jquery-1.9.1.min.js"></script>
+    <script src="frame/bootstrap3/js/bootstrap.js"></script>
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="frame/bootstrap3/font-awesome-4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="css/top.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="css/reg.css"/>
+    <link rel="stylesheet" type="text/css" href="css/footer.css"/>
+    <title>管理员登录界面</title>
+
+</head>
+<body id="#app">
+<!--头部-->
+<header class="header">
+    <img src="images/index/stumalllogo.png" alt=""/>
+    <span class="pull-right"><b>管理员登录界面</b></span>
+</header>
+<!--主体-->
+<div class="container mycontent text-left">
+    <!--透明层 -->
+    <div class="regDiv" id="app">
+        <p>管理员登录</p>
+        <div style="margin-top: 70px">
+            <!-- 管理员登录 -->
+            <el-form :model="formUser" mstatus-icon :rules="rules" ref="formUser" label-width="100px"
+                     v-show="patternName"> <!-- ref:表单验证(和提交数据相同) -->
+                <el-form-item label="管理员：" prop="username">  <!-- prop的值与rules里面要验证的字段值是对应 -->
+                    <el-input
+                            prefix-icon="el-icon-user" style="width: 250px"
+                            type="text" v-model="formUser.username" autocomplete="off">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="密 码：" prop="password">
+                    <el-input
+                            prefix-icon="el-icon-menu"
+                            style="width: 250px" show-password type="password"
+                            v-model="formUser.password" autocomplete="off">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button el-button type="primary" @click="loginData()" style="margin-right: 100px">登录</el-button>
+                </el-form-item>
+                <span class="pull-right"><a href="login.html">用户登录</a></span>
+            </el-form>
+
+        </div>
+    </div>
+</div>
+
+<!--页脚开始-->
+<div class="clearfix"></div>
+<footer class="footer">
+    <!-- 页面底部-备案号 #footer -->
+    <div class="col-md-12 text-center bottom">
+        计算2173 黄嘉源 202142051087
+    </div>
+</footer>
+</body>
+<script src="frame/axios/axios.min.js"></script>
+<script src="js/adminLogin.js"></script>
+</html>

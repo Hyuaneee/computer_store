@@ -85,14 +85,14 @@
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
-            <el-input placeholder="请输入内容" v-model="searchData" class="input-with-select">
+            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search" @Click="searchContent()"></el-button>
             </el-input>
         </div>
     </div>
 
     <div class="container">
-        <div class="row" style="margin-bottom: 10px">
+        <div class="row" style="margin-bottom: 20px">
 
             <!-- 轮播图 -->
             <div class="col-md-12">
@@ -102,8 +102,6 @@
                         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                         <li data-target="#myCarousel" data-slide-to="1"></li>
                         <li data-target="#myCarousel" data-slide-to="2"></li>
-                        <li data-target="#myCarousel" data-slide-to="3"></li>
-                        <li data-target="#myCarousel" data-slide-to="4"></li>
                     </ol>
                     <!-- 轮播（Carousel）项目 -->
                     <div class="carousel-inner" align="center">
@@ -116,12 +114,7 @@
                         <div class="item">
                             <img src="../images/index/index_banner3.png">
                         </div>
-                        <div class="item">
-                            <img src="../images/index/index_banner4.png">
-                        </div>
-                        <div class="item">
-                            <img src="../images/index/index_banner5.png">
-                        </div>
+
                     </div>
                     <!-- 轮播（Carousel）导航 -->
                     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
@@ -138,14 +131,33 @@
 
         <!--推荐栏目-->
         <div class="row">
-            <div class="col-md-6">
+
+            <!--热门产品-->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <p class="panel-title">热门产品</p>
+                    </div>
+                    <div id="hot-list" class="panel-body panel-item">
+                        <div class="col-md-6" v-for="product of this.page.content">
+                            <div class="col-md-6 text-row-2"><a :href="'/page/product.html?id='+product.id">{{product.title}}</a>
+                            </div>
+                            <div class="col-md-2">¥{{product.price}}</div>
+                            <div class="col-md-3"><img :src="'http://localhost'+product.image+'collect.png'"
+                                                       class="img-responsive"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <p class="panel-title">新到好货</p>
                     </div>
                     <div class="panel-body panel-item">
-                        <div class="col-md-12" v-for="product of pageRecommend.content">
-                            <div class="col-md-7 text-row-2"><a :href="'/page/product.html?id='+product.id">{{product.title}}</a>
+                        <div class="col-md-6" v-for="product of pageRecommend.content">
+                            <div class="col-md-6 text-row-2"><a :href="'/page/product.html?id='+product.id">{{product.title}}</a>
                             </div>
                             <div class="col-md-2">¥{{product.price}}</div>
                             <div class="col-md-3"><img :src="'http://localhost'+product.image+'collect.png'"
@@ -154,46 +166,13 @@
                     </div>
                 </div>
             </div>
-            <!--热销排行-->
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <p class="panel-title">热销排行</p>
-                    </div>
-                    <div id="hot-list" class="panel-body panel-item">
-                        <div class="col-md-12" v-for="product of this.page.content">
-                            <div class="col-md-7 text-row-2"><a :href="'/page/product.html?id='+product.id">{{product.title}}</a>
-                            </div>
-                            <div class="col-md-2">¥{{product.price}}</div>
-                            <div class="col-md-3"><img :src="'http://localhost'+product.image+'collect.png'"
-                                                       class="img-responsive"/></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+
         </div>
     </div>
     <!--页脚开始-->
+    <div class="clearfix"></div>
     <footer class="footer">
-        <!-- 品质保障，私人定制等-->
-        <div class="text-center rights container">
-            <div class="col-md-offset-2 col-md-2">
-                <span class="fa fa-thumbs-o-up"></span>
-                <p>品质保障</p>
-            </div>
-            <div class="col-md-2">
-                <span class="fa fa-address-card-o"></span>
-                <p>私人订制</p>
-            </div>
-            <div class="col-md-2">
-                <span class="fa fa-graduation-cap"></span>
-                <p>学生特供</p>
-            </div>
-            <div class="col-md-2">
-                <span class="fa fa-bitcoin"></span>
-                <p>专属特权</p>
-            </div>
-        </div>
         <!--联系我们、下载客户端等-->
         <div class="container beforeBottom">
             <div class="col-md-offset-1 col-md-3">
@@ -202,41 +181,30 @@
             </div>
             <div class="col-md-4 callus text-center">
                 <div class="col-md-4">
+                    <h5>常用功能</h5>
                     <ul>
-                        <li>
-                            <a href="#">
-                                <p>买家帮助</p>
-                            </a>
-                        </li>
-                        <li><a href="#">新手指南</a></li>
-                        <li><a href="#">服务保障</a></li>
-                        <li><a href="#">常见问题</a></li>
+                        <li><a href="">会员介绍</a></li>
+                        <li><a href="">常见问题</a></li>
+                        <li><a href="">意见反馈</a></li>
+                        <li><a href="">联系客服</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
+                    <h5>配送方式</h5>
                     <ul>
-                        <li>
-                            <a href="#">
-                                <p>商家帮助</p>
-                            </a>
-                        </li>
-                        <li><a href="#">商家入驻</a></li>
-                        <li><a href="#">商家后台</a></li>
+                        <li><a href="">上门自取</a></li>
+                        <li><a href="">限时到达</a></li>
+                        <li><a href="">配送服务</a></li>
+                        <li><a href="">收费标准</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
+                    <h5>更多功能</h5>
                     <ul>
-                        <li>
-                            <a href="#">
-                                <p>关于我们</p>
-                            </a>
-                        </li>
-                        <li><a href="#">关于圆心</a></li>
-                        <li><a href="#">联系我们</a></li>
-                        <li>
-                            <span class="fa fa-wechat"></span>
-                            <span class="fa fa-weibo"></span>
-                        </li>
+                        <li><a href="">关于我们</a></li>
+                        <li><a href="">联系方式</a></li>
+                        <li><a href="">查看更多</a></li>
+                        <li><a href="">资质校验</a></li>
                     </ul>
                 </div>
             </div>
@@ -253,9 +221,7 @@
         </div>
         <!-- 页面底部-备案号 #footer -->
         <div class="col-md-12 text-center bottom">
-            Copyright © 2022 dnsc.cn All Rights Reserved 京ICP备08963888号-45 <a target="_blank"
-                                                                              href="http://www.dnsc.cn/">圆心科技集团有限公司</a>
-            版权所有
+            计算2173 黄嘉源 202142051087
         </div>
     </footer>
 </div>

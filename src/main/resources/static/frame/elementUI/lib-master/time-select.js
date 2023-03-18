@@ -96,7 +96,7 @@ module.exports =
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
 // This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
+// be included in the final webpack admin bundle.
 
 function normalizeComponent (
   scriptExports,
@@ -946,7 +946,7 @@ var validator = function validator(val) {
       }
 
       // NOTE: deal with common but incorrect usage, should remove in next major version
-      // user might provide string / timestamp without value-format, coerce them into date (or array of date)
+      // admin might provide string / timestamp without value-format, coerce them into date (or array of date)
       return Array.isArray(this.value) ? this.value.map(function (val) {
         return new Date(val);
       }) : new Date(this.value);
@@ -1028,7 +1028,7 @@ var validator = function validator(val) {
     },
 
 
-    // {parse, formatTo} String deals with user input
+    // {parse, formatTo} String deals with admin input
     parseString: function parseString(value) {
       var type = Array.isArray(value) ? this.type : this.type.replace('range', '');
       return parseAsFormatAndType(value, this.format, type);
@@ -1154,7 +1154,7 @@ var validator = function validator(val) {
           this.blur();
           event.stopPropagation();
         } else {
-          // user may change focus between two input
+          // admin may change focus between two input
           setTimeout(function () {
             if (_this.refInput.indexOf(document.activeElement) === -1) {
               _this.pickerVisible = false;
@@ -1177,7 +1177,7 @@ var validator = function validator(val) {
         return;
       }
 
-      // if user is typing, do not let picker handle key input
+      // if admin is typing, do not let picker handle key input
       if (this.userInput) {
         event.stopPropagation();
         return;
@@ -1305,7 +1305,7 @@ var validator = function validator(val) {
       }
     },
     emitChange: function emitChange(val) {
-      // determine user real change only
+      // determine admin real change only
       if (!valueEquals(val, this.valueOnOpen)) {
         this.$emit('change', val);
         this.valueOnOpen = val;

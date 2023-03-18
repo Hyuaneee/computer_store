@@ -36,7 +36,6 @@ new Vue({
     //钩子函数，VUE对象初始化完成后自动执行
     created() {
         this.getUser();
-        this.selectUser();
     },
     methods: {
         //获取用户信息

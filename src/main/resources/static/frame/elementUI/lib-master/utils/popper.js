@@ -212,7 +212,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         this._popper.style[getSupportedPropertyName('transform')] = '';
         this._removeEventListeners();
 
-        // remove the popper if user explicity asked for the deletion on destroy
+        // remove the popper if admin explicity asked for the deletion on destroy
         if (this._options.removeOnDestroy) {
             this._popper.remove();
         }

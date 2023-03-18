@@ -58,7 +58,7 @@ public class AddressController {
         }
 
         address.setUid(uid);
-        address.setIs_default(0);
+        address.setIsDefault(0);
         boolean flag = addressService.save(address);
         if (!flag) {
             return ReturnFront.error("添加失败");
