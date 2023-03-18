@@ -102,7 +102,6 @@ public class OrdersController {
             orders_item.setImage(cartVO.getImage());
             orders_item.setPrice(cartVO.getPrice());
             orders_item.setNum(cartVO.getNum());
-            orders_item.setAfterSale(0);
             orders_item.setItemStatus(0);
             orders_item.setIsReceive(0);
 

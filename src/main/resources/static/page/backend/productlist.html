@@ -43,7 +43,7 @@
                 <li>
                     <a href="#"></a>
                 </li>
-                <li class="active"><a href="../index.html"><span class="fa fa-home"></span></a></li>
+                <li class="active"><a href="userlist.html"><span class="fa fa-home"></span></a></li>
                 <li><a href="userlist.html">用户列表</a></li>
                 <li><a href="productlist.html">商品列表</a></li>
                 <li><a href="orderlist.html">订单列表</a></li>
@@ -55,35 +55,37 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <!--用户显示-->
-                    <h4 style="text-align: center">用户列表</h4>
+                    <!--商品列表显示-->
+                    <h4 style="text-align: center">商品列表</h4>
                     <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key,selection-change:多选，当选择项发生变化时会触发该事件 -->
-                    <el-table height="259" border :data="page.content" v-loading="loading"
+                    <el-table height="295" border :data="page.content" v-loading="loading"
                               :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
                               @selection-change="handleSelectionChange" ref="multipleTable" style="font-size: 10px">
-                        <el-table-column prop="uid" label="用户ID" min-width="11%"></el-table-column>
-                        <el-table-column prop="username" label="用户名" min-width="11%"></el-table-column>
-                        <el-table-column prop="phone" label="手机号码" min-width="16%"></el-table-column>
-                        <el-table-column prop="gender" label="性别" min-width="11%">
-                            <template slot-scope="scope">   <!-- 将整个行对象封装为scope -->
-                                {{scope.row.gender== '0'?"女":"男"}}
-                            </template>
-                        </el-table-column>
+                        <el-table-column prop="id" label="商品id" min-width="10%"></el-table-column>
+                        <el-table-column prop="itemType" label="商品类型" min-width="10%"></el-table-column>
+                        <el-table-column prop="title" label="商品全名" min-width="20%"></el-table-column>
+                        <el-table-column prop="price" label="价格" min-width="10%"></el-table-column>
+                        <el-table-column prop="num" label="库存数量" min-width="10%"></el-table-column>
                         <el-table-column prop="status" label="状态" min-width="10%">
                             <template slot-scope="scope">   <!-- 将整个行对象封装为scope -->
-                                {{scope.row.status== '0'?"启用":"禁用"}}
+                                {{scope.row.status== '0'?"上架":"下架"}}
                             </template>
                         </el-table-column>
                         <el-table-column label="操作" min-width="26%">
                             <template slot-scope="scope">   <!-- 将整个行对象封装为scope -->
+                                <el-button type="primary"
+                                           size="mini"
+                                           @click="handleUpdate(scope.row)"
+                                >编辑
+                                </el-button>
                                 <el-button
                                         :type="scope.row.status == '0' ? 'danger' : 'success'"
                                         size="mini"
                                         @click="setStatus(scope.row)"
-                                >{{scope.row.status == '0'?"禁用":"启用"}}
+                                >{{scope.row.status == '1'?"上架":"下架"}}
                                 </el-button>
                                 <el-button
-                                        :type='danger'
+                                        type='danger'
                                         size="mini"
                                         @click="setDeleted(scope.row)"
                                 >删除
@@ -165,5 +167,5 @@
 </div>
 </body>
 <script src="../../frame/axios/axios.min.js"></script>
-<script src="../../js/backend/userlist.js"></script>
+<script src="../../js/backend/productlist.js"></script>
 </html>

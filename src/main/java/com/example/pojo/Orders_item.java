@@ -14,7 +14,6 @@ public class Orders_item extends BaseEntity {
     private String image;   //商品图片
     private Long price;    //商品价格
     private Long num;    //购买数量
-    private Integer afterSale;  //申请售后：0未申请，1申请
     private Integer itemStatus;  //货品状态：0未发货，1已发货，
     private Integer isReceive;  //用户接受状态，0未接受，1已接收
 }
