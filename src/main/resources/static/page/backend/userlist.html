@@ -57,10 +57,10 @@
                 <div class="panel-body">
                     <!--用户显示-->
                     <h4 style="text-align: center">用户列表</h4>
-                    <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key,selection-change:多选，当选择项发生变化时会触发该事件 -->
+                    <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key -->
                     <el-table height="259" border :data="page.content" v-loading="loading"
                               :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
-                              @selection-change="handleSelectionChange" ref="multipleTable" style="font-size: 10px">
+                              ref="multipleTable" style="font-size: 10px">
                         <el-table-column prop="uid" label="用户ID" min-width="11%"></el-table-column>
                         <el-table-column prop="username" label="用户名" min-width="11%"></el-table-column>
                         <el-table-column prop="phone" label="手机号码" min-width="16%"></el-table-column>

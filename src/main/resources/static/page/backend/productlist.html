@@ -57,10 +57,10 @@
                 <div class="panel-body">
                     <!--商品列表显示-->
                     <h4 style="text-align: center">商品列表</h4>
-                    <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key,selection-change:多选，当选择项发生变化时会触发该事件 -->
-                    <el-table height="295" border :data="page.content" v-loading="loading"
+                    <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key -->
+                    <el-table height="300" border :data="page.content" v-loading="loading"
                               :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
-                              @selection-change="handleSelectionChange" ref="multipleTable" style="font-size: 10px">
+                              ref="multipleTable" style="font-size: 10px">
                         <el-table-column prop="id" label="商品id" min-width="10%"></el-table-column>
                         <el-table-column prop="itemType" label="商品类型" min-width="10%"></el-table-column>
                         <el-table-column prop="title" label="商品全名" min-width="20%"></el-table-column>
@@ -97,6 +97,9 @@
                     <div style="margin-top: 10px">
                         <tr>
                             <th colspan="6">
+                                <el-button @click="handleAdd()" icon="el-icon-plus" type="primary" style="float: right">
+                                    新增
+                                </el-button>
                                 <el-button type="info" @click="Next()" plain :disabled="page.lastPage"
                                            style="float: right;margin-right: 20px">下一页
                                 </el-button>
@@ -105,6 +108,88 @@
                                 </el-button>
                             </th>
                         </tr>
+                    </div>
+
+                    <!-- 添加数据弹框 -->
+                    <div class="add-form">
+                        <el-dialog title="添加商品" :visible.sync="dialogFormVisible">
+                            <el-form ref="elAdd" :model="elAdd" :rules="rules" label-position="right"
+                                     label-width="100px" :clearable="true">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <el-form-item label="商品类型" prop="itemType">
+                                            <el-input v-model="elAdd.itemType" placeholder="请输入商品类型"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="商品全称" prop="title">
+                                            <el-input v-model="elAdd.title" placeholder="请输入商品全称">
+                                            </el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="商品价格" prop="price">
+                                            <el-input v-model="elAdd.price" placeholder="请输入商品价格"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="库存数量" prop="num">
+                                            <el-input v-model="elAdd.num" placeholder="请输入库存数量"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="商品卖点" prop="sellPoint">
+                                            <el-input v-model="elAdd.sellPoint" placeholder="请输入商品卖点"/>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer">
+                                <el-button @click="cancel()">取消</el-button>
+                                <el-button @click="reset()">重置</el-button>
+                                <el-button type="primary" @click="handleSave()">确定</el-button>
+                            </div>
+                        </el-dialog>
+                    </div>
+                    <!-- 修改i数据弹框 -->
+                    <div class="updata-form">
+                        <el-dialog title="修改数据" :visible.sync="dialogUpdateVisible">
+                            <el-form ref="elUpdate" :model="elUpdate" :rules="rules" label-position="right"
+                                     label-width="100px" :clearable="true">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <el-form-item label="商品类型" prop="itemType">
+                                            <el-input v-model="elUpdate.itemType" placeholder="请输入商品类型"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="商品全称" prop="title">
+                                            <el-input v-model="elUpdate.title" placeholder="请输入商品全称">
+                                            </el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="商品价格" prop="price">
+                                            <el-input v-model="elUpdate.price" placeholder="请输入商品价格"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="库存数量" prop="num">
+                                            <el-input v-model="elUpdate.num" placeholder="请输入库存数量"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="商品卖点" prop="sellPoint">
+                                            <el-input v-model="elUpdate.sellPoint" placeholder="请输入商品卖点"/>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer">
+                                <el-button @click="cancel()">取消</el-button>
+                                <el-button type="primary" @click="handleEdit()">确定</el-button>
+                            </div>
+                        </el-dialog>
                     </div>
                 </div>
             </div>

@@ -6,12 +6,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.ReturnFront;
 import com.example.pojo.Product;
-import com.example.pojo.User;
 import com.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -36,7 +37,7 @@ public class ProductController {
         return ReturnFront.success(page);
     }
 
-    //热销排行
+    //后台商品查询
     @PostMapping("/getList/{currentPage}/{pageSize}")
     public ReturnFront getList(@PathVariable Integer currentPage, @PathVariable Integer pageSize) {
         IPage<Product> IPage = new Page<>(currentPage, pageSize);
@@ -121,4 +122,45 @@ public class ProductController {
         return ReturnFront.success("设置成功");
     }
 
+    //添加数据
+    @PostMapping("/addRow")
+    public ReturnFront addRow(@RequestBody Product product, HttpSession session) {
+        product.setStatus(0);
+        product.setCreatedUser("admin");
+        product.setModifiedUser("admin");
+        product.setCreatedTime(new Date());
+        product.setModifiedTime(new Date());
+        boolean flag = productService.save(product);
+        if (!flag) {
+            return ReturnFront.error("添加失败");
+        }
+        return ReturnFront.success("添加成功");
+    }
+
+    //查询数据
+    @GetMapping("/selectId/{id}")
+    public ReturnFront selectId(@PathVariable Long id) {
+        QueryWrapper<Product> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id);
+        Product product = productService.getOne(wrapper);
+        if (product == null) {
+            return ReturnFront.error("地址信息不存在，请刷新");
+        }
+        return ReturnFront.success(product);
+    }
+
+    //修改数据
+    @PutMapping("/updateRow")
+    public ReturnFront updateRow(@RequestBody Product product) {
+        QueryWrapper<Product> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", product.getId());
+        //不添加数据，数据库中自增
+        product.setId(null);
+        product.setModifiedTime(new Date());
+        boolean flag = productService.update(product, wrapper);
+        if (!flag) {
+            return ReturnFront.error("修改失败");
+        }
+        return ReturnFront.success("修改成功");
+    }
 }
