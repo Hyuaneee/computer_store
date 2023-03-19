@@ -182,8 +182,8 @@ public class OrdersController {
 
 
     //用户确认是否收货
-    @GetMapping("/updateIs_receive/{id}")
-    public ReturnFront updateIs_receive(@PathVariable Long id) {
+    @GetMapping("/updateIsReceive/{id}")
+    public ReturnFront updateIsReceive(@PathVariable Long id) {
         Orders_item orders_item = orders_itemService.getById(id);
         //判断订单商品是否存在
         if (orders_item == null) {
@@ -263,4 +263,65 @@ public class OrdersController {
         return ReturnFront.success("操作成功");
     }
 
+
+    //获取所有订单
+    @GetMapping("/getList")
+    public ReturnFront getList(Integer status) {
+        QueryWrapper<Orders> wrapper = new QueryWrapper<>();
+        if (status != null) {
+            wrapper.eq("status", status);
+        }
+        List<Orders> ordersList = ordersService.list(wrapper);
+        List<ReturnFront> result = new ArrayList<>();
+        for (Orders orders : ordersList) {
+            QueryWrapper<Orders_item> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("oid", orders.getOid());
+            List<Orders_item> orders_itemList = orders_itemService.list(queryWrapper);
+            if (orders_itemList == null) {
+                return ReturnFront.error("订单出现异常");
+            }
+            result.add(new ReturnFront(orders, orders_itemList));
+
+        }
+        return ReturnFront.success(result);
+    }
+
+    //商品发货
+    @GetMapping("/updateItemStatus/{id}")
+    public ReturnFront updateIs_receive(@PathVariable Long id) {
+        Orders_item orders_item = orders_itemService.getById(id);
+        //判断订单商品是否存在
+        if (orders_item == null) {
+            return ReturnFront.error("订单商品有误,请刷新");
+        }
+
+        //判断是否已收货
+        if (orders_item.getItemStatus() == 1) {
+            return ReturnFront.error("已发货");
+        }
+
+        //查询商品所属订单
+        QueryWrapper<Orders> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("oid", orders_item.getOid());
+        Orders one = ordersService.getOne(queryWrapper1);
+
+        //判断订单状态
+        if (one.getStatus() == 0) {  //0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
+            return ReturnFront.error("还未支付,请支付");
+        }
+        if (one.getStatus() == 2 || one.getStatus() == 3) {  //0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
+            return ReturnFront.error("订单已取消或已关闭!");
+        }
+
+        //发货操作
+        UpdateWrapper<Orders_item> wrapper = new UpdateWrapper<>();
+        wrapper.eq("id", id);
+        wrapper.set("item_status", 1); //修改为收货状态
+        boolean flag = orders_itemService.update(wrapper);
+        if (!flag) {
+            return ReturnFront.error("操作失败，请重试");
+        }
+
+        return ReturnFront.success("操作成功");
+    }
 }

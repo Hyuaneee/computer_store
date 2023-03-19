@@ -69,11 +69,12 @@ public class ProductController {
         System.out.println("获取到的参数" + context);
         IPage<Product> iPage = new Page<>(currentPage, pageSize);
         QueryWrapper<Product> wrapper = new QueryWrapper<>();
-        //if (context == null || "".equals(context)) {
-        wrapper.like("title", context);
-        wrapper.or();
-        wrapper.like("item_type", context);
-        //}
+        if (context == null || "".equals(context)) {
+            wrapper.eq("status", 0);
+            wrapper.like("title", context);
+            wrapper.or();
+            wrapper.like("item_type", context);
+        }
         wrapper.orderByDesc("modified_time", "title");
         IPage<Product> page = productService.page(iPage, wrapper);
         if (page == null) {
@@ -144,7 +145,7 @@ public class ProductController {
         wrapper.eq("id", id);
         Product product = productService.getOne(wrapper);
         if (product == null) {
-            return ReturnFront.error("地址信息不存在，请刷新");
+            return ReturnFront.error("商品信息不存在，请刷新");
         }
         return ReturnFront.success(product);
     }

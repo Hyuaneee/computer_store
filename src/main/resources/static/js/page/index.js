@@ -15,13 +15,7 @@ new Vue({
         page: {
             content: [],
             currentPage: 1,   //当前页
-            pageSize: 6,  //当前页条数
-        },
-        //推荐栏目
-        pageRecommend: {
-            content: [],
-            currentPage: 2,   //当前页
-            pageSize: 6,  //当前页条数
+            pageSize: 10,  //当前页条数
         }
     },
     //钩子函数，VUE对象初始化完成后自动执行
@@ -48,7 +42,7 @@ new Vue({
         searchContent() {
             location.href = "search.html?context=" + this.searchData;
         },
-        //获取热销排行前五,推荐栏目前五
+        //获取热销排行
         findPage() {
             axios({
                 method: "POST",
@@ -56,13 +50,6 @@ new Vue({
                 data: {},
             }).then((res) => {
                 this.page.content = res.data.data.records;
-            });
-            axios({
-                method: "POST",
-                url: "/product/getBestList/" + this.pageRecommend.currentPage + "/" + this.pageRecommend.pageSize,
-                data: {},
-            }).then((res) => {
-                this.pageRecommend.content = res.data.data.records;
             });
         },
     }

@@ -149,25 +149,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <p class="panel-title">新到好货</p>
-                    </div>
-                    <div class="panel-body panel-item">
-                        <div class="col-md-6" v-for="product of pageRecommend.content">
-                            <div class="col-md-6 text-row-2"><a :href="'/page/product.html?id='+product.id">{{product.title}}</a>
-                            </div>
-                            <div class="col-md-2">¥{{product.price}}</div>
-                            <div class="col-md-3"><img :src="'http://localhost'+product.image+'collect.png'"
-                                                       class="img-responsive"/></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
     </div>
     <!--页脚开始-->

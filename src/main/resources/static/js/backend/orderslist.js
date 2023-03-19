@@ -3,14 +3,6 @@ Vue.config.productionTip = false;  //以阻止 vue 在启动时生成生产提�
 new Vue({
     el: '#app',
     data: {
-        userLoading: false,  //用户是否显示
-        user: {
-            uid: null,
-            username: '',
-            avatar: ''
-        },
-        //搜索
-        searchData: null,
         //订单信息
         orders: {
             oid: null,
@@ -18,39 +10,17 @@ new Vue({
         },
         //订单列表
         ordersMap: {},
-        //售后按钮是否加载
-        afterSale: false,
-    }
-    ,
+    },
     //钩子函数，VUE对象初始化完成后自动执行
     created() {
-        this.getUser();
         this.getList();
     },
     methods: {
-        //获取用户信息
-        getUser() {
-            axios({
-                methods: "get",
-                url: "/user/getUser",
-            }).then((res) => {
-                if (res.data.code === 1) {
-                    this.userLoading = true;
-                    this.user = res.data.data;
-                } else {
-                    this.userLoading = false;
-                }
-            });
-        },
-        //搜索
-        searchContent() {
-            location.href = "search.html?context=" + this.searchData;
-        },
         //根据oid获取订单列表
         getList(status) {
             axios({
                 methods: "get",
-                url: "/order/getListoid",
+                url: "/order/getList",
                 params: {
                     status: status
                 }
@@ -87,20 +57,20 @@ new Vue({
             return (`${year}-${month}-${day} ${hh}:${mm}:${ss}`);
         },
 
-        //用户确认接受包裹
-        updateIsReceive(id) {
-            this.$confirm("您确认已接受包裹？", "提示", {
+        //商家发货
+        updateItemStatus(id) {
+            this.$confirm("您确认要发货吗？", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(() => {   //选择确定的情况
                 axios({
                     methods: "get",
-                    url: "/order/updateIsReceive/" + id,
+                    url: "/order/updateItemStatus/" + id,
                 }).then((res) => {
                     if (res.data.code === 1) {
                         this.$message.success({
-                            message: res.data.message,
+                            message: "商品已发货",
                             type: 'success'
                         });
                     } else {
@@ -140,7 +110,7 @@ new Vue({
         },
         //用户取消订单
         changeStatus(oid) {
-            this.$confirm("您确认取消订单？", "提示", {
+            this.$confirm("您确认取消用户订单？", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
