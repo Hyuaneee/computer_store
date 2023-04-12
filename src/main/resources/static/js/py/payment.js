@@ -12,7 +12,7 @@ function getUrlParam(name) {
     }
 }
 
-Vue.config.productionTip=false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
+Vue.config.productionTip = false;  //以阻止 vue 在启动时生成生产提示。 <!-- 全局配置 -->
 
 new Vue({
     el: '#app',
@@ -24,93 +24,96 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '',
         //订单信息
-        order:{
+        order: {
             oid: null,
             totalPrice: 0,
         },
+        //支付宝沙箱支付
+        aliPay: {
+            traceNo: '',
+            totalAmount: 0.0
+        },
     },
     //钩子函数，VUE对象初始化完成后自动执行
-    created(){
+    created() {
         this.getUser();
         this.getOrderOid();
     },
-    methods:{
+    methods: {
         //获取用户信息
-        getUser(){
+        getUser() {
             axios({
                 methods: "get",
                 url: "/user/getUser",
-            }).then((res)=>{
-                if(res.data.code === 1){
-                    this.userLoading=true;
-                    this.user=res.data.data;
-                }else{
-                    this.userLoading=false;
+            }).then((res) => {
+                if (res.data.code === 1) {
+                    this.userLoading = true;
+                    this.user = res.data.data;
+                } else {
+                    this.userLoading = false;
                 }
             });
         },
         //搜索
-        searchContent(){
-            location.href="search.html?context="+this.searchData;
+        searchContent() {
+            location.href = "search.html?context=" + this.searchData;
         },
         //根据oid获取订单
-        getOrderOid(){
-            var oid=getUrlParam("oid");
+        getOrderOid() {
+            var oid = getUrlParam("oid");
             axios({
                 methods: "get",
-                url: "/order/getOrderOid/"+oid,
-            }).then((res)=>{
-                if(res.data.code === 1){
-                    this.order=res.data.data;
-                }else{
+                url: "/order/getOrderOid/" + oid,
+            }).then((res) => {
+                if (res.data.code === 1) {
+                    this.order = res.data.data;
+                } else {
                     this.$message.error(res.data.message);
                 }
             });
         },
         //支付金额
-        payment(){
-            var oid=getUrlParam("oid");
-
-            this.$confirm("是否支付金额","提示",{
-                confirmButtonText:"确定",
-                cancelButtonText:"取消",
+        payment(totalPrice) {
+            var oid = getUrlParam("oid");
+            this.$confirm("是否支付金额", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
                 type: "warning"
-            }).then(()=> {   //选择确定的情况
-                var payMethod=0;    //支付方式：1支付宝，2微信，3网银，4货到付款
-                var radio = $('input[name="optionsRadios"]');
-                for(var i=0; i<radio.length; i ++){
-                    // 判断该单选框是否处于选中状态
-                    if(radio[i].checked){
-                        payMethod=radio[i].value;
-                    }
-                }
-                console.log(payMethod);
+            }).then(() => {
+                this.aliPay.traceNo = oid;
+                this.aliPay.totalAmount = totalPrice;
+                //location.href = this.payURL();
+
                 axios({
                     methods: "get",
-                    url: "/order/updateStatus/"+oid,
-                }).then((res)=>{
-                    if(res.data.code === 1){
+                    url: "/order/updateStatus/" + oid,
+                }).then((res) => {
+                    if (res.data.code === 1) {
                         this.$message.success({
-                            message: res.data.message,
+                            message: "订单已支付",
                             type: 'success'
                         });
                         setTimeout(function () {
-                            location.href="paySuccess.html?oid="+oid;
-                        },1500);
-                    }else{
+                            location.href = "paySuccess.html?oid=" + oid;
+                        }, 1500);
+                    } else {
                         this.$message.error(res.data.message);
                     }
                 });
 
-            }).catch(()=>{   //选择取消的情况
+            }).catch(() => {   //选择取消的情况
                 this.$message({
-                    type:"into",
-                    message:"已取消"
+                    type: "into",
+                    message: "已取消"
                 });
             });
         },
+        //支付跳转路径
+        payURL: function () {
+            return 'http://localhost/alipay/pay?subject=收购阿里&traceNo=' + this.aliPay.traceNo + '&totalAmount=' + this.aliPay.totalAmount
+        }
 
     }
 });

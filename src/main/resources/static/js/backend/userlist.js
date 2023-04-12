@@ -5,7 +5,8 @@ const v = new Vue({
         loading: false,   //页面加载,false:关闭,true:加载中
         //用户信息
         formData: {},
-
+        searchData: '',
+        statusData: '',
         //分页数据
         page: {
             content: [],
@@ -23,12 +24,16 @@ const v = new Vue({
     },
     methods: {
         //获取当前页数据
+        
         findPage() {
             this.loading = true;
             axios({
                 method: "POST",
                 url: "/user/PageList/" + this.page.currentPage + "/" + this.page.pageSize,
-                data: {},
+                params: {
+                    context: this.searchData,
+                    status: this.statusData
+                },
             }).then((res) => {
                 this.page.content = res.data.data.records;
                 this.page.currentPage = res.data.data.current;

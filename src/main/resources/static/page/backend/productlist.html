@@ -43,35 +43,62 @@
                 <li>
                     <a href="#"></a>
                 </li>
-                <li class="active"><a href="userlist.html"><span class="fa fa-home"></span></a></li>
+                <li class="active"><a href="#"><span class="fa fa-home"></span></a></li>
                 <li><a href="userlist.html">用户列表</a></li>
                 <li><a href="productlist.html">商品列表</a></li>
                 <li><a href="orderslist.html">订单列表</a></li>
             </ul>
         </div>
+
     </div>
 
     <div class="container">
-        <div class="col-md-12">
+        <div class="col-md-16">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <!--商品列表显示-->
                     <h4 style="text-align: center">商品列表</h4>
+                    <div class="col-md-3" style="float: left;margin-bottom: 10px">
+                        <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select">
+                            <el-button slot="append" icon="el-icon-search" @Click="findPage()"></el-button>
+                        </el-input>
+                    </div>
+                    <div class="col-md-3" style="float: left;margin-bottom: 10px">
+                        <el-select placeholder="请选择商品分类"
+                                   v-model="typeData"
+                                   @change="findPage()">
+                            <el-option
+                                    label="全部"
+                                    value="">
+                            </el-option>
+                            <el-option v-for="category of type.categories" :key="category.id"
+                                       :label="category.name" :value="category.id"></el-option>
+                        </el-select>
+                    </div>
                     <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key -->
-                    <el-table height="300" border :data="page.content" v-loading="loading"
+                    <el-table height="500" border :data="page.content" v-loading="loading"
                               :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
                               ref="multipleTable" style="font-size: 10px">
-                        <el-table-column prop="id" label="商品id" min-width="10%"></el-table-column>
-                        <el-table-column prop="itemType" label="商品类型" min-width="10%"></el-table-column>
-                        <el-table-column prop="title" label="商品全名" min-width="20%"></el-table-column>
-                        <el-table-column prop="price" label="价格" min-width="10%"></el-table-column>
-                        <el-table-column prop="num" label="库存数量" min-width="10%"></el-table-column>
-                        <el-table-column prop="status" label="状态" min-width="10%">
+                        <el-table-column prop="id" label="商品id" min-width="8%"></el-table-column>
+                        <el-table-column prop="categoryId" label="商品分类" min-width="8%">
+                        </el-table-column>
+                        <el-table-column prop="itemType" label="商品名称" min-width="10%"></el-table-column>
+                        <el-table-column prop="title" label="商品全名" min-width="15%"></el-table-column>
+                        <el-table-column prop="image" label="商品图片" min-width="15%">
+                            <template slot-scope="scope">
+                                <el-image
+                                        :src="'http://localhost'+scope.row.image+'collect.png'">
+                                </el-image>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="price" label="价格" min-width="8%"></el-table-column>
+                        <el-table-column prop="num" label="库存数量" min-width="8%"></el-table-column>
+                        <el-table-column prop="status" label="状态" min-width="8%">
                             <template slot-scope="scope">   <!-- 将整个行对象封装为scope -->
                                 {{scope.row.status== '0'?"上架":"下架"}}
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" min-width="26%">
+                        <el-table-column label="操作" min-width="20%">
                             <template slot-scope="scope">   <!-- 将整个行对象封装为scope -->
                                 <el-button type="primary"
                                            size="mini"
@@ -116,9 +143,18 @@
                             <el-form ref="elAdd" :model="elAdd" :rules="rules" label-position="right"
                                      label-width="100px" :clearable="true">
                                 <el-row>
-                                    <el-col :span="24">
-                                        <el-form-item label="商品类型" prop="itemType">
-                                            <el-input v-model="elAdd.itemType" placeholder="请输入商品类型"/>
+                                    <el-col :span="12">
+                                        <el-form-item label="商品名称" prop="itemType">
+                                            <el-input v-model="elAdd.itemType" placeholder="请输入商品名称"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="商品分类" prop="categoryId">
+                                            <el-select v-model="elAdd.categoryId" placeholder="请选择商品分类"
+                                                       @input="getType()">
+                                                <el-option v-for="category of type.categories" :key="category.id"
+                                                           :label="category.name" :value="category.id"></el-option>
+                                            </el-select>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="24">
@@ -157,9 +193,18 @@
                             <el-form ref="elUpdate" :model="elUpdate" :rules="rules" label-position="right"
                                      label-width="100px" :clearable="true">
                                 <el-row>
-                                    <el-col :span="24">
-                                        <el-form-item label="商品类型" prop="itemType">
-                                            <el-input v-model="elUpdate.itemType" placeholder="请输入商品类型"/>
+                                    <el-col :span="12">
+                                        <el-form-item label="商品名称" prop="itemType">
+                                            <el-input v-model="elUpdate.itemType" placeholder="请输入商品名称"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="商品分类" prop="categoryId">
+                                            <el-select v-model="elUpdate.categoryId" placeholder="请选择商品分类"
+                                                       @input="getType()">
+                                                <el-option v-for="category of type.categories" :key="category.id"
+                                                           :label="category.name" :value="category.id+''"></el-option>
+                                            </el-select>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="24">
@@ -205,33 +250,7 @@
                 <div><img src="../../images/index/footerFont.png" alt=""/></div>
             </div>
             <div class="col-md-4 callus text-center">
-                <div class="col-md-4">
-                    <h5>常用功能</h5>
-                    <ul>
-                        <li><a href="">会员介绍</a></li>
-                        <li><a href="">常见问题</a></li>
-                        <li><a href="">意见反馈</a></li>
-                        <li><a href="">联系客服</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>配送方式</h5>
-                    <ul>
-                        <li><a href="">上门自取</a></li>
-                        <li><a href="">限时到达</a></li>
-                        <li><a href="">配送服务</a></li>
-                        <li><a href="">收费标准</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>更多功能</h5>
-                    <ul>
-                        <li><a href="">关于我们</a></li>
-                        <li><a href="">联系方式</a></li>
-                        <li><a href="">查看更多</a></li>
-                        <li><a href="">资质校验</a></li>
-                    </ul>
-                </div>
+                计算2173 黄嘉源 202142051087
             </div>
             <div class="col-md-4">
                 <div class="col-md-5">
@@ -243,10 +262,6 @@
                     <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
                 </div>
             </div>
-        </div>
-        <!-- 页面底部-备案号 #footer -->
-        <div class="col-md-12 text-center bottom">
-            计算2173 黄嘉源 202142051087
         </div>
     </footer>
 </div>

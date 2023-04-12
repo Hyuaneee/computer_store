@@ -6,7 +6,7 @@ import lombok.Data;
  * 订单中存放商品类
  */
 @Data
-public class Orders_item extends BaseEntity {
+public class Orders_item {
     private Long id;   //订单中的商品记录的id
     private Long oid;   //所归属的订单的id
     private Long pid;   //商品的id(购物车中的商品id)

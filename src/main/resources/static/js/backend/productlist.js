@@ -5,12 +5,13 @@ const v = new Vue({
         loading: false,   //页面加载,false:关闭,true:加载中
         dialogFormVisible: false,   //是否弹出的添加窗口
         dialogUpdateVisible: false,   //是否弹出的修改窗口
-
+        searchData: '',
+        typeData: '',
         //分页数据
         page: {
             content: [],
             currentPage: 1,   //当前页
-            pageSize: 4,  //当前页条数
+            pageSize: 3,  //当前页条数
             total: 1,  //数据总条数
             pages: 1,  //总页数
             firstPage: false,  //是否禁用前一页按钮
@@ -28,8 +29,15 @@ const v = new Vue({
             num: [
                 {required: true, message: '数量不能为空', trigger: 'blur'},
                 {pattern: /^[1-9]\d*$/, message: '请输入正确的数量区间（不包含小数）', trigger: 'blur'},
-            ]
+            ],
+            categoryId: [{required: true, message: '不能为空', trigger: 'blur'}]
         },
+
+        //分类集合
+        type: {
+            categories: []
+        },
+
         //修改窗口信息
         elUpdate: {},
         //添加窗口信息
@@ -38,6 +46,7 @@ const v = new Vue({
     //钩子函数，VUE对象初始化完成后自动执行
     created() {
         this.findPage();
+        this.getType();
     },
     methods: {
         //获取当前页数据
@@ -46,7 +55,10 @@ const v = new Vue({
             axios({
                 method: "POST",
                 url: "/product/getList/" + this.page.currentPage + "/" + this.page.pageSize,
-                data: {},
+                params: {
+                    context: this.searchData,
+                    typeData: this.typeData
+                },
             }).then((res) => {
                 this.page.content = res.data.data.records;
                 this.page.currentPage = res.data.data.current;
@@ -60,6 +72,21 @@ const v = new Vue({
                 this.loading = false;  //关闭加载
             });
         },
+
+        //获取查询分类名
+        getType() {
+            axios({
+                method: "get",
+                url: "/productCategory/getAllCode",
+            }).then((res) => {
+                if (!res.data.code === 1) {
+                    this.$message("未查询到分类");
+                } else {
+                    this.type.categories = res.data.data;
+                }
+            });
+        },
+
 
         //上架下架
         setStatus(row) {
@@ -227,16 +254,19 @@ const v = new Vue({
         reset() {
             this.$refs.elAdd.resetFields();
         },
+
         //上一页
         Previous() {
             this.page.currentPage = this.page.currentPage - 1;
             this.findPage();
         },
+
         //下一页
         Next() {
             this.page.currentPage = this.page.currentPage + 1;
             this.findPage();
         },
+
         //添加和修改的取消
         cancel() {
             this.dialogFormVisible = false;

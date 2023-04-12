@@ -6,10 +6,11 @@ import lombok.Data;
  * 商品类
  */
 @Data
-public class Product extends BaseEntity {
+public class Product  {
     private Long id;  //商品id
-    private String itemType;  //商品系列
-    private String title;  //商品标题
+    private String categoryId; //商品分类
+    private String itemType;  //商品简称
+    private String title;  //商品全程
     private String sellPoint;  //商品卖点
     private Long price;  //商品单价
     private Long num;  //库存数量

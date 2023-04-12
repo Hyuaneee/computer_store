@@ -6,7 +6,7 @@ import lombok.Data;
  * 收藏类
  */
 @Data
-public class Collect extends BaseEntity {
+public class Collect {
     private Long id;   //用户收藏数据id
     private Long uid;  //用户id
     private Long pid;  //商品id

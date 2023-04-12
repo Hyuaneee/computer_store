@@ -33,7 +33,7 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '1123',
         //分页信息
         pageData: {
             content: [],
@@ -68,9 +68,6 @@ new Vue({
         },
         //搜索
         searchContent() {
-            if (this.searchData == null) {
-                this.searchData = "a"
-            }
             location.href = "search.html?context=" + this.searchData;
         },
         //获取当前页数据

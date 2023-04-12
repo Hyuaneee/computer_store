@@ -11,7 +11,7 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '',
         //购物车列表数据
         cartList: {
             content: [],
@@ -137,6 +137,7 @@ new Vue({
                 }
             })
             this.numLoading = false;
+            this.findPage();
         },
         //全选
         checkall(event) {

@@ -10,7 +10,7 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '',
         //热销排行
         page: {
             content: [],

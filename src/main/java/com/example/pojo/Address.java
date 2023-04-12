@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-public class Address extends BaseEntity{
+public class Address{
     @TableId(type = IdType.AUTO)
     private Long aid;  //收货地址(本类)id
     private Long uid;  //归属的用户id

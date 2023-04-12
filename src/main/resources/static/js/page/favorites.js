@@ -20,7 +20,7 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '',
         //分页信息
         pageData: {
             content: [],

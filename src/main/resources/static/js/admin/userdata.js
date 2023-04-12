@@ -8,7 +8,7 @@ new Vue({
         //倒计时
         showTime: false,   //修改按钮上的倒计时是否显示
         downTime: 0,  //倒计时
-
+        searchData: '',
         //获取用户信息
         user: {
             uid: 0,
@@ -55,7 +55,7 @@ new Vue({
         },
         //搜索
         searchContent() {
-            location.href = "search.html?context=" + this.searchData;
+            location.href = "../../page/search.html?context=" + this.searchData;
         },
         //实现倒计时
         Time() {

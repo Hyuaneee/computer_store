@@ -45,7 +45,7 @@
                 <li>
                     <a href="#"></a>
                 </li>
-                <li class="active"><a href="userlist.html"><span class="fa fa-home"></span></a></li>
+                <li class="active"><a href="#"><span class="fa fa-home"></span></a></li>
                 <li><a href="userlist.html">用户列表</a></li>
                 <li><a href="productlist.html">商品列表</a></li>
                 <li><a href="orderslist.html">订单列表</a></li>
@@ -60,12 +60,12 @@
                     <div class="panel-heading">
                         <!--主选项：我的订单-->
                         <p class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">我的订单</a>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">全部订单</a>
                         </p>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <div class="panel-body">
-                            <div><a @Click="getList(null)" href="#"><b>全部订单</b></a></div>
+                            <div><a @Click="getList()" href="#"><b>全部订单</b></a></div>
                             <div><a @Click="getList(0)" href="#">待支付</a></div>
                             <div><a @Click="getList(1)" href="#">待收货</a></div>
                             <div><a @Click="getList(4)" href="#">待评价</a></div>
@@ -78,11 +78,16 @@
         <!--左侧导航结束-->
 
         <!---->
+        <div class="col-md-3" style="float: left;margin: 5px">
+            <el-input placeholder="请输入订单号进行查询" v-model="searchData" class="input-with-select" clearable>
+                <el-button slot="append" icon="el-icon-search" @Click="getList()"></el-button>
+            </el-input>
+        </div>
         <div class="col-md-10">
             <div class="panel panel-default" v-for="orders of ordersMap" :key="orders.oid">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        订单号：{{orders.key.oid}}，下单时间：{{(orders.key.orderTime)}} ，
+                        订单号：{{orders.key.oid}}，下单时间：{{formatting(orders.key.orderTime)}},
                         收货人：{{orders.key.recvName}}
                         ，支付时间：{{orders.key.payTime==null?'未支付':formatting(orders.key.payTime)}}
                         ，订单状态：{{showStatus(orders.key.status)}}
@@ -110,14 +115,15 @@
                             <td>¥<span>{{item.price*item.num}}</span></td>
                             <td>
                                 <div>{{item.itemStatus==0?'未发货':'已发货'}}</div>
-                                <!--<div><a :href="'ordersInfo.html?id='+item.id" :disabled="orders.key.status==2">订单详情</a>
-                                </div>-->
+
                             </td>
                             <td>
-                                <a href="#" class="btn btn-default btn-xs" v-show="item.itemStatus==false"
-                                   @click="updateItemStatus(item.id)" :disabled="orders.key.status==2">点击发货</a>
-                                <a href="#" class="btn btn-default btn-xs" v-show="item.itemStatus==true"
-                                   :disabled="true">已发货</a>
+                                <button class="btn btn-default btn-xs" v-show="item.itemStatus==false"
+                                        @click="updateItemStatus(item.id)" :disabled="item.itemStatus==1">点击发货
+                                </button>
+                                <button class="btn btn-default btn-xs" v-show="item.itemStatus==true"
+                                        :disabled="true">已发货
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -133,10 +139,7 @@
                 </div>
             </div>
         </div>
-        <!---->
     </div>
-
-    <!---->
     <!--页脚开始-->
     <div class="clearfix"></div>
     <footer class="footer">
@@ -147,33 +150,7 @@
                 <div><img src="../../images/index/footerFont.png" alt=""/></div>
             </div>
             <div class="col-md-4 callus text-center">
-                <div class="col-md-4">
-                    <h5>常用功能</h5>
-                    <ul>
-                        <li><a href="">会员介绍</a></li>
-                        <li><a href="">常见问题</a></li>
-                        <li><a href="">意见反馈</a></li>
-                        <li><a href="">联系客服</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>配送方式</h5>
-                    <ul>
-                        <li><a href="">上门自取</a></li>
-                        <li><a href="">限时到达</a></li>
-                        <li><a href="">配送服务</a></li>
-                        <li><a href="">收费标准</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>更多功能</h5>
-                    <ul>
-                        <li><a href="">关于我们</a></li>
-                        <li><a href="">联系方式</a></li>
-                        <li><a href="">查看更多</a></li>
-                        <li><a href="">资质校验</a></li>
-                    </ul>
-                </div>
+                计算2173 黄嘉源 202142051087
             </div>
             <div class="col-md-4">
                 <div class="col-md-5">
@@ -185,10 +162,6 @@
                     <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
                 </div>
             </div>
-        </div>
-        <!-- 页面底部-备案号 #footer -->
-        <div class="col-md-12 text-center bottom">
-            计算2173 黄嘉源 202142051087
         </div>
     </footer>
 </div>

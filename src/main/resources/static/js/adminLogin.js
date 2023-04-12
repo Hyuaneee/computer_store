@@ -56,7 +56,7 @@ new Vue({
                                 type: 'success'
                             });
                             setTimeout(function () {
-                                location.href = "../page/backend/userlist.html";
+                                location.href = "../page/backend/productlist.html";
                             }, 500)
 
                         }

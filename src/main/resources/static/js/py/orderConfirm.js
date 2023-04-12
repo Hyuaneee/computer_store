@@ -24,7 +24,7 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '',
         //购物车列表数据
         cartList: {
             content: [],
@@ -73,7 +73,6 @@ new Vue({
                 var num = parseInt(sb);
                 this.multipleSelection.push(num);
             }
-
             axios({
                 method: "POST",
                 url: "/cart/getListCids",
@@ -133,11 +132,12 @@ new Vue({
                         if (res.data.code === 1) {
                             this.$message({
                                 type: "success",
-                                message: res.data.message
+                                message: "订单已生成"
                             });
+                            this.deleteList();
                             setTimeout(function () {
                                 location.href = "payment.html?oid=" + res.data.data;
-                            }, 1500);
+                            }, 10);
                         } else {
                             this.$message({
                                 type: "into",
@@ -153,6 +153,26 @@ new Vue({
                     });
                 });
             }
-        }
+        },
+
+        //删除购物车数据
+        deleteList() {
+            axios({
+                method: "POST",
+                url: "/cart/deleteList",
+                data: this.multipleSelection
+            }).then((res) => {
+                if (res.data.code === 1) {
+                    this.$message.success({
+                        message: res.data.data,
+                        type: 'success'
+                    });
+                } else {
+                    this.$message.error(res.data.data);
+                }
+            }).finally(() => {
+                this.findPage();
+            });
+        },
     }
 });

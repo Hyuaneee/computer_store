@@ -2,6 +2,7 @@ Vue.config.productionTip = false  //以阻止 vue 在启动时生成生产提示
 const v = new Vue({
     el: '#app',
     data: {
+        searchData: '',
         loading: false,   //页面加载,false:关闭,true:加载中
         dialogFormVisible: false,   //是否弹出的添加窗口
         dialogUpdateVisible: false,   //是否弹出的修改窗口
@@ -72,7 +73,7 @@ const v = new Vue({
         },
         //搜索
         searchContent() {
-            location.href = "search.html?context=" + this.searchData;
+            location.href = "../../page/search.html?context=" + this.searchData;
         },
         //获取当前页数据
         findPage() {

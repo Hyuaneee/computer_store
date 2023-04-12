@@ -14,7 +14,7 @@ import java.util.List;
 public interface CartMapper extends BaseMapper<Cart> {
 
     //查询购物车数据，使用CartVO返回额外数据
-    @Select("SELECT cid,uid,pid,cart.price,cart.num,product.num AS numCount,product.title,product.price*cart.num AS realPrice,product.image FROM cart LEFT JOIN product ON cart.pid=product.id where cart.uid= #{uid} ORDER BY cart.created_time DESC")
+    @Select("SELECT cid,uid,pid,cart.price,cart.num,product.num AS numCount,product.title,product.price*cart.num AS realPrice,product.image FROM cart LEFT JOIN product ON cart.pid=product.id where cart.uid= #{uid} ORDER BY cart.cid DESC")
     List<CartVO> PageCartVO(Long uid);
 
     //动态sql,查询购物车数据，获取购物车结果集
@@ -27,7 +27,7 @@ public interface CartMapper extends BaseMapper<Cart> {
             "#{cid}" +
             "</foreach>" +
             "</where>" +
-            "ORDER BY cart.created_time DESC;" +
+            "ORDER BY cart.cid DESC;" +
             "</script>")
     List<CartVO> getListCids(List<Long> cids);
 

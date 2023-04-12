@@ -24,7 +24,7 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '',
         //商品信息
         productData: {},
         //购物车信息

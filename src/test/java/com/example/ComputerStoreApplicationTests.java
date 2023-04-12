@@ -1,7 +1,6 @@
 package com.example;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.common.ReturnFront;
 import com.example.mapper.UserMapper;
 import com.example.pojo.Address;
 import com.example.pojo.Orders;
@@ -54,7 +53,7 @@ class ComputerStoreApplicationTests {
         for (Orders order : orderList) {
             System.out.println(order);
         }
-      /*  List<ReturnFront> result = new ArrayList<>();
+      /*  List<Result> result = new ArrayList<>();
         for (Orders order : orderList) {
             QueryWrapper<Orders_item> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("oid", order.getOid());
@@ -62,9 +61,9 @@ class ComputerStoreApplicationTests {
             if (order_itemList == null) {
                 System.out.println("订单出现异常");
             }
-            result.add(new ReturnFront(order, order_itemList));
+            result.add(new Result(order, order_itemList));
         }
-        for (ReturnFront returnFront : result) {
+        for (Result returnFront : result) {
             System.out.println(returnFront);
         }*/
     }

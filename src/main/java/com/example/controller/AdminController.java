@@ -1,10 +1,8 @@
 package com.example.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.example.common.ReturnFront;
-import com.example.mapper.AdminMapper;
+import com.example.common.Result;
 import com.example.pojo.Admin;
-import com.example.pojo.User;
 import com.example.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +33,7 @@ public class AdminController {
      */
 
     @PostMapping("/login")
-    public ReturnFront<Admin> login(HttpServletRequest request, @RequestBody Admin admin) {
+    public Result<Admin> login(HttpServletRequest request, @RequestBody Admin admin) {
         //密码加盐（拼接盐+密码后使用MD5算法加密）
         String passwd = admin.getPassword().concat(md5Salt);
         passwd = DigestUtils.md5DigestAsHex(passwd.getBytes());
@@ -44,16 +42,16 @@ public class AdminController {
         queryWrapper.eq(Admin::getUsername, admin.getUsername());
         Admin one = adminService.getOne(queryWrapper);
         if (one == null) {
-            return ReturnFront.error("管理员账户或密码错误");
+            return Result.error("管理员账户或密码错误");
         }
 
         if (!one.getPassword().equals(passwd)) {
-            return ReturnFront.error("管理员账户或密码错误");
+            return Result.error("管理员账户或密码错误");
         }
 
         request.getSession().setAttribute("uid", one.getUid());
         System.out.println("管理员账户:" + one.getUid() + one.getUsername() + "已登录");
-        return ReturnFront.success(one);
+        return Result.success(one);
 
     }
 
@@ -67,10 +65,10 @@ public class AdminController {
      */
 
     @GetMapping("/logout")
-    public ReturnFront<String> logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public Result<String> logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession().removeAttribute("uid");
         response.sendRedirect("/adminLogin.html");
         System.out.println("管理员已退出");
-        return ReturnFront.success("管理员已退出");
+        return Result.success("管理员已退出");
     }
 }

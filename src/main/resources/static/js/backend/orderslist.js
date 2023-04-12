@@ -9,6 +9,7 @@ new Vue({
             totalPrice: 0,
         },
         //订单列表
+        searchData: '',
         ordersMap: {},
     },
     //钩子函数，VUE对象初始化完成后自动执行
@@ -18,11 +19,13 @@ new Vue({
     methods: {
         //根据oid获取订单列表
         getList(status) {
+            this.status = status
             axios({
                 methods: "get",
                 url: "/order/getList",
                 params: {
-                    status: status
+                    context: this.searchData,
+                    status: this.status
                 }
             }).then((res) => {
                 if (res.data.code === 1) {
@@ -34,27 +37,29 @@ new Vue({
         },
         //时间格式化
         formatting(value) {
-            var now = new Date();
-            var zeroFill = function (value) {
-                if (value < 10) {
-                    value = '0' + value
-                }
-                return value
-            }
-
-            var year = now.getFullYear();
+            var now = new Date(value);
             //年
-            var month = zeroFill(now.getMonth() + 1);
+            var year = now.getFullYear() + '-';
             //月
-            var day = zeroFill(now.getDate());
+            var month = (now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1) + '-';
             //日
-            var hh = zeroFill(now.getHours());
+            var day = now.getDate() + ' ';
+            if (now.getDate().toString().length === 1) {
+                day = '0' + now.getDate() + ' '
+            }
             //时
-            var mm = zeroFill(now.getMinutes());
+            var hh = now.getHours() + ':';
             //分
-            var ss = zeroFill(now.getSeconds());
-
-            return (`${year}-${month}-${day} ${hh}:${mm}:${ss}`);
+            var mm = now.getMinutes() + ":";
+            if (now.getMinutes().toString().length === 1) {
+                mm = '0' + now.getMinutes() + ':'
+            }
+            //秒
+            var ss = now.getSeconds();
+            if (now.getSeconds().toString().length === 1) {
+                ss = '0' + now.getSeconds() + ' '
+            }
+            return (year + month + day + hh + mm + ss);
         },
 
         //商家发货
@@ -77,7 +82,7 @@ new Vue({
                         this.$message.error(res.data.message);
                     }
                 }).finally(() => {
-                    this.getList(null);
+                    this.getList(this.status);
                 });
             }).catch(() => {   //选择取消的情况
                 this.$message({
@@ -121,14 +126,14 @@ new Vue({
                 }).then((res) => {
                     if (res.data.code === 1) {
                         this.$message.success({
-                            message: res.data.message,
+                            message: "取消订单成功",
                             type: 'success'
                         });
                     } else {
                         this.$message.error(res.data.message);
                     }
                 }).finally(() => {
-                    this.getList(null);
+                    this.getList(this.status);
                 });
             }).catch(() => {   //选择取消的情况
                 this.$message({

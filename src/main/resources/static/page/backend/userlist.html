@@ -43,7 +43,7 @@
                 <li>
                     <a href="#"></a>
                 </li>
-                <li class="active"><a href="../index.html"><span class="fa fa-home"></span></a></li>
+                <li class="active"><a href="#"><span class="fa fa-home"></span></a></li>
                 <li><a href="userlist.html">用户列表</a></li>
                 <li><a href="productlist.html">商品列表</a></li>
                 <li><a href="orderslist.html">订单列表</a></li>
@@ -57,6 +57,27 @@
                 <div class="panel-body">
                     <!--用户显示-->
                     <h4 style="text-align: center">用户列表</h4>
+                    <div class="col-md-3" style="float: left;margin-bottom: 10px">
+                        <el-input placeholder="输入用户名称进行查询" v-model="searchData" class="input-with-select">
+                            <el-button slot="append" icon="el-icon-search" @Click="findPage()"></el-button>
+                        </el-input>
+                    </div>
+                    <div class="col-md-3" style="float: left;margin-bottom: 10px">
+                        <el-select v-model="statusData" filterable placeholder="请选择账号状态" @change="findPage()">
+                            <el-option
+                                    label="全部"
+                                    value="">
+                            </el-option>
+                            <el-option
+                                    label="启用"
+                                    value="0">
+                            </el-option>
+                            <el-option
+                                    label="禁用"
+                                    value="1">
+                            </el-option>
+                        </el-select>
+                    </div>
                     <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key -->
                     <el-table height="259" border :data="page.content" v-loading="loading"
                               :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
@@ -83,7 +104,7 @@
                                 >{{scope.row.status == '0'?"禁用":"启用"}}
                                 </el-button>
                                 <el-button
-                                        :type='danger'
+                                        type='danger'
                                         size="mini"
                                         @click="setDeleted(scope.row)"
                                 >删除
@@ -118,33 +139,7 @@
                 <div><img src="../../images/index/footerFont.png" alt=""/></div>
             </div>
             <div class="col-md-4 callus text-center">
-                <div class="col-md-4">
-                    <h5>常用功能</h5>
-                    <ul>
-                        <li><a href="">会员介绍</a></li>
-                        <li><a href="">常见问题</a></li>
-                        <li><a href="">意见反馈</a></li>
-                        <li><a href="">联系客服</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>配送方式</h5>
-                    <ul>
-                        <li><a href="">上门自取</a></li>
-                        <li><a href="">限时到达</a></li>
-                        <li><a href="">配送服务</a></li>
-                        <li><a href="">收费标准</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>更多功能</h5>
-                    <ul>
-                        <li><a href="">关于我们</a></li>
-                        <li><a href="">联系方式</a></li>
-                        <li><a href="">查看更多</a></li>
-                        <li><a href="">资质校验</a></li>
-                    </ul>
-                </div>
+                计算2173 黄嘉源 202142051087
             </div>
             <div class="col-md-4">
                 <div class="col-md-5">
@@ -156,10 +151,6 @@
                     <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
                 </div>
             </div>
-        </div>
-        <!-- 页面底部-备案号 #footer -->
-        <div class="col-md-12 text-center bottom">
-            计算2173 黄嘉源 202142051087
         </div>
     </footer>
 </div>

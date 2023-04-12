@@ -55,14 +55,12 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
                                     <span id="top-dropdown-btn">
-                                        <img v-bind:src="user.avatar" style="width: 25px;height: 25px">
                                         &nbsp;{{user.username}}<span class="caret"></span>
                                     </span>
                             </button>
                             <ul class="dropdown-menu top-dropdown-ul" role="menu">
                                 <li><a href="admin/password.html">修改密码</a></li>
                                 <li><a href="admin/userdata.html">个人资料</a></li>
-                                <li><a href="admin/upload.html">上传头像</a></li>
                                 <li><a href="admin/address.html">收货管理 </a></li>
                                 <li><a href="/user/logout">注销</a></li>
                             </ul>
@@ -111,7 +109,6 @@
                             <div><a @Click="getList(1)" href="#">待收货</a></div>
                             <div><a @Click="getList(4)" href="#">待评价</a></div>
                             <div><a @Click="getList(2)" href="#">已取消订单</a></div>
-                            <div><a href="#">退货退款</a></div>
                         </div>
                     </div>
                 </div>
@@ -138,7 +135,7 @@
             <div class="panel panel-default" v-for="orders of ordersMap" :key="orders.oid">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        订单号：{{orders.key.oid}}，下单时间：{{(orders.key.orderTime)}} ，
+                        订单号：{{orders.key.oid}}，下单时间：{{formatting(orders.key.orderTime)}},
                         收货人：{{orders.key.recvName}}
                         ，支付时间：{{orders.key.payTime==null?'未支付':formatting(orders.key.payTime)}}
                         ，订单状态：{{showStatus(orders.key.status)}}
@@ -166,13 +163,11 @@
                             <td>¥<span>{{item.price*item.num}}</span></td>
                             <td>
                                 <div>{{item.itemStatus==0?'未发货':'已发货'}}</div>
-                                <!--<div><a :href="'ordersInfo.html?id='+item.id" :disabled="orders.key.status==2">订单详情</a>
-                                </div>-->
                             </td>
                             <td>
-                                <a href="#" class="btn btn-default btn-xs" v-show="item.isReceive==false"
-                                   @click="updateIsReceive(item.id)" :disabled="orders.key.status==2">确认收货</a>
-                                <a href="#" class="btn btn-default btn-xs" v-show="item.isReceive==true"
+                                <a class="btn btn-default btn-xs" v-show="item.isReceive==false"
+                                   @click="updateIsReceive(item.id)" :disabled="item.itemStatus==0">确认收货</a>
+                                <a class="btn btn-default btn-xs" v-show="item.isReceive==true"
                                    :disabled="true">已收货</a>
                             </td>
                         </tr>
@@ -199,52 +194,22 @@
         <!--联系我们、下载客户端等-->
         <div class="container beforeBottom">
             <div class="col-md-offset-1 col-md-3">
-                <div><img src="../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
-                <div><img src="../images/index/footerFont.png" alt=""/></div>
+                <div><img src="../../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
+                <div><img src="../../images/index/footerFont.png" alt=""/></div>
             </div>
             <div class="col-md-4 callus text-center">
-                <div class="col-md-4">
-                    <h5>常用功能</h5>
-                    <ul>
-                        <li><a href="">会员介绍</a></li>
-                        <li><a href="">常见问题</a></li>
-                        <li><a href="">意见反馈</a></li>
-                        <li><a href="">联系客服</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>配送方式</h5>
-                    <ul>
-                        <li><a href="">上门自取</a></li>
-                        <li><a href="">限时到达</a></li>
-                        <li><a href="">配送服务</a></li>
-                        <li><a href="">收费标准</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>更多功能</h5>
-                    <ul>
-                        <li><a href="">关于我们</a></li>
-                        <li><a href="">联系方式</a></li>
-                        <li><a href="">查看更多</a></li>
-                        <li><a href="">资质校验</a></li>
-                    </ul>
-                </div>
+                计算2173 黄嘉源 202142051087
             </div>
             <div class="col-md-4">
                 <div class="col-md-5">
                     <p>电脑商城客户端</p>
-                    <img src="../images/index/ios.png" class="lf">
-                    <img src="../images/index/android.png" alt="" class="lf"/>
+                    <img src="../../images/index/ios.png" class="lf">
+                    <img src="../../images/index/android.png" alt="" class="lf"/>
                 </div>
                 <div class="col-md-6">
-                    <img style="width: 120px;height: 120px" src="../images/index/erweima.png">
+                    <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
                 </div>
             </div>
-        </div>
-        <!-- 页面底部-备案号 #footer -->
-        <div class="col-md-12 text-center bottom">
-            计算2173 黄嘉源 202142051087
         </div>
     </footer>
 </div>

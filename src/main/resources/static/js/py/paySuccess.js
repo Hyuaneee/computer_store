@@ -24,7 +24,7 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: null,
+        searchData: '',
         //订单信息
         order:{
             oid: null,

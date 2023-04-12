@@ -23,8 +23,8 @@ public class UserLoginInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response, Object handler) throws Exception {
         StringBuffer requestURL = request.getRequestURL();
         try {
             HttpSession session = request.getSession();
@@ -33,10 +33,8 @@ public class UserLoginInterceptor implements HandlerInterceptor {
                 return true; //放行
             }
         } catch (Exception e) {
-            System.out.println("登录出现异常");
             e.printStackTrace();
         }
-        System.out.println("拦截到请求：" + requestURL.toString());
         //重定向
         response.sendRedirect("/login.html");
         return false;

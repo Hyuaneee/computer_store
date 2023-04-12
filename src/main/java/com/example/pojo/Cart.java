@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-public class Cart extends BaseEntity {
+public class Cart {
     @TableId(type = IdType.AUTO)
     private Long cid;   //购物车数据id
     private Long uid;   //用户id
