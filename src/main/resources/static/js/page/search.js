@@ -38,7 +38,7 @@ new Vue({
         pageData: {
             content: [],
             currentPage: 1,   //当前页
-            pageSize: 8,  //当前页条数
+            pageSize: 12,  //当前页条数
             total: 1,  //数据总条数
             pages: 1,  //总页数
             firstPage: false,  //是否禁用前一页按钮

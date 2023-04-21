@@ -5,7 +5,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * 利用uid进行拦截
@@ -25,17 +24,14 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
-        StringBuffer requestURL = request.getRequestURL();
         try {
-            HttpSession session = request.getSession();
-            Number uid = (Number) session.getAttribute("uid");
+            Number uid = (Number) request.getSession().getAttribute("uid");
             if (uid != null) {
                 return true; //放行
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //重定向
         response.sendRedirect("/login.html");
         return false;
     }

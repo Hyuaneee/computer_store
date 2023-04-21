@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="css/layout.css"/>
     <link rel="stylesheet" type="text/css" href="css/reg.css"/>
     <link rel="stylesheet" type="text/css" href="css/footer.css"/>
-    <title>Title</title>
+    <title>注册</title>
 
 </head>
 <body id="#app">
@@ -43,27 +43,27 @@
             <el-form-item label="用户名：" prop="username">  <!-- prop的值与rules里面要验证的字段值是对应 -->
                 <el-input
                         prefix-icon="el-icon-user" style="width: 250px"
-                        type="text" v-model="formData.username" autocomplete="off">
+                        type="text" v-model="formData.username" autocomplete="off" clearable>
                 </el-input>
             </el-form-item>
             <el-form-item label="密 码：" prop="password1">
                 <el-input
                         prefix-icon="el-icon-menu"
                         style="width: 250px" show-password type="password"
-                        v-model="formData.password1" autocomplete="off">
+                        v-model="formData.password1" autocomplete="off" clearable>
                 </el-input>
             </el-form-item>
             <el-form-item label="确认密码：" prop="password2">
                 <el-input
                         prefix-icon="el-icon-menu"
                         style="width: 250px" show-password type="password"
-                        v-model="formData.password2" autocomplete="off">
+                        v-model="formData.password2" autocomplete="off" clearable>
                 </el-input>
             </el-form-item>
             <el-form-item label="手机号" prop="phone">  <!-- prop的值与rules里面要验证的字段值是对应 -->
                 <el-input
                         prefix-icon="el-icon-phone" style="width: 250px"
-                        type="text" v-model="formData.phone" autocomplete="off">
+                        type="text" v-model="formData.phone" autocomplete="off" clearable>
                 </el-input>
             </el-form-item>
             <el-form-item>

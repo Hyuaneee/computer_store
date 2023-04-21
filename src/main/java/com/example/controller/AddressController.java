@@ -57,7 +57,6 @@ public class AddressController {
         if (count > 20) {
             return Result.error("一个用户最多只能有20个收货地址");
         }
-
         address.setUid(uid);
         address.setIsDefault(0);
         boolean flag = addressService.save(address);

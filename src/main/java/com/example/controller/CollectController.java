@@ -90,11 +90,11 @@ public class CollectController {
     //获取收藏列表
     @PostMapping("/getPageList/{currentPage}/{pageSize}")
     public Result getPageList(@PathVariable Integer currentPage, @PathVariable Integer pageSize, HttpSession session) {
-        Long uid = (Long) session.getAttribute("uid");
         IPage<Collect> iPage = new Page<>(currentPage, pageSize);
         LambdaQueryWrapper<Collect> wrapper = new LambdaQueryWrapper<>();
+        Long uid = (Long) session.getAttribute("uid");
         wrapper.eq(Collect::getUid, uid);
-        wrapper.orderBy(true, false, Collect::getTitle);
+        wrapper.orderByAsc(Collect::getId);
         IPage<Collect> page = collectService.page(iPage, wrapper);
         if (page == null) {
             return Result.error("数据有误,请刷新");

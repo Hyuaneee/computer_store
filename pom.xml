@@ -99,6 +99,7 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>4.9.13.ALL</version>
         </dependency>
+
         <!--注解处理器配置-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

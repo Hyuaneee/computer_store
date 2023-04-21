@@ -27,7 +27,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/footer.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/orderConfirm.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/cart.css"/>
-    <title>电脑商城</title>
+    <title>订单详情</title>
 </head>
 <body>
 <div id="app">
@@ -86,7 +86,7 @@
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
-            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select">
+            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @Click="searchContent()"></el-button>
             </el-input>
         </div>
@@ -108,7 +108,7 @@
             </div>
             <div class="col-md-4">
                 <div class="col-md-12 order-bar-undo">
-                    3.付款成功
+                    3.支付结果
                 </div>
             </div>
             <div class="col-md-12">
@@ -146,7 +146,7 @@
                                 </thead>
                                 <tbody id="cart-list" class="cart-body">
                                 <tr v-for="cart of cartList.content" :key="cart.cid">
-                                    <td><img :src="'http://localhost'+cart.image+'collect.png'" class="img-responsive"/>
+                                    <td><img :src="'http://127.0.0.1'+cart.image+'.png'" class="img-responsive"/>
                                     </td>
                                     <td>{{cart.title}}</td>
                                     <td>¥<span>{{cart.price}}</span></td>
@@ -200,5 +200,5 @@
 </div>
 </body>
 <script src="../../frame/axios/axios.min.js"></script>
-<script src="../../js/py/orderConfirm.js"></script>
+<script src="../../js/pay/orderConfirm.js"></script>
 </html>

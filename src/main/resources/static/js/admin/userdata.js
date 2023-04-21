@@ -57,18 +57,6 @@ new Vue({
         searchContent() {
             location.href = "../../page/search.html?context=" + this.searchData;
         },
-        //实现倒计时
-        Time() {
-            this.downTime = 30;
-            var time = setInterval(() => {
-                this.downTime -= 1;
-                if (this.downTime == 0) {
-                    this.showTime = false;
-                    this.loading = false,
-                        clearInterval(time);
-                }
-            }, 1000)
-        },
         //修改信息
         update() {
             this.loading = true;
@@ -101,8 +89,6 @@ new Vue({
                     return false;
                 }
             });
-            this.Time();
-            this.formData.phone = '';
         },
     }
 });

@@ -42,12 +42,11 @@ public class UserController {
 
     @PostMapping("/login")
     public Result<User> login(HttpServletRequest request, @RequestBody User user) {
-        //密码加盐（拼接盐+密码后使用MD5算法加密）
         String passwd = user.getPassword().concat(md5Salt);
         passwd = DigestUtils.md5DigestAsHex(passwd.getBytes());
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, user.getUsername());
-        User one = userService.getOne(queryWrapper);
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, user.getUsername());
+        User one = userService.getOne(wrapper);
         if (one == null || one.getDeleted() == 1) {
             return Result.error("用户名或密码错误");
         }
@@ -148,15 +147,19 @@ public class UserController {
     //修改用户信息
     @PutMapping("/updateUser")
     public Result<String> updateUser(HttpSession session, @RequestBody User user) {
-        //获取session中uid并查找对应数据
         Long uid = (Long) session.getAttribute("uid");
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUid, uid);
-        boolean flag = userService.update(user, queryWrapper);
+        LambdaQueryWrapper<User> wrapper1 = new LambdaQueryWrapper<>();
+        wrapper1.eq(User::getUsername, user.getUsername());
+        User one = userService.getOne(wrapper1);
+        if (one != null && !one.getUid().equals(uid)) {
+            return Result.error("用户名已存在");
+        }
+        LambdaQueryWrapper<User> wrapper2 = new LambdaQueryWrapper<>();
+        wrapper2.eq(User::getUid, uid);
+        boolean flag = userService.update(user, wrapper2);
         if (!flag) {
             return Result.error("修改失败");
         }
-        //更新sesson中的数据
         session.setAttribute("uid", user.getUid());
         return Result.success("修改成功");
     }

@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/top.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/footer.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/order.css"/>
-    <title>电脑商城</title>
+    <title>订单列表</title>
 </head>
 
 <body>
@@ -68,7 +68,7 @@
                             <div><a @Click="getList()" href="#"><b>全部订单</b></a></div>
                             <div><a @Click="getList(0)" href="#">待支付</a></div>
                             <div><a @Click="getList(1)" href="#">待收货</a></div>
-                            <div><a @Click="getList(4)" href="#">待评价</a></div>
+                            <div><a @Click="getList(3)" href="#">待评价</a></div>
                             <div><a @Click="getList(2)" href="#">已取消订单</a></div>
                         </div>
                     </div>
@@ -87,10 +87,15 @@
             <div class="panel panel-default" v-for="orders of ordersMap" :key="orders.oid">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        订单号：{{orders.key.oid}}，下单时间：{{formatting(orders.key.orderTime)}},
-                        收货人：{{orders.key.recvName}}
-                        ，支付时间：{{orders.key.payTime==null?'未支付':formatting(orders.key.payTime)}}
-                        ，订单状态：{{showStatus(orders.key.status)}}
+                        订单号：{{orders.key.oid}}，
+                        下单时间：{{formatting(orders.key.orderTime)}}，
+                        收货人：{{orders.key.recvName}}，
+                        手机号码:{{orders.key.recvPhone}}
+                    </p>
+                    <p class="panel-title">
+                        收货地址：{{orders.key.recvProvince+"-"+orders.key.recvCity+"-"+orders.key.recvArea+"-"+orders.key.recvAddress}}，
+                        支付时间：{{orders.key.payTime==null?'未支付':formatting(orders.key.payTime)}} ，
+                        订单状态：{{showStatus(orders.key.status)}}
                     </p>
                 </div>
                 <div class="panel-body">
@@ -108,7 +113,7 @@
                         </thead>
                         <tbody class="orders-body">
                         <tr v-for="item of orders.value">
-                            <td><img :src="'http://localhost'+item.image+'collect.png'" class="img-responsive"/></td>
+                            <td><img :src="'http://127.0.0.1'+item.image+'.png'" class="img-responsive"/></td>
                             <td>{{item.title}}</td>
                             <td>¥<span>{{item.price}}</span></td>
                             <td>{{item.num}}件</td>

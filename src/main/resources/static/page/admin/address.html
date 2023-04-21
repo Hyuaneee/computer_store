@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/layout.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/top.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/footer.css"/>
-    <title>电脑商城</title>
+    <title>地址管理</title>
 </head>
 
 <body>
@@ -138,7 +138,7 @@
                     <h4 style="text-align: center">收货地址列表</h4>
                     <span style="float: right; color: darkgreen">最多只能有20个收货地址</span>
                     <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key,selection-change:多选，当选择项发生变化时会触发该事件 -->
-                    <el-table height="259" border :data="page.content" v-loading="loading"
+                    <el-table height="320" border :data="page.content" v-loading="loading"
                               :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
                               @selection-change="handleSelectionChange" ref="multipleTable" style="font-size: 10px">
                         <el-table-column type="selection" label="全选" :reserve-selection="true"

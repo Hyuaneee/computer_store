@@ -102,6 +102,9 @@ new Vue({
                     }
                 });
         },
+        buyNow() {
+            location.href = "pay/orderConfirm.html?pid=" + this.productData.id + "&num=" + this.cartData.num;
+        },
         //根据商品id获取购车信息
         getCart() {
             var pid = getUrlParam("id");  //获取地址栏id

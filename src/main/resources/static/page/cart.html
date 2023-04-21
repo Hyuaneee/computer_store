@@ -26,8 +26,7 @@
     <link rel="stylesheet" type="text/css" href="../css/top.css"/>
     <link rel="stylesheet" type="text/css" href="../css/footer.css"/>
     <link rel="stylesheet" type="text/css" href="../css/cart.css"/>
-
-    <title>电脑商城</title>
+    <title>购物车</title>
 </head>
 
 <body>
@@ -86,7 +85,7 @@
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
-            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select">
+            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @Click="searchContent()"></el-button>
             </el-input>
         </div>
@@ -105,7 +104,7 @@
                             <thead>
                             <tr>
                                 <th width="8%">
-                                    <input type="checkbox" id="allSelect" class="ckall" @Change="checkall"/>全选
+                                    <input type="checkbox" id="allSelect" class="ckAll" @Change="checkAll"/>全选
                                 </th>
                                 <th width="110"></th>
                                 <th width="29%">商品</th>
@@ -118,16 +117,17 @@
                             <tbody id="cart-list" class="cart-body">
                             <tr v-for="cart of cartList.content" :key="cart.cid">
                                 <td>
-                                    <input type="checkbox" class="ckitem" @change="checkOne" :value="cart.cid"/>
+                                    <input type="checkbox" class="ckItem" @change="checkOne" :value="cart.cid"/>
                                 </td>
-                                <td><img :src="'http://localhost'+cart.image+'collect.png'" class="img-responsive"/>
+                                <td><img :src="'http://127.0.0.1'+cart.image+'.png'" class="img-responsive"/>
                                 </td>
                                 <td>{{cart.title}}</td>
                                 <td>¥<span>{{cart.price}}</span></td>
                                 <td>
                                     <el-input-number :disabled="numLoading" size="small" v-model="cart.num" :min="1"
-                                                     :max="cart.numCount"
+                                                     :max="cart.numCount" :precision="0"
                                                      @change="handleChange(cart.cid,arguments)"></el-input-number>
+
                                 </td>
                                 <td>
                                     <span>{{cart.price*cart.num}}</span>
@@ -164,8 +164,8 @@
         <!--联系我们、下载客户端等-->
         <div class="container beforeBottom">
             <div class="col-md-offset-1 col-md-3">
-                <div><img src="../../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
-                <div><img src="../../images/index/footerFont.png" alt=""/></div>
+                <div><img src="../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
+                <div><img src="../images/index/footerFont.png" alt=""/></div>
             </div>
             <div class="col-md-4 callus text-center">
                 计算2173 黄嘉源 202142051087
@@ -173,11 +173,11 @@
             <div class="col-md-4">
                 <div class="col-md-5">
                     <p>电脑商城客户端</p>
-                    <img src="../../images/index/ios.png" class="lf">
-                    <img src="../../images/index/android.png" alt="" class="lf"/>
+                    <img src="../images/index/ios.png" class="lf">
+                    <img src="../images/index/android.png" alt="" class="lf"/>
                 </div>
                 <div class="col-md-6">
-                    <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
+                    <img style="width: 120px;height: 120px" src="../images/index/erweima.png">
                 </div>
             </div>
         </div>

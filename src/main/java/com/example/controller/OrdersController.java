@@ -26,11 +26,12 @@ public class OrdersController {
     private CartService cartService;
     @Autowired
     private Orders_itemService orders_itemService;
+    @Autowired
+    private ProductService productService;
 
     //添加订单
     @PostMapping("/insert/{aid}")
     public Result insert(@RequestBody List<Long> cids, @PathVariable Long aid, HttpSession session) {
-        //获取session中uid并查找对应数据
         //获取用户信息
         Long uid = (Long) session.getAttribute("uid");
         LambdaQueryWrapper<User> userWrapper = new LambdaQueryWrapper<>();
@@ -54,6 +55,18 @@ public class OrdersController {
         //获取总价
         Long total_price = 0L;
         for (CartVO cartVO : listCids) {
+            Product product = productService.getById(cartVO.getPid());
+            product.setNum(product.getNum() - cartVO.getNum());
+            if (product.getNum() < 0) {
+                return Result.error(product.getTitle() + "的库存不足");
+            }
+            if (product.getNum() == 0) {
+                product.setStatus(1);
+            }
+            boolean numFlag = productService.updateById(product);
+            if (!numFlag) {
+                return Result.error("库存扣除失败");
+            }
             total_price += cartVO.getRealPrice();
         }
 
@@ -97,17 +110,70 @@ public class OrdersController {
         return Result.success(orders.getOid());
     }
 
-    //根据oid获取订单
-    @GetMapping("/getOrderOid/{oid}")
-    public Result getOrderOid(@PathVariable Long oid) {
-        LambdaQueryWrapper<Orders> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Orders::getOid, oid);
-        Orders orders = ordersService.getOne(wrapper);
-        if (orders == null) {
-            throw new RuntimeException("订单不存在");
+    //立即购买
+    @PostMapping("/buyNow/{pid}/{num}/{aid}")
+    public Result buyNow(@PathVariable Long pid, @PathVariable Long num, @PathVariable Long aid, HttpSession session) {
+        //获取用户信息
+        Long uid = (Long) session.getAttribute("uid");
+        LambdaQueryWrapper<User> userWrapper = new LambdaQueryWrapper<>();
+        userWrapper.eq(User::getUid, uid);
+        User user = userService.getOne(userWrapper);
+        if (user == null) {
+            return Result.error("用户不存在");
+        }
+        //获取地址信息
+        LambdaQueryWrapper<Address> addressWrapper = new LambdaQueryWrapper<>();
+        addressWrapper.eq(Address::getAid, aid);
+        Address address = addressService.getOne(addressWrapper);
+        if (address == null) {
+            return Result.error("创建订单失败，无对应收货地址");
+        }
+        Product product = productService.getById(pid);
+        if (product == null) {
+            return Result.error("商品不存在");
+        }
+        Long total_price = product.getPrice() * num;
+        Long productNum = product.getNum();
+        if (productNum < num) {
+            return Result.error("商品库存不足");
+        }
+        product.setNum(productNum - num);
+        if (product.getNum() == 0) {
+            product.setStatus(1);
+        }
+        productService.updateById(product);
+        //操作订单表
+        Orders orders = new Orders();
+        orders.setUid(user.getUid());
+        orders.setRecvName(address.getName());
+        orders.setRecvPhone(address.getPhone());
+        orders.setRecvProvince(address.getProvinceName());
+        orders.setRecvCity(address.getCityName());
+        orders.setRecvArea(address.getAreaName());
+        orders.setRecvAddress(address.getAddress());
+        orders.setTotalPrice(total_price);
+        orders.setStatus(0); //订单状态
+        orders.setOrderTime(new Date());
+
+        boolean flag1 = ordersService.save(orders);        //生成订单（添加到表内）
+        if (!flag1) {
+            return Result.error("创建订单失败");
         }
 
-        return Result.success(orders);
+        Orders_item orders_item = new Orders_item();
+        orders_item.setOid(orders.getOid());
+        orders_item.setPid(pid);
+        orders_item.setTitle(product.getTitle());
+        orders_item.setImage(product.getImage());
+        orders_item.setPrice(product.getPrice());
+        orders_item.setNum(num);
+        orders_item.setItemStatus(0);
+        orders_item.setIsReceive(0);
+        boolean flag2 = orders_itemService.save(orders_item);
+        if (!flag2) {
+            return Result.error("创建订单失败");
+        }
+        return Result.success(orders.getOid());
     }
 
     //更新表的status字段和支付时间
@@ -122,8 +188,8 @@ public class OrdersController {
         if (orders.getStatus() == 1) {
             return Result.error("请不要重复支付");
         }
-        if (orders.getStatus() == 2 || orders.getStatus() == 3 || orders.getStatus() == 4) {
-            return Result.error("您的订单已取消或已完成");
+        if (orders.getStatus() == 2) {
+            return Result.error("您的订单已取消");
         }
         LambdaUpdateWrapper<Orders> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Orders::getOid, oid);
@@ -134,6 +200,27 @@ public class OrdersController {
             return Result.error("支付失败");
         }
         return Result.success("支付成功");
+    }
+
+    //根据oid获取订单
+    @GetMapping("/getOrderOid/{oid}")
+    public Result getOrderOid(@PathVariable Long oid, HttpSession session) {
+        Long uid = (Long) session.getAttribute("uid");
+        LambdaQueryWrapper<Orders> wrapper1 = new LambdaQueryWrapper<>();
+        wrapper1.eq(Orders::getOid, oid);
+        Orders orders = ordersService.getOne(wrapper1);
+        if (orders == null) {
+            throw new RuntimeException("订单不存在");
+        }
+        LambdaQueryWrapper<Orders_item> wrapper2 = new LambdaQueryWrapper<>();
+        wrapper2.eq(Orders_item::getOid, oid);
+        List<Orders_item> orders_itemList = orders_itemService.list(wrapper2);
+        if (orders_itemList == null) {
+            return Result.error("订单出现异常");
+        }
+        List<Result> result = new ArrayList<>();
+        result.add(new Result(orders, orders_itemList));
+        return Result.success(result);
     }
 
     //根据oid获取订单列表
@@ -183,11 +270,11 @@ public class OrdersController {
         Orders one = ordersService.getOne(queryWrapper1);
 
         //判断订单状态
-        if (one.getStatus() == 0) {  //0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
+        if (one.getStatus() == 0) {  //0-未支付，1-已支付，2-已取消，3-已完成
             return Result.error("还未支付,请支付");
         }
-        if (one.getStatus() == 2 || one.getStatus() == 3) {  //0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
-            return Result.error("订单已取消或已关闭!");
+        if (one.getStatus() == 2) {  //0-未支付，1-已支付，2-已取消，3已完成
+            return Result.error("订单已取消!");
         }
 
         //收货操作
@@ -215,7 +302,7 @@ public class OrdersController {
         if (is_receive == 1) {
             LambdaUpdateWrapper<Orders> queryWrapper3 = new LambdaUpdateWrapper<>();
             queryWrapper3.eq(Orders::getOid, orders_item.getOid());
-            queryWrapper3.set(Orders::getStatus, 4); //订单完成
+            queryWrapper3.set(Orders::getStatus, 3); //订单完成
             boolean update = ordersService.update(queryWrapper3);
             if (!update) {
                 return Result.error("订单有误,请刷新");
@@ -239,7 +326,26 @@ public class OrdersController {
         wrapper2.set(Orders::getStatus, 2); //修改为取消状态
         boolean flag = ordersService.update(wrapper2);
         if (!flag) {
-            throw new RuntimeException("取消失败,请重试");
+            return Result.error("取消失败,请重试");
+        }
+        LambdaQueryWrapper<Orders_item> wrapper3 = new LambdaQueryWrapper<>();
+        wrapper3.eq(Orders_item::getOid, oid);
+        List<Orders_item> list = orders_itemService.list(wrapper3);
+        for (Orders_item orders_item : list) {
+            LambdaQueryWrapper<Product> wrapper4 = new LambdaQueryWrapper<>();
+            wrapper4.eq(Product::getId, orders_item.getPid());
+            Product one = productService.getOne(wrapper4);
+            if (one == null) {
+                return Result.error("商品不存在");
+            }
+            one.setNum(one.getNum() + orders_item.getNum());
+            if (one.getNum() > 0) {
+                one.setStatus(0);
+            }
+            boolean numFlag = productService.updateById(one);
+            if (!numFlag) {
+                return Result.error("操作失败");
+            }
         }
         return Result.success("操作成功");
     }
@@ -291,11 +397,11 @@ public class OrdersController {
         Orders one = ordersService.getOne(queryWrapper1);
 
         //判断订单状态
-        if (one.getStatus() == 0) {  //0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
+        if (one.getStatus() == 0) {  //0-未支付，1-已支付，2-已取消，3-已完成
             return Result.error("还未支付,请支付");
         }
-        if (one.getStatus() == 2 || one.getStatus() == 3) {  //0-未支付，1-已支付，2-已取消，3-已关闭，4-已完成
-            return Result.error("订单已取消或已关闭!");
+        if (one.getStatus() == 2) {  //0-未支付，1-已支付，2-已取消，3-已完成
+            return Result.error("订单已取消!");
         }
 
         //发货操作

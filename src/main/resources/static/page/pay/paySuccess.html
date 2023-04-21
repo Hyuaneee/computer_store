@@ -26,7 +26,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/top.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/footer.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/orderConfirm.css"/>
-    <title>电脑商城</title>
+    <title>支付成功</title>
 </head>
 
 <body>
@@ -86,7 +86,7 @@
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
-            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select">
+            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @Click="searchContent()"></el-button>
             </el-input>
         </div>
@@ -108,7 +108,7 @@
             </div>
             <div class="col-md-4">
                 <div class="col-md-12 order-bar-active">
-                    3.付款成功
+                    3.支付结果
                 </div>
             </div>
             <div class="col-md-12">
@@ -117,13 +117,10 @@
                         <label>
                             <p>支付结果：</p>
                         </label>
-                        <div>订单号：{{order.oid}}，支付金额¥{{order.totalPrice}}，收款方圆心电脑商城</div>
+                        <div>订单号：{{ordersMap.keys.oid}}，支付金额¥{{ordersMap.keys.totalPrice}}，收款方：电脑商城</div>
                         <hr/>
                         <div class="text-center pay-res">
                             <span class="fa fa-check-square-o pay-res-icon"></span>支付成功
-                        </div>
-                        <div class="text-center">
-                            圆心电脑商城不会以系统异常、订单升级为由，要求你点击任何链接进行退款操作
                         </div>
                         <div class="pay-bar">
                             <a href="../orders.html">查看订单</a>
@@ -163,5 +160,5 @@
 <!--页脚结束-->
 </body>
 <script src="../../frame/axios/axios.min.js"></script>
-<script src="../../js/py/paySuccess.js"></script>
+<script src="../../js/pay/paySuccess.js"></script>
 </html>

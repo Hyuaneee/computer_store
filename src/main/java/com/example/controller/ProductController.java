@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.Result;
+import com.example.pojo.CartVO;
 import com.example.pojo.Product;
 import com.example.pojo.ProductCategory;
 import com.example.service.ProductCategoryService;
@@ -12,6 +13,7 @@ import com.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,9 +89,32 @@ public class ProductController {
         return Result.success(product);
     }
 
+    //详情页数据获取
+    @GetMapping("/buyNow")
+    public Result buyNow(Long id, Long num, HttpSession session) {
+        Product product = productService.getById(id);
+        if (product == null) {
+            return Result.error("商品不存在");
+        }
+        List<CartVO> list = new ArrayList<>();
+        CartVO cartVO = new CartVO();
+        cartVO.setCid(1L);
+        cartVO.setUid((Long) session.getAttribute("uid"));
+        cartVO.setPid(id);
+        cartVO.setPrice(product.getPrice());
+        cartVO.setNum(num);
+        cartVO.setNumCount(product.getNum());
+        cartVO.setTitle(product.getTitle());
+        cartVO.setRealPrice(num * product.getPrice());
+        cartVO.setImage(product.getImage());
+        list.add(cartVO);
+        return Result.success(list);
+    }
+
     //获取搜索详情页信息
     @PostMapping("/getPageList/{currentPage}/{pageSize}")
-    public Result getPageList(@PathVariable Integer currentPage, @PathVariable Integer pageSize, String context) {
+    public Result getPageList(@PathVariable Integer currentPage,
+                              @PathVariable Integer pageSize, String context) {
         LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
         if (!context.equals("")) {
             wrapper.like(Product::getTitle, context).or().like(Product::getItemType, context);
@@ -114,7 +139,7 @@ public class ProductController {
         return new Result(page, resultList);
     }
 
-    //商品状态设置
+    //商品上下架设置
     @GetMapping("/setStatus/{id}/{status}")
     public Result setDefault(@PathVariable Long id, @PathVariable Integer status) {
         status = status == 0 ? 1 : 0;
@@ -128,7 +153,7 @@ public class ProductController {
         return Result.success("设置成功");
     }
 
-    //账号逻辑删除
+    //商品逻辑删除
     @GetMapping("/setDeleted/{id}")
     public Result setDeleted(@PathVariable Long id) {
         LambdaUpdateWrapper<Product> wrapper = new LambdaUpdateWrapper<>();
@@ -136,9 +161,9 @@ public class ProductController {
         wrapper.set(Product::getStatus, 2);
         boolean flag = productService.update(wrapper);
         if (!flag) {
-            return Result.error("设置失败,请重试");
+            return Result.error("删除失败,请重试");
         }
-        return Result.success("设置成功");
+        return Result.success("删除成功");
     }
 
     //添加数据

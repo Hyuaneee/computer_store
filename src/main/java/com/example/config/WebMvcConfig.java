@@ -25,6 +25,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                         "/**/login",
                         "/**/logout",
                         "/**/enroll",
+                        "/**/alipay/**/",
                         "/frame/**",
                         "/css/**",
                         "/images/**",

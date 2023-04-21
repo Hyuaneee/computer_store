@@ -24,7 +24,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/layout.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/top.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/footer.css"/>
-    <title>电脑商城</title>
+    <title>商品列表</title>
 </head>
 
 <body>
@@ -78,7 +78,7 @@
                     <!-- dataList查询出来的列表，header-cell-style表头颜色,使用reserve-selection属性必须配合row-key -->
                     <el-table height="500" border :data="page.content" v-loading="loading"
                               :header-cell-style="{background:'#f9f9f9',color:'#333'}" row-key="id"
-                              ref="multipleTable" style="font-size: 10px">
+                              ref="multipleTable" style="font-size: 15px">
                         <el-table-column prop="id" label="商品id" min-width="8%"></el-table-column>
                         <el-table-column prop="categoryId" label="商品分类" min-width="8%">
                         </el-table-column>
@@ -87,7 +87,7 @@
                         <el-table-column prop="image" label="商品图片" min-width="15%">
                             <template slot-scope="scope">
                                 <el-image
-                                        :src="'http://localhost'+scope.row.image+'collect.png'">
+                                        :src="'http://127.0.0.1'+scope.row.image+'.png'">
                                 </el-image>
                             </template>
                         </el-table-column>

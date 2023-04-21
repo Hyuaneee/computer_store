@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="css/layout.css"/>
     <link rel="stylesheet" type="text/css" href="css/reg.css"/>
     <link rel="stylesheet" type="text/css" href="css/footer.css"/>
-    <title>管理员登录界面</title>
+    <title>管理员登录</title>
 
 </head>
 <body id="#app">
@@ -44,14 +44,14 @@
                 <el-form-item label="管理员：" prop="username">  <!-- prop的值与rules里面要验证的字段值是对应 -->
                     <el-input
                             prefix-icon="el-icon-user" style="width: 250px"
-                            type="text" v-model="formUser.username" autocomplete="off">
+                            type="text" v-model="formUser.username" autocomplete="off" clearable>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="密 码：" prop="password">
                     <el-input
                             prefix-icon="el-icon-menu"
                             style="width: 250px" show-password type="password"
-                            v-model="formUser.password" autocomplete="off">
+                            v-model="formUser.password" autocomplete="off" clearable>
                     </el-input>
                 </el-form-item>
                 <el-form-item>
@@ -70,8 +70,8 @@
     <!--联系我们、下载客户端等-->
     <div class="container beforeBottom">
         <div class="col-md-offset-1 col-md-3">
-            <div><img src="../../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
-            <div><img src="../../images/index/footerFont.png" alt=""/></div>
+            <div><img src="images/index/stumalllogo.png" alt="" class="footLogo"/></div>
+            <div><img src="images/index/footerFont.png" alt=""/></div>
         </div>
         <div class="col-md-4 callus text-center">
             计算2173 黄嘉源 202142051087
@@ -79,11 +79,11 @@
         <div class="col-md-4">
             <div class="col-md-5">
                 <p>电脑商城客户端</p>
-                <img src="../../images/index/ios.png" class="lf">
-                <img src="../../images/index/android.png" alt="" class="lf"/>
+                <img src="images/index/ios.png" class="lf">
+                <img src="images/index/android.png" alt="" class="lf"/>
             </div>
             <div class="col-md-6">
-                <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
+                <img style="width: 120px;height: 120px" src="images/index/erweima.png">
             </div>
         </div>
     </div>

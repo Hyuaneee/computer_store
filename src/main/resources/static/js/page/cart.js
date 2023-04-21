@@ -57,7 +57,6 @@ new Vue({
                 url: "/cart/getPageList",
                 data: {},
             }).then((res) => {
-                console.log(res.data.data)
                 this.cartList.content = res.data.data;
                 $('#allSelect').prop("checked", false);
             });
@@ -123,7 +122,7 @@ new Vue({
                 });
             });
         },
-        //计时器，增加购物车num
+        //购物车num
         handleChange(cid, data) {   //回调函数传递其他参数
             this.numLoading = true;
             axios({
@@ -137,13 +136,11 @@ new Vue({
                 }
             })
             this.numLoading = false;
-            this.findPage();
         },
         //全选
-        checkall(event) {
+        checkAll(event) {
             var flag = event.target.checked;
             $('input[type="checkbox"]').prop('checked', flag);
-
             if (flag) {
                 for (var index = 0; index < this.cartList.content.length; index++) {
                     this.multipleSelection.push(this.cartList.content[index].cid);
@@ -154,7 +151,6 @@ new Vue({
                 }
             } else {
                 this.multipleSelection.splice(index, this.multipleSelection.length);
-
                 //计算总金额
                 this.CartCount.allmoney = 0;
             }
@@ -192,6 +188,13 @@ new Vue({
             }
             //计算商品总数
             this.CartCount.allProduct = this.multipleSelection.length;
+            var ckItemLength = $("input[type='checkbox'][class='ckItem']:checked").length;
+            var cartList = this.cartList.content.length;
+            if (ckItemLength === cartList) {
+                $("input[type='checkbox'][class='ckAll']").prop('checked', true);
+            } else {
+                $("input[type='checkbox'][class='ckAll']").prop('checked', false);
+            }
         },
         //结算购物车
         submitCart() {

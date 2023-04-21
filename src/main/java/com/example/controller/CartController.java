@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.example.common.Result;
 import com.example.pojo.Cart;
 import com.example.pojo.CartVO;
+import com.example.pojo.Product;
 import com.example.pojo.User;
 import com.example.service.CartService;
+import com.example.service.ProductService;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +25,23 @@ public class CartController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ProductService productService;
+
     //添加商品到购物车
     @GetMapping("/insert")
     public Result insert(Cart cart, HttpSession session) {
         //获取session中uid并查找对应数据
         Long uid = (Long) session.getAttribute("uid");
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUid, uid);
-        User user = userService.getOne(queryWrapper);
+        LambdaQueryWrapper<User> wrapper1 = new LambdaQueryWrapper<>();
+        wrapper1.eq(User::getUid, uid);
+        User user = userService.getOne(wrapper1);
         if (user == null) {
             return Result.error("用户不存在");
         }
-        LambdaQueryWrapper<Cart> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Cart::getUid, user.getUid()).eq(Cart::getPid, cart.getPid());
-        Cart one = cartService.getOne(wrapper);
+        LambdaQueryWrapper<Cart> wrapper2 = new LambdaQueryWrapper<>();
+        wrapper2.eq(Cart::getUid, user.getUid()).eq(Cart::getPid, cart.getPid());
+        Cart one = cartService.getOne(wrapper2);
         if (one != null) {
             return Result.error("已添加到购物车,请在购物车页面修改或者结算");
         }
@@ -119,6 +124,11 @@ public class CartController {
         Cart one = cartService.getOne(wrapper);
         if (one == null) {
             return Result.error("信息有误，请刷新");
+        }
+        Product product = productService.getById(one.getPid());
+
+        if (num > product.getNum()) {
+            num = product.getNum();
         }
         LambdaUpdateWrapper<Cart> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Cart::getCid, cid);  //条件
