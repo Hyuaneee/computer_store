@@ -68,8 +68,8 @@
                             <div><a @Click="getList()" href="#"><b>全部订单</b></a></div>
                             <div><a @Click="getList(0)" href="#">待支付</a></div>
                             <div><a @Click="getList(1)" href="#">待收货</a></div>
-                            <div><a @Click="getList(3)" href="#">待评价</a></div>
-                            <div><a @Click="getList(2)" href="#">已取消订单</a></div>
+                            <div><a @Click="getList(3)" href="#">已完成</a></div>
+                            <div><a @Click="getList(2)" href="#">已取消</a></div>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                         </thead>
                         <tbody class="orders-body">
                         <tr v-for="item of orders.value">
-                            <td><img :src="'http://127.0.0.1'+item.image+'.png'" class="img-responsive"/></td>
+                            <td><img :src="'http://127.0.0.1'+item.image" class="img-responsive"/></td>
                             <td>{{item.title}}</td>
                             <td>¥<span>{{item.price}}</span></td>
                             <td>{{item.num}}件</td>

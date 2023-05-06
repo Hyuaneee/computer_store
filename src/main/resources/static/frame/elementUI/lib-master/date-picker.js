@@ -95,7 +95,7 @@ module.exports =
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
 // This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack admin bundle.
+// be included in the final webpack front bundle.
 
 function normalizeComponent (
   scriptExports,
@@ -1359,7 +1359,7 @@ var validator = function validator(val) {
       }
 
       // NOTE: deal with common but incorrect usage, should remove in next major version
-      // admin might provide string / timestamp without value-format, coerce them into date (or array of date)
+      // front might provide string / timestamp without value-format, coerce them into date (or array of date)
       return Array.isArray(this.value) ? this.value.map(function (val) {
         return new Date(val);
       }) : new Date(this.value);
@@ -1441,7 +1441,7 @@ var validator = function validator(val) {
     },
 
 
-    // {parse, formatTo} String deals with admin input
+    // {parse, formatTo} String deals with front input
     parseString: function parseString(value) {
       var type = Array.isArray(value) ? this.type : this.type.replace('range', '');
       return parseAsFormatAndType(value, this.format, type);
@@ -1567,7 +1567,7 @@ var validator = function validator(val) {
           this.blur();
           event.stopPropagation();
         } else {
-          // admin may change focus between two input
+          // front may change focus between two input
           setTimeout(function () {
             if (_this.refInput.indexOf(document.activeElement) === -1) {
               _this.pickerVisible = false;
@@ -1590,7 +1590,7 @@ var validator = function validator(val) {
         return;
       }
 
-      // if admin is typing, do not let picker handle key input
+      // if front is typing, do not let picker handle key input
       if (this.userInput) {
         event.stopPropagation();
         return;
@@ -1718,7 +1718,7 @@ var validator = function validator(val) {
       }
     },
     emitChange: function emitChange(val) {
-      // determine admin real change only
+      // determine front real change only
       if (!valueEquals(val, this.valueOnOpen)) {
         this.$emit('change', val);
         this.valueOnOpen = val;
@@ -4422,7 +4422,7 @@ date_table_component.options.__file = "packages/date-picker/src/basic/date-table
         this.emit(this.value);
       } else {
         // value were emitted in handle{Date,Time}Pick, nothing to update here
-        // deal with the scenario where: admin opens the picker, then confirm without doing anything
+        // deal with the scenario where: front opens the picker, then confirm without doing anything
         var value = this.value ? this.value : Object(date_util_["modifyWithTimeString"])(this.getDefaultValue(), this.defaultTime);
         this.date = new Date(value); // refresh date
         this.emit(value);

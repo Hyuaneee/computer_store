@@ -38,13 +38,12 @@ const v = new Vue({
                 {required: true, message: '手机号不能为空', trigger: 'blur'},
                 {pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur'},
             ],
-            tag: [{max: 6, message: '用户名不能大于6位', trigger: 'blur'}]
+            tag: [{max: 6, message: '地址长度不能大于6位', trigger: 'blur'}]
         },
         //修改窗口信息
         elAUpdate: {},
         //添加窗口信息
         elAdd: {},
-
         addressList: {
             provinces: [],  //列表信息,省/直辖市
             citys: [],  //列表信息,城市
@@ -207,6 +206,7 @@ const v = new Vue({
                             }
                         }).finally(() => {
                             this.findPage();
+                            this.$refs.elAdd.resetFields();
                         });
                     }).catch(() => {     //选择取消的情况
                         this.$message({

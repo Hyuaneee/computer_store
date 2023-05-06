@@ -6,7 +6,6 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.example.common.Result;
 import com.example.config.AlipayConfig;
 import com.example.pojo.Orders;
 import com.example.service.OrdersService;
@@ -152,7 +151,6 @@ public class AlipayController {
                 // 判断该笔订单是否在商户网站中已经做过处理
                 // 如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 // 如果有做过处理，不执行商户的业务程序
-
                 Long oid = Long.valueOf(out_trade_no);
                 //调用订单业务层修改订单状态信息
                 LambdaUpdateWrapper<Orders> updateWrapper = new LambdaUpdateWrapper<>();
@@ -223,11 +221,12 @@ public class AlipayController {
             wrapper.eq(Orders::getOid, out_trade_no);
             Orders orders = ordersService.getOne(wrapper);
             if (orders == null || orders.getStatus() == 2) {
-                response.sendRedirect("http://127.0.0.1/page/pay/payError.html?oid=" + out_trade_no);
+                response.sendRedirect(request.getContextPath() + "/page/pay/payError.html?oid=" + out_trade_no);
+               // response.sendRedirect("http://127.0.0.1/page/pay/payError.html?oid=" + out_trade_no);
             } else {
                 //携带订单号并跳转到支付成功的界面
-                response.sendRedirect("http://127.0.0.1/page/pay/paySuccess.html?oid=" + out_trade_no);
-                //response.sendRedirect(request.getContextPath() + "/page/pay/paySuccess.html?oid=" + out_trade_no);
+                //response.sendRedirect("http://127.0.0.1/page/pay/paySuccess.html?oid=" + out_trade_no);
+                response.sendRedirect(request.getContextPath() + "/page/pay/paySuccess.html?oid=" + out_trade_no);
             }
 
             log.info("********************** 支付成功(支付宝同步通知) **********************");

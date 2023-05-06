@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CartMapper">
+
+    <!--查询购物车数据，使用CartVO返回额外数据-->
+    <select id="PageCartVO" resultType="CartVO">
+        SELECT cid,
+               uid,
+               pid,
+               cart.price,
+               cart.num,
+               product.num              AS numCount,
+               product.title,
+               product.price * cart.num AS realPrice,
+               product.image
+        FROM cart
+                 LEFT JOIN product ON cart.pid = product.id
+        where cart.uid = #{uid}
+        ORDER BY cart.cid DESC
+    </select>
+
+    <!--动态sql,查询购物车数据，获取购物车结果集-->
+    <select id="getListCids" resultType="CartVO">
+        SELECT cid,uid,pid,cart.price,cart.num,product.num AS numCount,product.title,product.price*cart.num AS
+        realPrice,product.image
+        FROM cart LEFT JOIN product ON cart.pid = product.id
+        <where>
+            cart.cid in
+            <foreach item='cid' collection='list' open='(' separator=',' close=')'>
+                #{cid}
+            </foreach>
+        </where>
+        ORDER BY cart.cid DESC;
+    </select>
+
+</mapper>

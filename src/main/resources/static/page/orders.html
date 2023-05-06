@@ -59,9 +59,9 @@
                                     </span>
                             </button>
                             <ul class="dropdown-menu top-dropdown-ul" role="menu">
-                                <li><a href="admin/password.html">修改密码</a></li>
-                                <li><a href="admin/userdata.html">个人资料</a></li>
-                                <li><a href="admin/address.html">收货管理 </a></li>
+                                <li><a href="front/password.html">修改密码</a></li>
+                                <li><a href="front/userdata.html">个人资料</a></li>
+                                <li><a href="front/address.html">收货管理 </a></li>
                                 <li><a href="/user/logout">注销</a></li>
                             </ul>
                         </div>
@@ -78,10 +78,10 @@
                     <a href="#"></a>
                 </li>
                 <li class="active"><a href="./index.html"><span class="fa fa-home"></span></a></li>
-                <li><a href="#">全部商品</a></li>
-                <li><a href="#">联想专区</a></li>
-                <li><a href="#">戴尔专区</a></li>
-                <li><a href="#">其他配件</a></li>
+                <li><a href="search.html?typeData=">全部商品</a></li>
+                <li><a href="search.html?typeData=1">戴尔专区</a></li>
+                <li><a href="search.html?typeData=2">联想专区</a></li>
+                <li><a href="search.html?typeData=3">配件专区</a></li>
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
@@ -107,8 +107,8 @@
                             <div><a @Click="getList(null)" href="#"><b>全部订单</b></a></div>
                             <div><a @Click="getList(0)" href="#">待支付</a></div>
                             <div><a @Click="getList(1)" href="#">待收货</a></div>
-                            <div><a @Click="getList(3)" href="#">待评价</a></div>
-                            <div><a @Click="getList(2)" href="#">已取消订单</a></div>
+                            <div><a @Click="getList(3)" href="#">已完成</a></div>
+                            <div><a @Click="getList(2)" href="#">已取消</a></div>
                         </div>
                     </div>
                 </div>
@@ -121,9 +121,9 @@
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <div><a href="admin/password.html"><b>修改密码</b></a></div>
-                            <div><a href="admin/userdata.html">个人资料</a></div>
-                            <div><a href="admin/address.html">收货管理</a></div>
+                            <div><a href="front/password.html"><b>修改密码</b></a></div>
+                            <div><a href="front/userdata.html">个人资料</a></div>
+                            <div><a href="front/address.html">收货管理</a></div>
                         </div>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                         </thead>
                         <tbody class="orders-body">
                         <tr v-for="item of orders.value">
-                            <td><img :src="'http://127.0.0.1'+item.image+'.png'" class="img-responsive"/></td>
+                            <td><img :src="'http://127.0.0.1'+item.image" class="img-responsive"/></td>
                             <td>{{item.title}}</td>
                             <td>¥<span>{{item.price}}</span></td>
                             <td>{{item.num}}件</td>

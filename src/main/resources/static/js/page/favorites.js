@@ -21,15 +21,14 @@ new Vue({
         },
         //搜索
         searchData: '',
+        curPage: 1,
         //分页信息
         pageData: {
             content: [],
             currentPage: 1,   //当前页
-            pageSize: 12,  //当前页条数
+            pageSize: 4,  //当前页条数
             total: 1,  //数据总条数
             pages: 1,  //总页数
-            firstPage: false,  //是否禁用前一页按钮
-            lastPage: false,  //是否有禁用下一页按钮
         }
 
     },
@@ -71,8 +70,6 @@ new Vue({
                 this.pageData.pageSize = res.data.key.size;
                 this.pageData.total = res.data.key.total;
                 this.pageData.pages = res.data.key.pages;
-                this.pageData.firstPage = this.pageData.currentPage == 1 ? true : false;
-                this.pageData.lastPage = this.pageData.currentPage == this.pageData.pages ? true : false;
                 setTimeout(function () {
                 }, 1000)
                 this.loading = false;  //关闭加载
@@ -110,7 +107,10 @@ new Vue({
         //跳转到商品展示页
         productShow(pid) {
             location.href = "product.html?id=" + pid;
-        }
-
+        },
+        handleCurrentChange() {
+            this.pageData.currentPage = this.curPage
+            this.findPage();
+        },
     }
 });

@@ -47,12 +47,14 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
         </dependency>
+
         <!-- mp-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.4.0</version>
         </dependency>
+
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -93,6 +95,7 @@
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.23</version>
         </dependency>
+
         <!--支付宝沙箱-->
         <dependency>
             <groupId>com.alipay.sdk</groupId>
@@ -100,11 +103,19 @@
             <version>4.9.13.ALL</version>
         </dependency>
 
+        <!-- 文件上传 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <!--注解处理器配置-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
+
 
     </dependencies>
 
@@ -122,7 +133,6 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
-
         </resources>
         <plugins>
             <plugin>

@@ -15,3 +15,6 @@
 .goods-panel h5 {
 	height: 60px;
 }
+.el-pagination{
+	text-align: center;
+}

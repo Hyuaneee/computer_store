@@ -51,7 +51,6 @@
         </div>
 
     </div>
-
     <div class="container">
         <div class="col-md-16">
             <div class="panel panel-default">
@@ -87,7 +86,7 @@
                         <el-table-column prop="image" label="商品图片" min-width="15%">
                             <template slot-scope="scope">
                                 <el-image
-                                        :src="'http://127.0.0.1'+scope.row.image+'.png'">
+                                        :src="'http://127.0.0.1'+scope.row.image">
                                 </el-image>
                             </template>
                         </el-table-column>
@@ -157,23 +156,39 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
+
                                     <el-col :span="24">
                                         <el-form-item label="商品全称" prop="title">
                                             <el-input v-model="elAdd.title" placeholder="请输入商品全称">
                                             </el-input>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="12">
+                                    <el-col :span="8">
+                                        <el-form-item label="商品图片" prop="image">
+                                            <el-upload
+                                                    class="avatar-uploader"
+                                                    action="/file/upload"
+                                                    :show-file-list="false"
+                                                    list-type="picture-card"
+                                                    :on-success="addSuccess"
+                                                    :on-change="onChange"
+                                                    ref="upload">
+                                                <img v-if="addImage" :src="addImage" class="avatar">
+                                                <i v-else class="el-icon-plus"></i>
+                                            </el-upload>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="8">
                                         <el-form-item label="商品价格" prop="price">
                                             <el-input v-model="elAdd.price" placeholder="请输入商品价格"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="12">
+                                    <el-col :span="8">
                                         <el-form-item label="库存数量" prop="num">
                                             <el-input v-model="elAdd.num" placeholder="请输入库存数量"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="24">
+                                    <el-col :span="16">
                                         <el-form-item label="商品卖点" prop="sellPoint">
                                             <el-input v-model="elAdd.sellPoint" placeholder="请输入商品卖点"/>
                                         </el-form-item>
@@ -213,17 +228,32 @@
                                             </el-input>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="12">
+                                    <el-col :span="8">
+                                        <el-form-item label="商品图片" prop="image">
+                                            <el-upload
+                                                    class="avatar-uploader"
+                                                    action="/file/upload"
+                                                    :show-file-list="false"
+                                                    list-type="picture-card"
+                                                    :on-success="updateSuccess"
+                                                    :on-change="onChange"
+                                                    ref="upload">
+                                                <img v-if="elUpdate.image" :src="elUpdate.image" class="avatar">
+                                                <i v-else class="el-icon-plus"></i>
+                                            </el-upload>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="8">
                                         <el-form-item label="商品价格" prop="price">
                                             <el-input v-model="elUpdate.price" placeholder="请输入商品价格"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="12">
+                                    <el-col :span="8">
                                         <el-form-item label="库存数量" prop="num">
                                             <el-input v-model="elUpdate.num" placeholder="请输入库存数量"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="24">
+                                    <el-col :span="16">
                                         <el-form-item label="商品卖点" prop="sellPoint">
                                             <el-input v-model="elUpdate.sellPoint" placeholder="请输入商品卖点"/>
                                         </el-form-item>
@@ -242,6 +272,7 @@
     </div>
     <!--页脚开始-->
     <div class="clearfix"></div>
+
     <footer class="footer">
         <!--联系我们、下载客户端等-->
         <div class="container beforeBottom">

@@ -16,7 +16,7 @@ public class AlipayConfig {
     public static String gatewayUrl = "https://openapi.alipaydev.com/gateway.do";
 
     //设置内网穿透回调地址
-    public static String callBack = "7mr47b.natappfree.cc";
+    public static String callBack = "computerstore.natapp1.cc";
 
     //使用的编码格式
     public static String charset = "utf-8";

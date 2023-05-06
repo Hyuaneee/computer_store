@@ -8,10 +8,8 @@ spring:
       url: jdbc:mysql://localhost:3306/computerstore?serverTimezone=Asia/Shanghai&useSSL=false
       username: root
       password: 123456
-
 # mp配置
 mybatis-plus:
-  mapper-locations: classpath*:**/mapper/xml*/*.xml*
   configuration:
     #驼峰命名默认true
     map-underscore-to-camel-case: true
@@ -21,9 +19,12 @@ mybatis-plus:
     db-config:
       #雪花算法
       id-type: auto
+  type-aliases-package: com.example.pojo
 salt:
   passwd: huangjy
 
+PImage:
+  path: D:\IdeaProject\computer_store\src\main\resources\static\images\product\
 
 logging:
   level:

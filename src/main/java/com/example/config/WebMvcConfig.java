@@ -35,8 +35,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                         "/adminLogin.html",
                         "/page/index.html",
                         "/page/search.html/**",
-                        "/product/**",
-                        "/page/product.html"
+                        "/**/product/**",
+                        "/page/product.html",
+                        "/**/file/**"
                 );
     }
 

@@ -61,9 +61,9 @@
                                     </span>
                             </button>
                             <ul class="dropdown-menu top-dropdown-ul" role="menu">
-                                <li><a href="admin/password.html">修改密码</a></li>
-                                <li><a href="admin/userdata.html">个人资料</a></li>
-                                <li><a href="admin/address.html">收货管理 </a></li>
+                                <li><a href="front/password.html">修改密码</a></li>
+                                <li><a href="front/userdata.html">个人资料</a></li>
+                                <li><a href="front/address.html">收货管理 </a></li>
                                 <li><a href="/user/logout">注销</a></li>
                             </ul>
                         </div>
@@ -81,10 +81,10 @@
                     <a href="#"></a>
                 </li>
                 <li class="active"><a href="./index.html"><span class="fa fa-home"></span></a></li>
-                <li><a href="#">全部商品</a></li>
-                <li><a href="#">联想专区</a></li>
-                <li><a href="#">戴尔专区</a></li>
-                <li><a href="#">其他配件</a></li>
+                <li><a href="search.html?typeData=">全部商品</a></li>
+                <li><a href="search.html?typeData=1">戴尔专区</a></li>
+                <li><a href="search.html?typeData=2">联想专区</a></li>
+                <li><a href="search.html?typeData=3">配件专区</a></li>
             </ul>
         </div>
         <div class="col-md-3" style="float: right;margin-right: 5px">
@@ -95,13 +95,13 @@
     </div>
 
     <div class="container">
-        <div class="col-md-offset-1 col-md-10"><b>{{searchData}}</b>&nbsp;<small>搜索结果：</small></div>
+        <div class="col-md-offset-1 col-md-10"><b>搜索结果：</b></div>
         <div class="col-md-offset-1 col-md-10" v-for="(list,index) of pageData.content" :key="index">
             <!-- 收藏信息 -->
             <div class="col-md-3" v-for="product of list" :key="product.id">
                 <div class="goods-panel">
                     <div class="move-img img-search"></div>
-                    <img :src="'http://127.0.0.1'+product.image+'.png'" class="img-responsive"
+                    <img :src="'http://127.0.0.1'+product.image" class="img-responsive"
                          @click="productShow(product.id)"/>
                     <p>¥{{product.price}}</p>
                     <p class="text-row-3"><a :href="'product.html?id='+product.id"
@@ -111,11 +111,13 @@
             </div>
         </div>
         <div class="col-md-offset-1 col-md-10">
-            <p align="center">
-                <a href="#" @click="Previous()">上一页</a>
-                <a href="#">{{pageData.currentPage}}</a>
-                <a href="#" @click="Next()">下一页</a>
-            </p>
+            <el-pagination
+                    hide-on-single-page
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="curPage"
+                    layout="prev, pager, next"
+                    :page-count="pageData.pages">
+            </el-pagination>
         </div>
     </div>
     <!--页脚开始-->

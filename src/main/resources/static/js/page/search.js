@@ -33,18 +33,17 @@ new Vue({
             avatar: ''
         },
         //搜索
-        searchData: '1123',
+        searchData: '',
+        typeData: '',
+        curPage: 1,
         //分页信息
         pageData: {
             content: [],
             currentPage: 1,   //当前页
-            pageSize: 12,  //当前页条数
+            pageSize: 8,  //当前页条数
             total: 1,  //数据总条数
             pages: 1,  //总页数
-            firstPage: false,  //是否禁用前一页按钮
-            lastPage: false,  //是否有禁用下一页按钮
         }
-
     },
     //钩子函数，VUE对象初始化完成后自动执行
     created() {
@@ -68,41 +67,35 @@ new Vue({
         },
         //搜索
         searchContent() {
-            location.href = "search.html?context=" + this.searchData;
+            location.href = "search.html?context=" + this.searchData + "&typeData=" + this.typeData;
         },
         //获取当前页数据
         findPage() {
             this.loading = true;
             var context = getUrlParam("context");
+            var typeData = getUrlParam("typeData");
             this.searchData = context;
             axios({
                 method: "POST",
                 url: "/product/getPageList/" + this.pageData.currentPage + "/" + this.pageData.pageSize,
                 params: {
-                    context: context
+                    context: context,
+                    typeData: typeData
                 },
             }).then((res) => {
-                console.log(res.data.data);
                 this.pageData.content = res.data.value;
                 this.pageData.currentPage = res.data.key.current;
                 this.pageData.pageSize = res.data.key.size;
                 this.pageData.total = res.data.key.total;
                 this.pageData.pages = res.data.key.pages;
-                this.pageData.firstPage = this.pageData.currentPage == 1 ? true : false;
-                this.pageData.lastPage = this.pageData.currentPage == this.pageData.pages ? true : false;
                 setTimeout(function () {
                     this.loading = false;  //关闭加载
                 }, 2000)
+                this.searchData = '';
             });
         },
-        //上一页
-        Previous() {
-            this.pageData.currentPage = this.pageData.currentPage - 1;
-            this.findPage();
-        },
-        //下一页
-        Next() {
-            this.pageData.currentPage = this.pageData.currentPage + 1;
+        handleCurrentChange() {
+            this.pageData.currentPage = this.curPage
             this.findPage();
         },
         //加入收藏

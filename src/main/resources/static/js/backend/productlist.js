@@ -30,14 +30,14 @@ const v = new Vue({
                 {required: true, message: '数量不能为空', trigger: 'blur'},
                 {pattern: /^[1-9]\d*$/, message: '请输入正确的数量区间（不包含小数）', trigger: 'blur'},
             ],
-            categoryId: [{required: true, message: '不能为空', trigger: 'blur'}]
+            categoryId: [{required: true, message: '不能为空', trigger: 'blur'}],
         },
 
         //分类集合
         type: {
             categories: []
         },
-
+        addImage: '',
         //修改窗口信息
         elUpdate: {},
         //添加窗口信息
@@ -86,7 +86,6 @@ const v = new Vue({
                 }
             });
         },
-
 
         //上架下架
         setStatus(row) {
@@ -185,11 +184,13 @@ const v = new Vue({
                         });
                     }).finally(() => {
                         this.dialogFormVisible = false;
+                        this.reset()
                     });
                 } else {
                     this.$message.error('此提交不符合规则');
                     return false;
                 }
+
             });
 
         },
@@ -242,6 +243,7 @@ const v = new Vue({
                         });
                     }).finally(() => {
                         this.dialogUpdateVisible = false;
+                        this.reset();
                     });
                 } else {
                     this.$message.error('此提交不符合规则');
@@ -253,6 +255,7 @@ const v = new Vue({
         //重置输入框
         reset() {
             this.$refs.elAdd.resetFields();
+            this.addImage = ''
         },
 
         //上一页
@@ -272,5 +275,31 @@ const v = new Vue({
             this.dialogFormVisible = false;
             this.dialogUpdateVisible = false;
         },
+        //添加图片方法
+        addSuccess(res) {
+            this.addImage = `/file/download?name=${res.data}`;
+            this.elAdd.image = `/file/download?name=${res.data}`;
+        },
+        //修改图片方法
+        updateSuccess(res) {
+            this.elUpdate.image = `/file/download?name=${res.data}`;
+        },
+        //图片校验格式
+        onChange(file) {
+            if (file) {
+                const suffix = file.name.split('.')[1]
+                const size = file.size / 1024 / 1024 < 2
+                if (['png', 'jpeg', 'jpg'].indexOf(suffix) < 0) {
+                    this.$message.error('上传图片只支持 png、jpeg、jpg 格式！')
+                    this.$refs.upload.clearFiles()
+                    return false
+                }
+                if (!size) {
+                    this.$message.error('上传文件大小不能超过 2MB!')
+                    return false
+                }
+                return file
+            }
+        }
     }
 });

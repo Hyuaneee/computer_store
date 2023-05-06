@@ -95,7 +95,7 @@ const v = new Vue({
                             });
                             setTimeout(function () {
                             }, 1000);
-                            location.href = "/admin/logout";
+                            location.href = "/front/logout";
                         } else {
                             this.$message.error(res.data.message);
                         }

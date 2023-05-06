@@ -10,6 +10,7 @@ import com.example.pojo.Product;
 import com.example.pojo.ProductCategory;
 import com.example.service.ProductCategoryService;
 import com.example.service.ProductService;
+import com.example.util.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,10 +115,19 @@ public class ProductController {
     //获取搜索详情页信息
     @PostMapping("/getPageList/{currentPage}/{pageSize}")
     public Result getPageList(@PathVariable Integer currentPage,
-                              @PathVariable Integer pageSize, String context) {
+                              @PathVariable Integer pageSize, String context, String typeData) {
+        if (typeData == null) {
+            typeData = "";
+        }
+        if (context == null) {
+            context = "";
+        }
         LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
         if (!context.equals("")) {
             wrapper.like(Product::getTitle, context).or().like(Product::getItemType, context);
+        }
+        if (!typeData.equals("")) {
+            wrapper.eq(Product::getCategoryId, typeData);
         }
         wrapper.orderByAsc(Product::getId);
         IPage<Product> iPage = new Page<>(currentPage, pageSize);

@@ -33,7 +33,7 @@ class ComputerStoreApplicationTests {
     void contextLoads() {
         /*Date date = new Date();
         System.out.println(date);*/
-        String username = "admin";
+        String username = "front";
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         User user = mapper.selectOne(queryWrapper);

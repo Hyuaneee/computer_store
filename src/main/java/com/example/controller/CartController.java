@@ -147,7 +147,6 @@ public class CartController {
         if (list == null) {
             return Result.error("获取失败，请重试");
         }
-
         return Result.success(list);
     }
 }
