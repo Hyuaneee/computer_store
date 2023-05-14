@@ -69,7 +69,7 @@ public class UserController {
     @GetMapping("/logout")
     public Result<String> logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession().removeAttribute("uid");
-        response.sendRedirect("resources/static/login.html");
+        response.sendRedirect("login.html");
         return Result.success("用户已退出");
     }
 

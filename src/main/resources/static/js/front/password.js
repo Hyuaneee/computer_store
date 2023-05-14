@@ -95,9 +95,9 @@ const v = new Vue({
                             });
                             setTimeout(function () {
                             }, 1000);
-                            location.href = "/front/logout";
+                            location.href = "/user/logout";
                         } else {
-                            this.$message.error(res.data.message);
+                            this.$message.error(res.data.message);11
                         }
                     });
                 } else {

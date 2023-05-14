@@ -88,7 +88,28 @@ new Vue({
             }).then(() => {
                 this.aliPay.traceNo = oid;
                 this.aliPay.totalAmount = totalPrice;
+
+                //对接支付宝沙箱支付
                 location.href = this.payURL();
+
+                //直接修改订单状态
+               /*axios({
+                    methods: "get",
+                    url: "/order/updateStatus/" + oid,
+                }).then((res) => {
+                    if (res.data.code === 1) {
+                        this.$message.success({
+                            message: "支付成功",
+                            type: 'success'
+                        });
+                        setTimeout(function () {
+                            location.href = "paySuccess.html?oid=" + oid;
+                        }, 500);
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
+                });*/
+
             }).catch(() => {   //选择取消的情况
                 this.$message({
                     type: "into",

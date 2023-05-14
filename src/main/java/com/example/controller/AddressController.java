@@ -21,9 +21,6 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
-    @Autowired
-    private UserService userService;
-
     //aid查询
     @GetMapping("/selectId/{aid}")
     public Result selectId(@PathVariable Long aid) {

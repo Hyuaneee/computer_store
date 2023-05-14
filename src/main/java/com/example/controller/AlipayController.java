@@ -220,14 +220,9 @@ public class AlipayController {
             LambdaQueryWrapper<Orders> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Orders::getOid, out_trade_no);
             Orders orders = ordersService.getOne(wrapper);
-            if (orders == null || orders.getStatus() == 2) {
-                response.sendRedirect(request.getContextPath() + "/page/pay/payError.html?oid=" + out_trade_no);
-               // response.sendRedirect("http://127.0.0.1/page/pay/payError.html?oid=" + out_trade_no);
-            } else {
-                //携带订单号并跳转到支付成功的界面
-                //response.sendRedirect("http://127.0.0.1/page/pay/paySuccess.html?oid=" + out_trade_no);
-                response.sendRedirect(request.getContextPath() + "/page/pay/paySuccess.html?oid=" + out_trade_no);
-            }
+            //response.sendRedirect("http://127.0.0.1/page/pay/paySuccess.html?oid=" + out_trade_no);
+            //携带订单号并跳转到支付成功的界面
+            response.sendRedirect(request.getContextPath() + "/page/pay/paySuccess.html?oid=" + out_trade_no);
 
             log.info("********************** 支付成功(支付宝同步通知) **********************");
             log.info("* 订单号: {}", out_trade_no);

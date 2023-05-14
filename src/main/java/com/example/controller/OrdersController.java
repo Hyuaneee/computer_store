@@ -223,7 +223,7 @@ public class OrdersController {
         return Result.success(result);
     }
 
-    //根据oid获取订单列表
+    //根据oid获取订单商品列表
     @GetMapping("/getListoid")
     public Result getListoid(Integer status, HttpSession session) {
         Long uid = (Long) session.getAttribute("uid");

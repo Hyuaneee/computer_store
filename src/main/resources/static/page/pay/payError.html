@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- elementUI -->
+    <link rel="stylesheet" href="../../frame/elementUI/lib-master/theme-chalk/index.css"/>
+    <!-- 必须先引入vue，  后使用element-ui -->
+    <script src="../../frame/elementUI/vue.js"></script>
+    <!-- 引入element 的组件库-->
+    <script src="../../frame/elementUI/lib-master/index.js"></script>
+    <!-- jquery -->
+    <script src="../../frame/jquery/jquery.min.js"></script>
+
+    <!--导入核心文件-->
+    <script src="../../frame/bootstrap3/js/holder.js"></script>
+    <link href="../../frame/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="../../frame/bootstrap3/jquery-1.9.1.min.js"></script>
+    <script src="../../frame/bootstrap3/js/bootstrap.js"></script>
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="../../frame/bootstrap3/font-awesome-4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/top.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/footer.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/orderConfirm.css"/>
+    <title>支付失败</title>
+</head>
+
+<body>
+<div id="app">
+    <!--头部-->
+    <header class="header">
+        <!--电脑商城logo-->
+        <div class="row">
+            <div class="col-md-3">
+                <a href="../index.html">
+                    <img src="../../images/index/stumalllogo.png"/>
+                </a>
+            </div>
+            <!--快捷选项-->
+            <div class="col-md-9 top-item">
+                <ul class="list-inline pull-right">
+                    <li><a href="../favorites.html"><span class="fa fa-heart"></span>&nbsp;收藏</a></li>
+                    <li class="li-split">|</li>
+                    <li><a href="../orders.html"><span class="fa fa-file-text"></span>&nbsp;订单</a></li>
+                    <li class="li-split">|</li>
+                    <li><a href="../cart.html"><span class="fa fa-cart-plus"></span>&nbsp;购物车</a></li>
+                    <li class="li-split">|</li>
+                    <li v-show="!userLoading"><a href="../../login.html"><span class="fa fa-user"></span>&nbsp;登录</a>
+                    </li>
+                    <li v-show="userLoading">
+                        <!--下列列表按钮 ：管理-->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                    <span id="top-dropdown-btn">
+                                        &nbsp;{{user.username}}<span class="caret"></span>
+                                    </span>
+                            </button>
+                            <ul class="dropdown-menu top-dropdown-ul" role="menu">
+                                <li><a href="../front/password.html">修改密码</a></li>
+                                <li><a href="../front/userdata.html">个人资料</a></li>
+                                <li><a href="../front/address.html">收货管理 </a></li>
+                                <li><a href="/user/logout">注销</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <!--导航 -->
+    <div class="row top-nav">
+        <div class="col-md-6">
+            <ul class="nav nav-pills">
+                <li>
+                    <a href="#"></a>
+                </li>
+                <li class="active"><a href="../index.html"><span class="fa fa-home"></span></a></li>
+                <li><a href="../search.html?typeData=">全部商品</a></li>
+                <li><a href="../search.html?typeData=1">戴尔专区</a></li>
+                <li><a href="../search.html?typeData=2">联想专区</a></li>
+                <li><a href="../search.html?typeData=3">配件专区</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3" style="float: right;margin-right: 5px">
+            <el-input placeholder="请输入商品名称进行查询" v-model="searchData" class="input-with-select" clearable>
+                <el-button slot="append" icon="el-icon-search" @Click="searchContent()"></el-button>
+            </el-input>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col-md-offset-1 col-md-10">
+            <div class="col-md-4">
+                <div class="col-md-12 order-bar-undo">
+                    1.确认订单信息
+                    <span class="pull-right"><span class="fa fa-chevron-right"></span></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-12 order-bar-undo">
+                    2.在线支付
+                    <span class="pull-right"><span class="fa fa-chevron-right"></span></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-12 order-bar-active">
+                    3.支付结果
+                </div>
+            </div>
+            <div class="col-md-12">
+                <form role="form">
+                    <div class="form-group">
+                        <label>
+                            <p>支付结果：</p>
+                        </label>
+                        <div>订单号：{{ordersMap.keys.oid}}，支付金额¥{{ordersMap.keys.totalPrice}}，收款方：电脑商城</div>
+                        <hr/>
+                        <div class="text-center pay-res">
+                            <span class="fa fa-close pay-res-icon"></span>支付失败
+                        </div>
+                        <div class="pay-bar">
+                            <a href="../orders.html">查看订单</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--页脚开始-->
+    <div class="clearfix"></div>
+    <footer class="footer">
+        <!--联系我们、下载客户端等-->
+        <div class="container beforeBottom">
+            <div class="col-md-offset-1 col-md-3">
+                <div><img src="../../images/index/stumalllogo.png" alt="" class="footLogo"/></div>
+                <div><img src="../../images/index/footerFont.png" alt=""/></div>
+            </div>
+            <div class="col-md-4 callus text-center">
+                计算2173 黄嘉源 202142051087
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-5">
+                    <p>电脑商城客户端</p>
+                    <img src="../../images/index/ios.png" class="lf">
+                    <img src="../../images/index/android.png" alt="" class="lf"/>
+                </div>
+                <div class="col-md-6">
+                    <img style="width: 120px;height: 120px" src="../../images/index/erweima.png">
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!--页脚结束-->
+</body>
+<script src="../../frame/axios/axios.min.js"></script>
+<script src="../../js/pay/paySuccess.js"></script>
+</html>
